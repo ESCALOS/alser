@@ -1,6 +1,5 @@
 import './bootstrap';
 import Swiper from 'swiper';
-import { EffectCards } from 'swiper/modules';
 // Cargar primera vez:
 new Swiper('.mySwiper', {
     spaceBetween: 30,
