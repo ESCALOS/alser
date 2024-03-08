@@ -29,6 +29,9 @@ export default {
                 '112': '28rem',
                 '128': '32rem'
             },
+            colors: {
+                'home-primary' : 'rgb(33, 1, 85)'
+            },
             animation: {
                 'heartbeat': 'heartbeat .9s ease-out infinite',
                 'zoom-in': 'zoom-in 0.6s ease-out',

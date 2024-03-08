@@ -29,7 +29,7 @@
         </p>
 
         <p class="mt-4 text-sm">
-            <a href="https://laravel.com/docs" class="inline-flex items-center font-semibold text-indigo-700 dark:text-indigo-300">
+            <a href="https://laravel.com/docs" class="inline-flex items-center font-semibold text-home-primary dark:text-indigo-300">
                 Explore the documentation
 
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="ms-1 w-5 h-5 fill-indigo-500 dark:fill-indigo-200">
@@ -54,7 +54,7 @@
         </p>
 
         <p class="mt-4 text-sm">
-            <a href="https://laracasts.com" class="inline-flex items-center font-semibold text-indigo-700 dark:text-indigo-300">
+            <a href="https://laracasts.com" class="inline-flex items-center font-semibold text-home-primary dark:text-indigo-300">
                 Start watching Laracasts
 
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="ms-1 w-5 h-5 fill-indigo-500 dark:fill-indigo-200">

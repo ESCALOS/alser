@@ -15,7 +15,7 @@ $routes = [
 ];
 @endphp
 
-<nav class="bg-indigo-700 border-b border-indigo-200 shadow dark:bg-gray-900" x-data="{ open: false, screenSize: window.matchMedia('(max-width: 767px)').matches }">
+<nav class="border-b border-indigo-200 shadow bg-home-primary dark:bg-gray-900" x-data="{ open: false, screenSize: window.matchMedia('(max-width: 767px)').matches }">
     <div class="flex flex-wrap items-center justify-between max-w-screen-xl p-4 mx-auto md:justify-between">
         <a wire:navigate href="{{ route('home') }}" class="flex items-center">
             <img src="storage/images/logo-alser.png" class="h-8 mr-3" alt="Logo" />
@@ -41,7 +41,7 @@ $routes = [
                 x-transition:leave-start="opacity-100 scale-100"
                 x-transition:leave-end="opacity-0 scale-90">
                 <ul
-                    class="flex flex-col p-4 mt-4 font-medium bg-indigo-800 border border-gray-100 rounded-lg md:p-0 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-indigo-700 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                    class="flex flex-col p-4 mt-4 font-medium border border-gray-100 rounded-lg bg-home-primary md:p-0 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-home-primary dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                     @foreach ($routes as $route)
                         <li class="{{ request()->routeIs($route['route']) ? 'md:border-b md:border-white' : 'md:hover:border-b md:hover:border-white'}}">
                             <a wire:navigate.hover href="{{ route($route['route']) }}"
