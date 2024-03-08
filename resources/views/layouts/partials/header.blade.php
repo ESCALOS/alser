@@ -41,19 +41,19 @@ $routes = [
                 x-transition:leave-start="opacity-100 scale-100"
                 x-transition:leave-end="opacity-0 scale-90">
                 <ul
-                    class="flex flex-col p-4 mt-4 font-medium bg-indigo-800 border border-gray-100 divide-y-2 rounded-lg md:divide-y-0 md:p-0 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-indigo-700 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                    class="flex flex-col p-4 mt-4 font-medium bg-indigo-800 border border-gray-100 rounded-lg md:p-0 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-indigo-700 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                     @foreach ($routes as $route)
-                        <li>
+                        <li class="{{ request()->routeIs($route['route']) ? 'md:border-b md:border-white' : 'md:hover:border-b md:hover:border-white'}}">
                             <a wire:navigate.hover href="{{ route($route['route']) }}"
                                 class="home-nav-link {{ request()->routeIs($route['route']) ? 'home-nav-link-active' : 'home-nav-link-inactive' }}"
                                 aria-current="page">{{ $route['name'] }}</a>
                         </li>
                     @endforeach
-                    <li>
+                    <li class="md:hover:border-b md:hover:border-white">
                         <a wire:navigate.hover href="{{ route('login') }}" class="home-nav-link home-nav-link-inactive"
                             aria-current="page">Iniciar Sesión</a>
                     </li>
-                    <li>
+                    <li class="md:hover:border-b md:hover:border-white">
                         <a wire:navigate.hover href="{{ route('register') }}" class="home-nav-link home-nav-link-inactive"
                             aria-current="page">Registrarse</a>
                     </li>

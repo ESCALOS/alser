@@ -27,7 +27,7 @@
 
             @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
                 <div class="mt-4">
-                    <x-label for="terms">
+                    <x-label-jet for="terms">
                         <div class="flex items-center">
                             <x-checkbox name="terms" id="terms" required />
 
@@ -38,7 +38,7 @@
                                 ]) !!}
                             </div>
                         </div>
-                    </x-label>
+                    </x-label-jet>
                 </div>
             @endif
 
@@ -47,9 +47,9 @@
                     {{ __('Already registered?') }}
                 </a>
 
-                <x-button type="submit" spinner primary class="ms-4">
+                <x-button-jet class="ms-4">
                     {{ __('Register') }}
-                </x-button>
+                </x-button-jet>
             </div>
         </form>
     </x-authentication-card>

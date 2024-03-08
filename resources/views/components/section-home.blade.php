@@ -6,7 +6,7 @@
                 role="alert">
                 <div class="flex-auto w-48 mr-2 text-xl md:w-64 text-pretty">¡Cambia dólares para tu <span class="text-2xl font-black text-yellow-500">Empresa</span>  con los mejores beneficios!</div>
                 <div class="relative flex items-center">
-                    <a wire:navigate.hover href="{{ route('home.companies') }}" class="px-2 py-1 mx-4 text-xs font-bold text-indigo-700 uppercase bg-white rounded-md md:text-base">Más información</a>
+                    <a wire:navigate.hover href="{{ route('home.companies') }}" class="px-2 py-1 mx-4 text-xs font-bold text-indigo-700 uppercase bg-white rounded-md md:text-md">Más información</a>
                     <svg @click="open = false" class="absolute top-0 right-0 w-4 h-4 opacity-75 cursor-pointer fill-current" xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path

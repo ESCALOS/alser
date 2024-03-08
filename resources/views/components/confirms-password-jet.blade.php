@@ -15,7 +15,7 @@
 </span>
 
 @once
-<x-dialog-modal wire:model.live="confirmingPassword">
+<x-dialog-modal-jet wire:model.live="confirmingPassword">
     <x-slot name="title">
         {{ $title }}
     </x-slot>
@@ -24,12 +24,12 @@
         {{ $content }}
 
         <div class="mt-4" x-data="{}" x-on:confirming-password.window="setTimeout(() => $refs.confirmable_password.focus(), 250)">
-            <x-input type="password" class="mt-1 block w-3/4" placeholder="{{ __('Password') }}" autocomplete="current-password"
+            <x-input-jet type="password" class="block w-3/4 mt-1" placeholder="{{ __('Password') }}" autocomplete="current-password"
                         x-ref="confirmable_password"
                         wire:model="confirmablePassword"
                         wire:keydown.enter="confirmPassword" />
 
-            <x-input-error for="confirmable_password" class="mt-2" />
+            <x-input-jet-error for="confirmable_password" class="mt-2" />
         </div>
     </x-slot>
 
@@ -38,9 +38,9 @@
             {{ __('Cancel') }}
         </x-secondary-button>
 
-        <x-button class="ms-3" dusk="confirm-password-button" wire:click="confirmPassword" wire:loading.attr="disabled">
+        <x-button-jet class="ms-3" dusk="confirm-password-button" wire:click="confirmPassword" wire:loading.attr="disabled">
             {{ $button }}
-        </x-button>
+        </x-button-jet>
     </x-slot>
-</x-dialog-modal>
+</x-dialog-modal-jet>
 @endonce
