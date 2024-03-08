@@ -24,3 +24,8 @@
     background-size: cover;
   }
 
+  input:focus {
+    /* Estilos específicos cuando el input está enfocado */
+    /* Por ejemplo, puedes agregar un fondo o un borde diferente */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  }

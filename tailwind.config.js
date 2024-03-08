@@ -25,12 +25,19 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            height: {
+                '112': '28rem',
+                '128': '32rem'
+            },
             animation: {
                 'heartbeat': 'heartbeat .9s ease-out infinite',
                 'zoom-in': 'zoom-in 0.6s ease-out',
                 'blurred-fade-in': 'blurred-fade-in 0.9s ease-in-out',
                 'swing-drop-in': 'swing-drop-in 0.6s ease-out',
                 'zoom-out': 'zoom-out 0.6s ease-out',
+                'rotate-90': 'rotate-90 1s ease-in-out',
+                'unrotate-90': 'unrotate-90 1s ease-in-out',
+                'rotate-180': 'rotate-180 1s ease-in-out'
             },
             keyframes: {
                 'heartbeat': {
@@ -67,6 +74,30 @@ export default {
                         "transform": "rotate(0deg) translateY(0)",
                         "opacity": "1"
                       }
+                  },
+                  'rotate-90': {
+                    "0%": {
+                      "transform": "rotate(0deg)"
+                    },
+                    "100%": {
+                      "transform": "rotate(90deg)"
+                    }
+                  },
+                  'unrotate-90': {
+                    "0%": {
+                      "transform": "rotate(90deg)"
+                    },
+                    "100%": {
+                      "transform": "rotate(0deg)"
+                    }
+                  },
+                  'rotate-180': {
+                    "0%": {
+                      "transform": "rotate(0deg)"
+                    },
+                    "100%": {
+                      "transform": "rotate(180deg)"
+                    }
                   }
             }
         },
