@@ -1,16 +1,20 @@
  @php
 $routes = [
     [
-        'name' => 'Nosotros',
-        'route' => 'home.about',
-    ],
-    [
         'name' => 'Empresas',
         'route' => 'home.companies',
     ],
     [
+        'name' => 'Tipo de cambio',
+        'route' => 'home.exchange-rate',
+    ],
+    [
         'name' => 'Ayuda',
         'route' => 'home.help',
+    ],
+    [
+        'name' => 'Nosotros',
+        'route' => 'home.about',
     ],
 ];
 @endphp

@@ -11,6 +11,7 @@
         "php": "^8.3",
         "filament/filament": "^3.2",
         "guzzlehttp/guzzle": "^7.2",
+        "jantinnerezo/livewire-alert": "^3.0",
         "laravel/folio": "^1.1",
         "laravel/framework": "^10.10",
         "laravel/jetstream": "^4.3",
@@ -18,6 +19,7 @@
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.0",
         "livewire/volt": "^1.6",
+        "predis/predis": "^2.2",
         "wireui/wireui": "^1.18"
     },
     "require-dev": {
