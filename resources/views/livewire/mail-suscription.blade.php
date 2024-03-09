@@ -1,4 +1,4 @@
-<section class="py-8 bg-home-primary">
+<section class="py-20 bg-home-primary">
     <div class="max-w-screen-xl px-6 mx-auto text-center text-white md:px-24">
         <h3 class="text-2xl">Entérate de las fluctuaciones del precio del dólar en el Perú</h3>
         <h4>Suscríbete y recibe el Tipo de Cambio Online semanalmente.</h4>

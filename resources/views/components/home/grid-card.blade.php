@@ -4,6 +4,6 @@
     </div>
     <div class="col-span-4">
         <h3 class="text-2xl font-bold">{{ $title }}</h3>
-        <p class="text-lg text-pretty">{{ $description }}</p>
+        {{ $slot }}
     </div>
 </div>

@@ -7,7 +7,9 @@
     </div>
     <div class="h-48 pt-4 pl-0 md:pl-4 md:pt-0">
         <div class="flex items-start justify-center pb-8">
-            <h1 class="text-lg text-white">Operaciones Interbancarias (hasta 1 día útil)</h1>
+            <h1 class="text-lg text-white">Op<span class="inline lg:hidden">.</span><span class="hidden lg:inline">eraciones</span>
+                Interbancarias (hasta 1 día útil)
+            </h1>
         </div>
         <x-home.banner.banks :banks="['bbva','scotia']"/>
     </div>

@@ -6,7 +6,8 @@ name('home');
 
 <x-guest-layout>
     @include('partials.home.banner')
-    @include('partials.home.securities')
-    <livewire:mail-suscription />
     @include('partials.home.process')
+    @include('partials.home.securities')
+    @include('partials.home.sbs-full')
+    <livewire:mail-suscription />
 </x-guest-layout>
