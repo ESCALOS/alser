@@ -12,8 +12,8 @@ class Quoter extends Component
 
     public function mount() {
         $price = Price::latest()->first(['purchase', 'sales']);
-        $this->purchaseFactor = $price->purchase;
-        $this->salesFactor = $price->sales;
+        $this->purchaseFactor = $price->purchase ?? 0;
+        $this->salesFactor = $price->sales ?? 0;
     }
 
     public function render()
