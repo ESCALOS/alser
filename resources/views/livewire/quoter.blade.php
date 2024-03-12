@@ -164,7 +164,7 @@
                     updateDolarAmount() {
                         // Actualizar la cantidad de dólares cuando cambia la cantidad de soles
                         this.dolarAmount = this.purchase ? (this.solAmount / {{ $purchaseFactor }}).toFixed(
-                            2) : (this.dolarAmount * {{ $salesFactor }}).toFixed(2);
+                            2) : (this.solAmount * {{ $salesFactor }}).toFixed(2);
                     },
                     toggleQuoterClass(active) {
 
