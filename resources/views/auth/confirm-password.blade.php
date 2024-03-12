@@ -14,14 +14,15 @@
             @csrf
 
             <div>
-                <x-label-jet for="password" value="{{ __('Password') }}" />
-                <x-input-jet id="password" class="block w-full mt-1" type="password" name="password" required autocomplete="current-password" autofocus />
+                <x-label for="password" value="{{ __('Password') }}" />
+                <x-input id="password" class="block w-full mt-1" type="password" name="password" required
+                    autocomplete="current-password" autofocus />
             </div>
 
             <div class="flex justify-end mt-4">
-                <x-button-jet class="ms-4">
+                <x-button class="ms-4">
                     {{ __('Confirm') }}
-                </x-button-jet>
+                </x-button>
             </div>
         </form>
     </x-authentication-card>

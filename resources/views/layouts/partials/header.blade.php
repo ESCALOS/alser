@@ -22,7 +22,7 @@
  <nav class="border-b border-indigo-200 shadow bg-home-primary dark:bg-gray-900" x-data="{ open: false, screenSize: window.matchMedia('(max-width: 1023px)').matches }">
      <div class="flex flex-wrap items-center justify-between max-w-screen-xl p-4 mx-auto lg:justify-between">
          <a wire:navigate.hover href="{{ route('home') }}" class="flex items-center">
-             <img src="storage/images/logo-alser.png" class="h-8 mr-3" alt="Logo" />
+             <img src="{{ asset('storage/images/logo-alser.png') }}" class="h-8 mr-3" alt="Logo" />
          </a>
          <div>
              <div class="flex items-center lg:order-2">

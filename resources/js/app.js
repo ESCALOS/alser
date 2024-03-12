@@ -10,7 +10,7 @@ document.addEventListener('livewire:navigating', () => {
         salesPrice: 1,
 
         async init() {
-            const response = await fetch('http://127.0.0.1/api/latest-price');
+            const response = await fetch('/api/latest-price');
             const data = await response.json();
             this.purchasePrice = parseFloat(data.purchase);
             this.salesPrice = parseFloat(data.sales);

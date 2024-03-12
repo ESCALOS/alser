@@ -16,11 +16,13 @@
             @csrf
 
             <div>
-                <x-input label="{{ __('Email') }}" id="email" class="block w-full mt-1" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+                <x-input label="{{ __('Email') }}" id="email" class="block w-full mt-1" type="email" name="email"
+                    :value="old('email')" required autofocus autocomplete="username" />
             </div>
 
             <div class="mt-4">
-                <x-input label="{{ __('Password') }}" id="password" class="block w-full mt-1" type="password" name="password" required autocomplete="current-password" />
+                <x-input label="{{ __('Password') }}" id="password" class="block w-full mt-1" type="password"
+                    name="password" required autocomplete="current-password" />
             </div>
 
             <div class="block mt-4">
@@ -32,14 +34,15 @@
 
             <div class="flex items-center justify-end mt-4">
                 @if (Route::has('password.request'))
-                    <a class="text-sm text-gray-600 underline rounded-md dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
+                    <a class="text-sm text-gray-600 underline rounded-md dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                        href="{{ route('password.request') }}">
                         {{ __('Forgot your password?') }}
                     </a>
                 @endif
 
-                <x-button-jet class="ms-4">
+                <x-button class="ms-4">
                     {{ __('Log in') }}
-                </x-button-jet>
+                </x-button>
             </div>
         </form>
     </x-authentication-card>
