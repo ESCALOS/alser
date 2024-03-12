@@ -16,8 +16,9 @@ class Faq extends Component
         public int $start = 0,
         public int $quantity = 2,
         public string $img = "default.png",
-        public string $imgPosition = "float-right" )
-    {}
+        public bool $imgLeft = true
+    ) {
+    }
 
     /**
      * Get the view / contents that represent the component.
@@ -26,6 +27,6 @@ class Faq extends Component
     {
         $faqs = DB::table('faqs')->skip($this->start)->take($this->quantity)->get();
 
-        return view('components.home.faq',compact('faqs'));
+        return view('components.home.faq', compact('faqs'));
     }
 }

@@ -1,12 +1,13 @@
+@props(['title' => 'Sin título', 'topText' => 'Sin descripción','contentHeight' => 'h-64'])
 <section class="py-12 bg-gradient-to-b from-home-primary to-violet-800 md:py-14">
-    <div class="flex flex-col items-center justify-between h-64 max-w-screen-xl px-6 mx-auto">
+    <div class="flex flex-col items-center justify-between {{ $contentHeight }} max-w-screen-xl px-6 mx-auto text-center">
         <div>
             <h3 class="text-lg font-semibold text-gray-300 uppercase">{{ $topText }}</h3>
         </div>
         <div>
             <h2 class="text-5xl font-bold text-white">{{ $title }}</h2>
         </div>
-        <div class="text-center text-gray-300">
+        <div class="text-gray-300">
             {{ $slot }}
         </div>
         <div>
