@@ -2,17 +2,15 @@
     <div class="animate-zoom-in" x-data="quoter">
         <div class="flex justify-center w-full">
             <div class="flex justify-between bg-white border-2 border-gray-300 rounded-full select-none w-96">
-                <div id="toggle-quoter"
-                    class="w-1/2 py-2 text-lg font-semibold text-center text-white rounded-full cursor-pointer bg-home-primary"
+                <div id="toggle-quoter" class="w-1/2 py-2 text-lg font-semibold text-center rounded-full cursor-pointer"
                     @click="active = true">Cotizador</div>
-                <div id="toggle-promo"
-                    class="w-1/2 py-2 text-lg font-medium text-center text-gray-700 rounded-full cursor-pointer"
+                <div id="toggle-promo" class="w-1/2 py-2 text-lg font-medium text-center rounded-full cursor-pointer"
                     @click="active = false"><span class="font-extrabold">ALSER</span> promos
                 </div>
             </div>
         </div>
         <div class="flex">
-            <div class="relative flex justify-center w-full mt-2" id="container-quoter" x-show="active"
+            <div class="flex justify-center w-full mt-2" id="container-quoter" x-show="active"
                 x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
                 x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-300"
                 x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90">
@@ -58,7 +56,7 @@
                                                 <input
                                                     class="pt-0 ml-2 text-lg text-right border-none rounded-2xl w-28 md:w-32"
                                                     x-model="dolarAmount" @input="updateSolAmount"
-                                                    style="box-shadow: none" type="text" />
+                                                    style="box-shadow: none" type="number" />
                                             </div>
                                         </div>
                                     </div>
@@ -88,7 +86,7 @@
                                             <div>
                                                 <input x-model="solAmount" @input="updateDolarAmount"
                                                     class="pt-0 text-lg text-right border-none rounded-2xl w-28 md:w-32"
-                                                    style="box-shadow: none" type="text" />
+                                                    style="box-shadow: none" type="number" />
                                             </div>
                                         </div>
                                     </div>
@@ -146,42 +144,14 @@
 
                     init() {
                         this.solAmount = 1000 * {{ $purchaseFactor }};
-                        this.$watch('purchase', () => {
-                            this.updateSolAmount();
-                            document.getElementById('tab-purchase').classList.toggle(
-                                'text-home-primary');
-                            document.getElementById('tab-purchase').classList.toggle('border-b');
-                            document.getElementById('tab-purchase').classList.toggle(
-                                'border-indigo-700');
-                            document.getElementById('tab-purchase').classList.toggle(
-                                'border-gray-600');
-                            document.getElementById('tab-sales').classList.toggle(
-                                'text-home-primary');
-                            document.getElementById('tab-sales').classList.toggle('border-b');
-                            document.getElementById('tab-sales').classList.toggle(
-                                'border-indigo-700');
-                            document.getElementById('tab-sales').classList.toggle(
-                            'border-gray-600');
+                        this.toggleQuoterClass(true);
+                        this.togglePurchaseClass(true);
+                        this.$watch('active', value => {
+                            this.toggleQuoterClass(value);
                         });
-                        this.$watch('active', () => {
-                            document.getElementById('toggle-quoter').classList.toggle(
-                                'bg-home-primary');
-                            document.getElementById('toggle-quoter').classList.toggle('text-white');
-                            document.getElementById('toggle-quoter').classList.toggle(
-                                'tex-gray-700');
-                            document.getElementById('toggle-promo').classList.toggle(
-                                'bg-home-primary');
-                            document.getElementById('toggle-promo').classList.toggle('text-white');
-                            document.getElementById('toggle-promo').classList.toggle(
-                            'tex-gray-700');
-                            document.getElementById('container-quoter').classList.toggle(
-                            'absolute');
-                            document.getElementById('container-quoter').classList.toggle('-z-10');
-                            document.getElementById('container-quoter').classList.toggle(
-                            'relative');
-                            document.getElementById('container-promo').classList.toggle('absolute');
-                            document.getElementById('container-promo').classList.toggle('-z-10');
-                            document.getElementById('container-promo').classList.toggle('relative');
+                        this.$watch('purchase', value => {
+                            this.updateSolAmount();
+                            this.togglePurchaseClass(value);
                         });
                     },
 
@@ -196,6 +166,92 @@
                         this.dolarAmount = this.purchase ? (this.solAmount / {{ $purchaseFactor }}).toFixed(
                             2) : (this.dolarAmount * {{ $salesFactor }}).toFixed(2);
                     },
+                    toggleQuoterClass(active) {
+
+                        if (active) {
+                            //visibilidad del cotizador
+                            document.getElementById('container-quoter').classList.remove(
+                                'absolute');
+                            document.getElementById('container-quoter').classList.remove('-z-10');
+                            document.getElementById('container-quoter').classList.add(
+                                'relative');
+                            document.getElementById('container-promo').classList.add('absolute');
+                            document.getElementById('container-promo').classList.add('-z-10');
+                            document.getElementById('container-promo').classList.remove('relative');
+                            //color y fondo de los tabs
+                            document.getElementById('toggle-quoter').classList.add(
+                                'bg-home-primary');
+                            document.getElementById('toggle-quoter').classList.add('text-white');
+                            document.getElementById('toggle-quoter').classList.remove(
+                                'tex-gray-700');
+                            document.getElementById('toggle-promo').classList.remove(
+                                'bg-home-primary');
+                            document.getElementById('toggle-promo').classList.remove('text-white');
+                            document.getElementById('toggle-promo').classList.add(
+                                'tex-gray-700');
+
+                        } else {
+                            //visibilidad de la promo
+                            document.getElementById('container-quoter').classList.add(
+                                'absolute');
+                            document.getElementById('container-quoter').classList.add('-z-10');
+                            document.getElementById('container-quoter').classList.remove(
+                                'relative');
+                            document.getElementById('container-promo').classList.remove('absolute');
+                            document.getElementById('container-promo').classList.remove('-z-10');
+                            document.getElementById('container-promo').classList.add('relative');
+                            //color y fondo de los tabs
+                            document.getElementById('toggle-quoter').classList.remove(
+                                'bg-home-primary');
+                            document.getElementById('toggle-quoter').classList.remove('text-white');
+                            document.getElementById('toggle-quoter').classList.add(
+                                'tex-gray-700');
+                            document.getElementById('toggle-promo').classList.add(
+                                'bg-home-primary');
+                            document.getElementById('toggle-promo').classList.add('text-white');
+                            document.getElementById('toggle-promo').classList.remove(
+                                'tex-gray-700');
+                        }
+                    },
+
+                    togglePurchaseClass(purchase) {
+                        if (purchase) {
+                            //active tab-purchase
+                            document.getElementById('tab-purchase').classList.add(
+                                'text-home-primary');
+                            document.getElementById('tab-purchase').classList.add('border-b');
+                            document.getElementById('tab-purchase').classList.add(
+                                'border-indigo-700');
+                            document.getElementById('tab-purchase').classList.remove(
+                                'border-gray-600');
+                            //inactive tab-sales
+                            document.getElementById('tab-sales').classList.remove(
+                                'text-home-primary');
+                            document.getElementById('tab-sales').classList.remove('border-b');
+                            document.getElementById('tab-sales').classList.remove(
+                                'border-indigo-700');
+                            document.getElementById('tab-sales').classList.add(
+                                'border-gray-600');
+                        } else {
+                            //inactive tab-purchase
+                            document.getElementById('tab-purchase').classList.remove(
+                                'text-home-primary');
+                            document.getElementById('tab-purchase').classList.remove('border-b');
+                            document.getElementById('tab-purchase').classList.remove(
+                                'border-indigo-700');
+                            document.getElementById('tab-purchase').classList.add(
+                                'border-gray-600');
+                            //active tab-sales
+                            document.getElementById('tab-sales').classList.add(
+                                'text-home-primary');
+                            document.getElementById('tab-sales').classList.add('border-b');
+                            document.getElementById('tab-sales').classList.add(
+                                'border-indigo-700');
+                            document.getElementById('tab-sales').classList.remove(
+                                'border-gray-600');
+                        }
+                    }
+
                 }));
 
             })
