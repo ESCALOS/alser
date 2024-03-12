@@ -141,9 +141,11 @@
                     purchase: true,
                     dolarAmount: 1000,
                     solAmount: 0,
+                    purchasePrice: {{ $purchaseFactor }},
+                    salesPrice: {{ $salesFactor }},
 
                     init() {
-                        this.solAmount = 1000 * {{ $purchaseFactor }};
+                        this.solAmount = 1000 * this.purchasePrice;
                         this.toggleQuoterClass(true);
                         this.togglePurchaseClass(true);
                         this.$watch('active', value => {
@@ -157,14 +159,16 @@
 
                     updateSolAmount() {
                         // Actualizar la cantidad de soles cuando cambia la cantidad de dólares
-                        this.solAmount = this.purchase ? (this.dolarAmount * {{ $purchaseFactor }}).toFixed(
-                            2) : (this.dolarAmount / {{ $salesFactor }}).toFixed(2);
+                        this.solAmount = this.purchase ? (this.dolarAmount * $this.purchasePrice)
+                            .toFixed(
+                                2) : (this.dolarAmount / this.salesPrice).toFixed(2);
                     },
 
                     updateDolarAmount() {
                         // Actualizar la cantidad de dólares cuando cambia la cantidad de soles
-                        this.dolarAmount = this.purchase ? (this.solAmount / {{ $purchaseFactor }}).toFixed(
-                            2) : (this.solAmount * {{ $salesFactor }}).toFixed(2);
+                        this.dolarAmount = this.purchase ? (this.solAmount / this.purchasePrice)
+                            .toFixed(
+                                2) : (this.solAmount * this.salesPrice).toFixed(2);
                     },
                     toggleQuoterClass(active) {
 
@@ -175,8 +179,11 @@
                             document.getElementById('container-quoter').classList.remove('-z-10');
                             document.getElementById('container-quoter').classList.add(
                                 'relative');
+                            document.getElementById('container-quoter').classList.remove(
+                                'translate-x-full');
                             document.getElementById('container-promo').classList.add('absolute');
-                            document.getElementById('container-promo').classList.add('-z-10');
+                            document.getElementById('container-promo').classList.add('-z-10')
+                            document.getElementById('container-promo').classList.add('translate-x-full');
                             document.getElementById('container-promo').classList.remove('relative');
                             //color y fondo de los tabs
                             document.getElementById('toggle-quoter').classList.add(
@@ -197,6 +204,8 @@
                             document.getElementById('container-quoter').classList.add('-z-10');
                             document.getElementById('container-quoter').classList.remove(
                                 'relative');
+                            document.getElementById('container-quoter').classList.add('translate-x-full');
+                            document.getElementById('container-promo').classList.remove('translate-x-full');
                             document.getElementById('container-promo').classList.remove('absolute');
                             document.getElementById('container-promo').classList.remove('-z-10');
                             document.getElementById('container-promo').classList.add('relative');
@@ -253,7 +262,6 @@
                     }
 
                 }));
-
             })
         </script>
     </div>
