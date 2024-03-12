@@ -20,6 +20,7 @@
     "dependencies": {
         "@alpinejs/intersect": "^3.13.6",
         "alpinejs": "^3.13.6",
+        "apexcharts": "^3.47.0",
         "swiper": "^11.0.7"
     }
 }
