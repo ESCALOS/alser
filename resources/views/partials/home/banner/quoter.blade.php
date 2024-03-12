@@ -1,3 +1,3 @@
-<div class="py-4 md:pt-36 md:py-12">
+<div class="py-4 md:pb-12">
     <livewire:quoter />
 </div>

@@ -1,4 +1,4 @@
-<div class="flex flex-col justify-around md:py-12 md:pt-36 animate-swing-drop-in" :class="open ? 'pt-32 pb-4' : 'py-4'">
+<div class="flex flex-col justify-around pb-4 md:pb-12">
     @include('partials.home.banner.slogan')
     @include('partials.home.banner.recognitions')
     @include('partials.home.banner.buttons')
