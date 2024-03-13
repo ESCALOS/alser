@@ -96,7 +96,7 @@
             salesPrice: {{ $salesFactor }},
 
             init() {
-                this.solAmount = 1000 * this.purchasePrice;
+                this.solAmount = (1000 * this.purchasePrice).toFixed(2);
                 this.togglePurchaseClass(true);
                 this.$watch('purchase', value => {
                     this.updateSolAmount();

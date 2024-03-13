@@ -19,6 +19,8 @@ export default {
             height: {
                 112: "28rem",
                 128: "32rem",
+                136: "34rem",
+                152: "38rem",
             },
             colors: {
                 "home-primary": "rgb(33, 1, 85)",

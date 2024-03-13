@@ -31,12 +31,17 @@ class MailSuscription extends Component
             [
                 'email.required' => 'Ingrese su correo electrónico',
                 'email.email' => 'Correo Inválido',
-                'email.unique' => 'Ya se encuentra suscrito',
+                'email.unique' => 'Correo ya suscrito',
             ]
         );
 
         if ($validator->stopOnFirstFailure()->fails()) {
-            $this->alert('warning', $validator->errors()->first());
+            $this->alert('warning', $validator->errors()->first(), [
+                'position' => 'center',
+                'toast' => false,
+                'showConfirmButton' => true,
+                'onConfirmed' => '',
+            ]);
         } else {
             $suscriptor = MailSuscriptor::create(['email' => $this->email]);
             $suscriptor->notify(new VerifyMailSuscription());
