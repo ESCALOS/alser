@@ -9,5 +9,9 @@ class Price extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['purchase','sales'];
+    protected $fillable = ['purchase', 'sales'];
+
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i:s',
+    ];
 }

@@ -18,7 +18,6 @@
     <!-- Styles -->
     @livewireStyles
     <!-- Scripts -->
-    @wireUiScripts
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
@@ -45,7 +44,6 @@
     </div>
 
     @stack('modals')
-
 
     @livewireScripts
 </body>

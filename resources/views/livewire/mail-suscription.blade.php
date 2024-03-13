@@ -10,7 +10,7 @@
                 </div>
                 <div>
                     <x-mary-button type="submit"
-                        class="w-full text-white transition-colors duration-500 bg-orange-500 hover:bg-orange-600"
+                        class="w-full text-white transition-colors duration-500 bg-amber-500 hover:bg-amber-600"
                         icon="o-envelope" spinner="send" label="Suscribirme" />
                 </div>
             </div>

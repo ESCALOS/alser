@@ -21,7 +21,6 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Scripts -->
     @livewireStyles
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     @vite(['resources/css/guest.css', 'resources/js/app.js'])
 </head>
 
@@ -35,10 +34,15 @@
 
     @include('layouts.partials.footer')
 
+    <x-mary-toast />
+
     @livewireScripts
+    @livewireChartsScripts
+
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <x-livewire-alert::scripts />
+    @stack('scripts')
 </body>
 
 </html>

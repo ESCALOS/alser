@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "asantibanez/livewire-charts": "^3.0",
         "filament/filament": "^3.2",
         "guzzlehttp/guzzle": "^7.2",
         "jantinnerezo/livewire-alert": "^3.0",
