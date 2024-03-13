@@ -2,11 +2,12 @@
 
 namespace App\View\Components\Graphics;
 
+use App\Models\Price;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class DollarPurchasePriceFluctuations extends Component
+class DollarFluctuation extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +22,8 @@ class DollarPurchasePriceFluctuations extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.graphics.dollar-purchase-price-fluctuations');
+        $prices = Price::whereDate('created_at', today())->get();
+
+        return view('components.graphics.dollar-fluctuation', compact('prices'));
     }
 }

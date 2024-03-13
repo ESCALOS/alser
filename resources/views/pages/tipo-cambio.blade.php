@@ -8,7 +8,7 @@ name('home.exchange-rate');
     <x-home.banner-default topText="EL MEJOR" title="Tipo de cambio">
         <p>Cambiar dólares era rápido, ahora es inmediato.</p>
     </x-home.banner-default>
-    @include('partials.home.graphics-dollar-price')
+    <x-graphics.dollar-fluctuation />
     @include('partials.home.process')
     @include('partials.home.securities')
     @include('partials.home.sbs-full')
