@@ -1,5 +1,5 @@
-<div class="bg-white border border-gray-200 rounded-lg shadow w-96 dark:bg-gray-800 dark:border-gray-700">
-    <div class="flex flex-wrap items-center text-sm font-medium text-center text-gray-900 border-b border-gray-200 rounded-t-lg justify-evenly bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800"
+<div class="bg-white border border-gray-200 rounded-lg shadow w-96">
+    <div class="flex flex-wrap items-center text-sm font-medium text-center text-gray-900 border-b border-gray-200 rounded-t-lg justify-evenly bg-gray-50"
         style="height: 58px">
         <h1 class="text-lg font-bold">Ninguna promo activa</h1>
     </div>
