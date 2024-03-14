@@ -21,6 +21,12 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        Price::factory(15)->create();
+        //Price::factory(15)->create();
+
+        $this->call([
+            LocationDepartmentSeeder::class,
+            LocationProvinceSeeder::class,
+            LocationDistrictSeeder::class,
+        ]);
     }
 }

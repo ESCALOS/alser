@@ -6,7 +6,11 @@
     display: none;
 }
 
-
+input:where(:not([type])) {
+    border-width: 0;
+    box-shadow: none!important;
+    padding-top: 0;
+}
 .home-nav-link {
     @apply block py-2 pl-3 pr-4
 }

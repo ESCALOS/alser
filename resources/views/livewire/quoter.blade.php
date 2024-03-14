@@ -1,6 +1,5 @@
-<div class="bg-white border border-gray-200 rounded-lg shadow w-96 dark:bg-gray-800 dark:border-gray-700"
-    x-data="quoter">
-    <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 rounded-t-lg select-none justify-evenly bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800"
+<div class="bg-white border border-gray-200 rounded-lg shadow w-96" x-data="quoter">
+    <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 rounded-t-lg select-none justify-evenly bg-gray-50"
         role="tablist">
         <li class="me-2">
             <button type="button" @click="purchase = true" role="tab" id="tab-purchase"

@@ -5,7 +5,7 @@
         <form wire:submit='send'>
             <div class="grid grid-cols-1 gap-2 py-6 md:grid-cols-3">
                 <div class="col-span-1 md:col-span-2">
-                    <x-input id="email" type="email" required class="block w-full h-full text-gray-900"
+                    <x-mary-input id="email" type="email" required class="form-control"
                         placeholder="Ingrese un correo electrónico" wire:model="email" />
                 </div>
                 <div>

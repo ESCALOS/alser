@@ -1,5 +1,5 @@
 <footer
-    class="flex flex-col flex-wrap items-center justify-around py-4 space-x-4 text-white border-t border-gray-100 bg-home-primary dark:border-gray-900 dark:bg-gray-900 text-md dark:text-gray-100 home-footer">
+    class="flex flex-col flex-wrap items-center justify-around py-4 space-x-4 text-white border-t border-gray-100 bg-home-primary text-md home-footer">
     <div class="grid max-w-screen-xl grid-cols-3 py-12 mx-auto border-b border-gray-100">
         <div>
             <img src="{{ asset('storage/images/logo-alser.png') }}" alt="logo">

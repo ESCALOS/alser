@@ -20,7 +20,9 @@ name('home.complaints-book');
             en nuestra Política de Privacidad.
         </p>
     </x-home.banner-default>
-    @include('partials.home.process')
-    @include('partials.home.securities')
-    @include('partials.home.sbs-full')
+    <section class="py-12 bg-white">
+        <div class="max-w-screen-xl px-6 mx-auto md:px-24">
+            <livewire:complaint-book />
+        </div>
+    </section>
 </x-guest-layout>

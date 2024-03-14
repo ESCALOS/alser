@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="light">
 
 <head>
     <meta charset="utf-8">
@@ -31,7 +31,7 @@
 
     @include('layouts.partials.header')
 
-    <div class="font-sans antialiased text-gray-900 dark:text-gray-100">
+    <div class="font-sans antialiased text-gray-900">
         {{ $slot }}
     </div>
 
@@ -41,7 +41,8 @@
 
     @livewireScripts
     @livewireChartsScripts
-
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/robsontenorio/mary@0.44.2/libs/currency/currency.js">
+    </script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <x-livewire-alert::scripts />
