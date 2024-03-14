@@ -26,9 +26,5 @@ class ComplaintBookForm extends Form
 
     public string $streetDpto = '';
 
-    public ?int $departmentId = null;
-
-    public ?int $provinceId = null;
-
     public ?int $districtId = null;
 }

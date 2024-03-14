@@ -6,12 +6,19 @@ use App\Livewire\Forms\ComplaintBookForm;
 use App\Models\LocationDepartment;
 use App\Models\LocationDistrict;
 use App\Models\LocationProvince;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class ComplaintBook extends Component
 {
+    use LivewireAlert;
+
     public ComplaintBookForm $form;
+
+    public ?int $departmentId = null;
+
+    public ?int $provinceId = null;
 
     public array $provincesFound = [];
 
@@ -40,35 +47,43 @@ class ComplaintBook extends Component
         return LocationDistrict::select('id', 'name', 'location_province_id')->get()->toArray();
     }
 
-    public function updated()
+    private function loadProvinces()
     {
-
-        $existDepartmentId = isset($this->form->departmentId);
-
-        if (! $existDepartmentId) {
-            $this->form->provinceId = null;
-        }
-
-        $this->provincesFound = $existDepartmentId
-                    ? collect($this->provinces)
-                        ->where('location_department_id', $this->form->departmentId)
-                        ->values()
-                        ->toArray()
-                    : [];
-
-        $existProvinceId = isset($this->form->provinceId);
-
-        if (! $existProvinceId) {
+        if (isset($this->departmentId)) {
+            $this->provincesFound = collect($this->provinces)
+                ->where('location_department_id', $this->departmentId)
+                ->values()
+                ->toArray();
+        } else {
+            $this->resetExcept('form', 'departmentId');
             $this->form->districtId = null;
         }
+    }
 
-        $this->districtsFound = $existProvinceId
-                    ? collect($this->districts)
-                        ->where('location_province_id', $this->form->provinceId)
-                        ->values()
-                        ->toArray()
-                    : [];
+    private function loadDistricts()
+    {
+        if (isset($this->departmentId)) {
+            if (isset($this->provinceId)) {
+                $this->districtsFound = collect($this->districts)
+                    ->where('location_province_id', $this->provinceId)
+                    ->values()
+                    ->toArray();
+            } else {
+                $this->form->districtId = null;
+                $this->districtsFound = [];
+            }
+        }
 
+    }
+
+    public function updatedDepartmentId()
+    {
+        $this->loadProvinces();
+    }
+
+    public function updatedProvinceId()
+    {
+        $this->loadDistricts();
     }
 
     public function render()
