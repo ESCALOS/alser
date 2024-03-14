@@ -18,7 +18,7 @@
             </div>
             <div x-show="$wire.provinceId" class="w-1/3 transition-all ease-out"
                 :class="$wire.departmentId ? 'opacity-100' : 'opacity-0'">
-                <x-mary-choices-offline label="Distrito" wire:model="form.districtId" :options="$districtsFound" single
+                <x-mary-choices-offline label="Distrito" wire:model.live="form.districtId" :options="$districtsFound" single
                     searchable no-result-text="Distrito no encontrado." />
             </div>
         </div>

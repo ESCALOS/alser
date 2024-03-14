@@ -1890,11 +1890,20 @@ class LocationDistrictSeeder extends Seeder
         ];
 
         $formattedDistricts = [];
+        $counter = 0;
+        $previousProvinceId = '';
+
         foreach ($districts as $district) {
+            if ($district['location_province_id'] != $previousProvinceId) {
+                $counter++;
+            }
+
             $formattedDistricts[] = [
                 'name' => $district['name'],
-                'location_province_id' => (int) substr($district['location_province_id'], 0, 2), // Convert to integer
+                'location_province_id' => $counter, // Asignar contador a 'location_province_id'
             ];
+
+            $previousProvinceId = $district['location_province_id'];
         }
 
         DB::table('location_districts')->insert($formattedDistricts);

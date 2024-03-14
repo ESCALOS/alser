@@ -54,9 +54,6 @@ class ComplaintBook extends Component
                 ->where('location_department_id', $this->departmentId)
                 ->values()
                 ->toArray();
-        } else {
-            $this->resetExcept('form', 'departmentId');
-            $this->form->districtId = null;
         }
     }
 
@@ -79,6 +76,9 @@ class ComplaintBook extends Component
     public function updatedDepartmentId()
     {
         $this->loadProvinces();
+
+        $this->reset('provinceId');
+        $this->form->districtId = null;
     }
 
     public function updatedProvinceId()
