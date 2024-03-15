@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Enums\CurrencyTypeEnum;
 use App\Enums\DocumentTypeEnum;
 use App\Livewire\Forms\ComplaintBookForm;
 use App\Models\LocationDepartment;
@@ -27,14 +28,27 @@ class ComplaintBook extends Component
 
     public array $documentTypes;
 
+    public array $currencies;
+
     public array $responseMediums = [
-        ['id' => 1, 'name' => 'Correo electrónico'],
-        ['id' => 2, 'name' => 'Entrega a domicilio'],
+        ['name' => 'Correo electrónico'],
+        ['name' => 'Entrega a domicilio'],
+    ];
+
+    public array $reasons = [
+        ['name' => 'Queja'],
+        ['name' => 'Reclamo'],
+    ];
+
+    public array $services = [
+        ['name' => 'Cambio de moneda online'],
+        ['name' => 'Otro'],
     ];
 
     public function mount()
     {
         $this->documentTypes = DocumentTypeEnum::getChoices();
+        $this->currencies = CurrencyTypeEnum::getChoices();
         $this->loadProvinces();
     }
 
@@ -93,6 +107,18 @@ class ComplaintBook extends Component
     public function updatedProvinceId()
     {
         $this->loadDistricts();
+    }
+
+    public function save()
+    {
+        $this->form->store();
+
+        $this->alert('success', 'Reclamo enviado', [
+            'position' => 'center',
+            'toast' => false,
+            'showConfirmButton' => true,
+            'onConfirmed' => '',
+        ]);
     }
 
     public function render()

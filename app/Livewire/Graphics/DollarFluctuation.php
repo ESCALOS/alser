@@ -15,13 +15,13 @@ class DollarFluctuation extends Component
 
     public Collection $prices;
 
-    public Price $lastPriceYesterday;
+    public Price $lastPrice;
 
-    public function mount($isPurchase, Collection $prices, Price $lastPriceYesterday)
+    public function mount($isPurchase, Collection $prices, Price $lastPrice)
     {
         $this->isPurchase = $isPurchase;
         $this->prices = $prices;
-        $this->lastPriceYesterday = $lastPriceYesterday;
+        $this->lastPrice = $lastPrice;
     }
 
     public function render()
@@ -33,7 +33,7 @@ class DollarFluctuation extends Component
             ->setAnimated($this->firstRun)
             // ->withOnPointClickEvent('onPointClick')
             ->setSmoothCurve()
-            ->addPoint('Ayer', $this->isPurchase ? $this->lastPriceYesterday->purchase : $this->lastPriceYesterday->sales);
+            ->addPoint('Ayer', $this->isPurchase ? $this->lastPrice->purchase : $this->lastPrice->sales);
 
         foreach ($this->prices as $price) {
             $chart->addPoint($price->created_at->format('H:i'), $this->isPurchase ? $price->purchase : $price->sales);

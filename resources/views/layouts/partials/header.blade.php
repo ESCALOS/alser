@@ -38,7 +38,7 @@
                  </button>
              </div>
              <div x-show="screenSize ? open : true"
-                 class="absolute right-0 z-10 w-full lg:relative lg:flex lg:w-auto lg:order-1"
+                 class="absolute right-0 z-10 w-full bg-home-primary lg:relative lg:flex lg:w-auto lg:order-1"
                  x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
                  x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-300"
                  x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90">

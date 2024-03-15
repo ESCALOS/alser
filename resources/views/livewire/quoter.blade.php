@@ -23,7 +23,7 @@
             <div class="relative p-4">
                 <div class="grid grid-cols-5 border border-indigo-700 rounded-2xl">
                     <div class="flex items-center justify-center col-span-2 rounded-l-2xl bg-indigo-50">
-                        <span class="font-bold text-home-primary">
+                        <span class="font-bold text-home-prima ry">
                             <span x-show="!purchase">Soles</span>
                             <span x-show="purchase">Dolares</span>
                         </span>
@@ -38,7 +38,7 @@
                             <div>
                                 <input class="pt-0 ml-2 text-lg text-right border-none rounded-2xl w-28 md:w-32"
                                     x-model="dolarAmount" @input="updateSolAmount" style="box-shadow: none"
-                                    type="number" />
+                                    type="text" x-mask:dynamic="$money($input)" />
                             </div>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                             <div>
                                 <input x-model="solAmount" @input="updateDolarAmount"
                                     class="pt-0 text-lg text-right border-none rounded-2xl w-28 md:w-32"
-                                    style="box-shadow: none" type="number" />
+                                    style="box-shadow: none" type="text" x-mask:dynamic="$money($input)" />
                             </div>
                         </div>
                     </div>
@@ -100,21 +100,24 @@
                 this.$watch('purchase', value => {
                     this.updateSolAmount();
                     this.togglePurchaseClass(value);
+                    document.getElementById("dolar").focus();
                 });
             },
 
             updateSolAmount() {
+                const dolarAmount = parseFloat(this.dolarAmount.replace(/,/g, ''));
                 // Actualizar la cantidad de soles cuando cambia la cantidad de dólares
-                this.solAmount = this.purchase ? (this.dolarAmount * this.purchasePrice)
+                this.solAmount = isNaN(dolarAmount) ? 0 : (this.purchase ? (dolarAmount * this.purchasePrice)
                     .toFixed(
-                        2) : (this.dolarAmount / this.salesPrice).toFixed(2);
+                        2) : (dolarAmount / this.salesPrice).toFixed(2));
             },
 
             updateDolarAmount() {
+                const solAmount = parseFloat(this.solAmount.replace(/,/g, ''));
                 // Actualizar la cantidad de dólares cuando cambia la cantidad de soles
-                this.dolarAmount = this.purchase ? (this.solAmount / this.purchasePrice)
+                this.dolarAmount = isNaN(solAmount) ? 0 : (this.purchase ? (solAmount / this.purchasePrice)
                     .toFixed(
-                        2) : (this.solAmount * this.salesPrice).toFixed(2);
+                        2) : (solAmount * this.salesPrice).toFixed(2));
             },
 
             togglePurchaseClass(purchase) {

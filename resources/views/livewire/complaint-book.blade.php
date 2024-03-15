@@ -12,7 +12,6 @@
             <div class="w-full mt-2 md:w-2/3 md:mt-0">
                 <x-mary-input label="Número de documento" type="text"
                     x-mask:dynamic="(value) => {
-                        console.log($wire.form.documentType);
                         switch ($wire.form.documentType) {
                             case 1:
                                 return '99999999';
@@ -46,30 +45,10 @@
                 <x-mary-input label="Nombres" wire:model='form.name' required />
             </div>
         </div>
-        <!--Dirección-->
-        <div class="flex flex-col md:flex-row md:space-x-2">
-            <div class="w-full md:w-1/2">
-                <x-mary-input label="Dirección" wire:model='form.street' hint="Av. / Calle / Jr." required />
-            </div>
-            <div class="flex w-full mt-2 space-x-2 md:w-1/2 md:mt-0">
-                <div class="w-1/3">
-                    <x-mary-input label="Nro/Mz" wire:model='form.streetNumber' />
-                </div>
-                <div class="w-1/3">
-                    <x-mary-input label="Lote" wire:model='form.streetLot' />
-                </div>
-                <div class="w-1/3">
-                    <x-mary-input label="Dpto" wire:model='form.streetDpto' />
-                </div>
-            </div>
-        </div>
-        <div class="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
-            <div class="w-1/2">
-                <x-mary-input label="Urbanización" wire:model='form.urbanization' />
-            </div>
-            <div class="w-1/2">
-                <x-mary-input label="Referencia" wire:model='form.reference' />
-            </div>
+        <!--Apoderado-->
+        <div>
+            <x-mary-input label="Datos del apoderado (En caso de ser menor de Edad)" wire:model='form.representative'
+                placeholder="Padre o Madre" />
         </div>
         <!--Ubicación-->
         <div class="flex flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0">
@@ -91,20 +70,106 @@
                     searchable no-result-text="Distrito no encontrado." required />
             </div>
         </div>
-        <!--Medio de Respuesta-->
-        <div class="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
-            <div class="w-1/2">
-                <x-mary-input label="Teléfono | Celular | Correo electrónico" wire:model='form.reference' required />
+        <!--Dirección-->
+        <div class="flex flex-col md:flex-row md:space-x-2">
+            <div class="w-full md:w-1/2">
+                <x-mary-input label="Dirección" wire:model='form.street' placeholder="Av. / Calle / Jr." required />
             </div>
-            <div class="w-1/2">
-                <x-mary-choices-offline option-label="id" label="Medio de Respuesta"
-                    wire:model.live="form.responseMedium" :options="$responseMediums" single required />
+            <div class="flex w-full mt-2 space-x-2 md:w-1/2 md:mt-0">
+                <div class="w-1/3">
+                    <x-mary-input label="Nro/Mz" wire:model='form.streetNumber' />
+                </div>
+                <div class="w-1/3">
+                    <x-mary-input label="Lote" wire:model='form.streetLot' />
+                </div>
+                <div class="w-1/3">
+                    <x-mary-input label="Nro Dpto" wire:model='form.streetDpto' />
+                </div>
             </div>
         </div>
+        <!--Urbanizacion-->
+        <div>
+            <x-mary-input label="Urbanización" wire:model='form.urbanization' />
+        </div>
+        <!--Referencia-->
+        <div>
+            <x-mary-input label="Referencia" wire:model='form.reference' />
+        </div>
+        <!--Medio de Respuesta-->
+        <div class="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
+            <div class="w-full md:w-1/3">
+                <x-mary-input label="Teléfono" wire:model='form.telephone' x-mask="(+99) 999999" required
+                    placeholder="Cód. Provincia + Nro Teléfono" />
+            </div>
+            <div class="w-full md:w-1/3">
+                <x-mary-input label="Celular" wire:model='form.celphone' required x-mask="999999999" />
+            </div>
+            <div class="w-full md:w-1/3">
+                <x-mary-input label="Correo electrónico" type="email" wire:model='form.email' placeholder="___@___"
+                    required />
+            </div>
+        </div>
+        <div>
+            <x-mary-choices-offline option-value="name" label="Medio de Respuesta" wire:model="form.responseMedium"
+                :options="$responseMediums" single required />
+        </div>
+        <h1 class="py-6 text-3xl font-bold text-center text-home-primary md:text-4xl">
+            Datos de la queja o reclamo
+        </h1>
+        <div>
+            <x-mary-radio label="Motivo de contacto" :options="$reasons" option-value="name" wire:model="form.reason"
+                class="w-full" />
+        </div>
+        <div x-show="$wire.form.reason != 'Queja'">
+            <div class="pt-2 pb-4 text-sm font-bold">
+                <label for="hiredService">Servicio contratado</label>
+            </div>
+            <div class="space-y-2">
+                <div @click="$wire.form.hiredService = 'Cambio de moneda online'" class="cursor-pointer">
+                    <input type="radio" name="service" wire:model='form.hiredService' value="Cambio de moneda online">
+                    Cambio de moneda online
+                </div>
+                <div @click="$wire.form.hiredService = 'Otros'" class="cursor-pointer">
+                    <input type="radio" name="service" wire:model='form.hiredService' value="Otros"> Otros
+                </div>
+            </div>
+            <div x-show="$wire.form.hiredService == 'Cambio de moneda online'" x-transition class="pt-5">
+                <div class="flex space-x-2">
+                    <div class="w-1/3">
+                        <x-mary-choices-offline label="Tipo de moneda" wire:model.live="form.hiredServiceCurrencyType"
+                            :options="$currencies" single />
+                    </div>
+                    <div class="w-1/3">
+                        <x-mary-input label="Código de operación" wire:model='form.hiredServiceOperationCode'
+                            placeholder="000000000" x-mask="999999999" prefix="ALS-" />
+                    </div>
+                    <div class="w-1/3">
+                        <x-mary-input label="Monto a reclamar" wire:model='form.hiredServiceAmountToClaim'
+                            x-mask:dynamic="$money($input, '.', ',')"
+                            prefix="{{ $form->hiredServiceCurrencyType == 1 ? 'S/.' : '$ ' }}" />
+                    </div>
+                </div>
+            </div>
+            <div x-show="$wire.form.hiredService=='Otros'" x-transition>
+                <x-mary-textarea label="Ingrese su reclamo" wire:model="form.reasonDescription"
+                    placeholder="Ingrese su reclamo lo más descriptivo posible..." rows="5" />
+            </div>
+        </div>
+
+        <div x-show="$wire.form.reason == 'Queja'">
+            <x-mary-textarea wire:model="form.reasonDescription"
+                placeholder="Ingrese su queja lo más descriptivo posible..." rows="5" inline />
+        </div>
+        <p class="text-sm text-justify text-gray-700">
+            *Si tu reclamo es sobre una operación que realizaste en alsercambio.com, indica el código de esta (puedes
+            encontrarlo en la sección "Historial de operaciones" en tu cuenta registrada en alsercambio.com)
+        </p>
         <x-slot:actions>
-            <x-mary-button label="Enviar" class="text-white btn-primary " type="submit" spinner="save" />
-        </x-slot>
+            <x-mary-button label="Enviar documento a Libro de Reclamaciones" class="text-white btn-primary "
+                type="submit" spinner="save" />
+        </x-slot:actions>
+
     </x-mary-form>
-    <!--Forzar compilacion del estilo max-h-64-->
+    <!--Forzar compilacion de estilos-->
     <div class="max-h-64"></div>
 </div>

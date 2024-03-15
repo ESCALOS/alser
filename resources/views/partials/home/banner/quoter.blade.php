@@ -1,5 +1,5 @@
 <div class="py-4 md:pb-12">
-    <div class="animate-zoom-in" x-data="toggle">
+    <div class="animate-zoom-in" x-cloak x-data="toggle">
         <div class="flex justify-center w-full">
             <div class="flex justify-between bg-white border-2 border-gray-300 rounded-full select-none w-96">
                 <div id="toggle-quoter" class="w-1/2 py-2 text-lg font-semibold text-center rounded-full cursor-pointer"

@@ -23,9 +23,9 @@ class DollarFluctuation extends Component
     public function render(): View|Closure|string
     {
         $yesteday = now()->subDay();
-        $lastPriceYesterday = Price::whereDate('created_at', $yesteday->toDateString())->latest()->first();
+        $lastPrice = Price::whereDate('created_at', '<', today())->latest()->first();
         $prices = Price::whereDate('created_at', today())->get();
 
-        return view('components.graphics.dollar-fluctuation', compact('prices', 'lastPriceYesterday'));
+        return view('components.graphics.dollar-fluctuation', compact('prices', 'lastPrice'));
     }
 }

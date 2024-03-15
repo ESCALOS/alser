@@ -17,6 +17,8 @@ class ComplaintBookForm extends Form
 
     public string $name = '';
 
+    public string $representative = '';
+
     // Dirección
     public string $street = '';
 
@@ -32,9 +34,28 @@ class ComplaintBookForm extends Form
 
     public ?int $districtId = null;
 
-    public string $contact = '';
+    public string $telephone = '';
 
-    public string $typeContact = '';
+    public string $celphone = '';
 
-    public string $responseMedium = '';
+    public string $email = '';
+
+    public string $responseMedium = 'Correo electrónico';
+
+    public string $reason = 'Queja';
+
+    public string $reasonDescription = '';
+
+    public string $hiredService = 'Cambio de moneda online';
+
+    public int $hiredServiceCurrencyType = 1;
+
+    public string $hiredServiceOperationCode = '';
+
+    public string $hiredServiceAmountToClaim = '';
+
+    public function store()
+    {
+
+    }
 }

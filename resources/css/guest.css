@@ -11,6 +11,15 @@ input:where(:not([type])) {
     box-shadow: none!important;
     padding-top: 0;
 }
+
+[type='radio']:checked {
+    background-image: none;
+}
+
+.join {
+    display: flex;
+}
+
 .home-nav-link {
     @apply block py-2 pl-3 pr-4
 }
@@ -28,3 +37,4 @@ input:where(:not([type])) {
 .nav-link-register {
     @apply block items-center justify-center pl-3 lg:px-3 text-base font-medium text-left hover:bg-gray-100 hover:text-home-primary lg:text-center bg-transparent lg:bg-white lg:border border-none lg:text-home-primary text-white focus:ring-4 focus:ring-gray-300 py-2 lg:py-0 rounded lg:rounded-md lg:hover:border-white lg:my-0
 }
+
