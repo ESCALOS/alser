@@ -36,7 +36,8 @@
                                 <span x-show="!purchase">S/.</span>
                             </div>
                             <div>
-                                <input class="pt-0 ml-2 text-lg text-right border-none rounded-2xl w-28 md:w-32"
+                                <input id="inputDolar"
+                                    class="pt-0 ml-2 text-lg text-right border-none rounded-2xl w-28 md:w-32"
                                     x-model="dolarAmount" @input="updateSolAmount" style="box-shadow: none"
                                     type="text" x-mask:dynamic="$money($input)" />
                             </div>
@@ -100,13 +101,12 @@
                 this.$watch('purchase', value => {
                     this.updateSolAmount();
                     this.togglePurchaseClass(value);
-                    document.getElementById("dolar").focus();
+                    document.getElementById("inputDolar").focus();
                 });
             },
 
             updateSolAmount() {
                 const dolarAmount = parseFloat(this.dolarAmount.replace(/,/g, ''));
-                // Actualizar la cantidad de soles cuando cambia la cantidad de dólares
                 this.solAmount = isNaN(dolarAmount) ? 0 : (this.purchase ? (dolarAmount * this.purchasePrice)
                     .toFixed(
                         2) : (dolarAmount / this.salesPrice).toFixed(2));
@@ -114,7 +114,6 @@
 
             updateDolarAmount() {
                 const solAmount = parseFloat(this.solAmount.replace(/,/g, ''));
-                // Actualizar la cantidad de dólares cuando cambia la cantidad de soles
                 this.dolarAmount = isNaN(solAmount) ? 0 : (this.purchase ? (solAmount / this.purchasePrice)
                     .toFixed(
                         2) : (solAmount * this.salesPrice).toFixed(2));
