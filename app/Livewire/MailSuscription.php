@@ -6,22 +6,13 @@ use App\Models\MailSuscriptor;
 use App\Notifications\VerifyMailSuscription;
 use Illuminate\Support\Facades\Validator;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
-use Livewire\Attributes\Rule;
 use Livewire\Component;
 
 class MailSuscription extends Component
 {
     use LivewireAlert;
 
-    #[Rule('required', message: 'Ingrese su correo')]
-    #[Rule('email:rfc,dns', message: 'Correo Inválido')]
-    #[Rule('unique:mail_suscriptors')]
-    public $email;
-
-    public function mount()
-    {
-
-    }
+    public string $email = '';
 
     public function send()
     {

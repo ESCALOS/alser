@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Enums\DocumentTypeEnum;
 use App\Livewire\Forms\ComplaintBookForm;
 use App\Models\LocationDepartment;
 use App\Models\LocationDistrict;
@@ -16,7 +17,7 @@ class ComplaintBook extends Component
 
     public ComplaintBookForm $form;
 
-    public ?int $departmentId = null;
+    public ?int $departmentId = 15;
 
     public ?int $provinceId = null;
 
@@ -24,9 +25,17 @@ class ComplaintBook extends Component
 
     public array $districtsFound = [];
 
+    public array $documentTypes;
+
+    public array $responseMediums = [
+        ['id' => 1, 'name' => 'Correo electrónico'],
+        ['id' => 2, 'name' => 'Entrega a domicilio'],
+    ];
+
     public function mount()
     {
-
+        $this->documentTypes = DocumentTypeEnum::getChoices();
+        $this->loadProvinces();
     }
 
     #[Computed(persist: true)]

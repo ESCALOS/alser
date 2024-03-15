@@ -20,7 +20,7 @@ enum DocumentTypeEnum: string implements HasColor, HasLabel
         return $this->value;
     }
 
-    public function getLabels(): array
+    public static function getLabels(): array
     {
         return [
             self::ID,
@@ -30,11 +30,45 @@ enum DocumentTypeEnum: string implements HasColor, HasLabel
         ];
     }
 
+    public static function getChoices(): array
+    {
+        return [
+            ['id' => 1, 'name' => self::ID->value],
+            ['id' => 2, 'name' => self::TAX_NUMBER->value],
+            ['id' => 3, 'name' => self::FOREIGN_CARD->value],
+            ['id' => 4, 'name' => self::PASSPORT->value],
+        ];
+    }
+
+    public static function getValueById(int $id): string
+    {
+        $choices = self::getChoices();
+
+        foreach ($choices as $choice) {
+            if ($choice['id'] === $id) {
+                return $choice['name'];
+            }
+        }
+
+        return 'Value not found';
+    }
+
     public function getColor(): string|array|null
     {
         return match ($this) {
             self::ID => 'info',
             self::FOREIGN_CARD => 'indigo',
+        };
+    }
+
+    public static function getSelfById(int $id): ?self
+    {
+        return match ($id) {
+            1 => self::ID,
+            2 => self::TAX_NUMBER,
+            3 => self::FOREIGN_CARD,
+            4 => self::PASSPORT,
+            default => null,
         };
     }
 
@@ -46,6 +80,21 @@ enum DocumentTypeEnum: string implements HasColor, HasLabel
     public function validateNumberDigits(string $documentNumber): bool
     {
         switch ($this) {
+            case self::ID:
+                return strlen($documentNumber) === 8;
+            case self::TAX_NUMBER:
+                return strlen($documentNumber) === 11;
+            case self::FOREIGN_CARD:
+            case self::PASSPORT:
+                return strlen($documentNumber) <= 12;
+            default:
+                return false;
+        }
+    }
+
+    public static function validateNumberDigitsStatic(string $documentType, string $documentNumber): bool
+    {
+        switch ($documentType) {
             case self::ID:
                 return strlen($documentNumber) === 8;
             case self::TAX_NUMBER:

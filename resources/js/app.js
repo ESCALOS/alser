@@ -1,5 +1,9 @@
 import "./bootstrap";
 
+import mask from "@alpinejs/mask";
+
+Alpine.plugin(mask);
+
 Alpine.data("toggle", () => ({
     active: true,
 

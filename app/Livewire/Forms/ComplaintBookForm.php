@@ -7,13 +7,13 @@ use Livewire\Form;
 class ComplaintBookForm extends Form
 {
     // Datos Personales
-    public string $documentType = 'DNI';
+    public ?int $documentType = 1;
 
     public string $documentNumber = '';
 
-    public string $paternalSurname = '';
+    public string $lastNameFather = '';
 
-    public string $maternalSurname = '';
+    public string $lastNameMother = '';
 
     public string $name = '';
 
@@ -26,5 +26,15 @@ class ComplaintBookForm extends Form
 
     public string $streetDpto = '';
 
+    public string $urbanization = '';
+
+    public string $reference = '';
+
     public ?int $districtId = null;
+
+    public string $contact = '';
+
+    public string $typeContact = '';
+
+    public string $responseMedium = '';
 }
