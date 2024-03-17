@@ -2,7 +2,7 @@
     <div class="max-w-screen-xl px-6 mx-auto md:px-24">
         <h1 class="py-6 text-3xl font-bold text-center text-home-primary md:text-4xl">¿Cómo Funciona?</h1>
         <div class="grid grid-cols-1 gap-8 py-4 md:grid-cols-2">
-            <x-home.grid-card title="1. Crea tu cuenta" img="carnet.png">
+            <x-home.grid-card title="1. Crea tu cuenta" img="carnet-chibi.jpeg">
                 <p class="text-lg text-pretty">Registra tus datos personales y tu cuenta bancaria donde recibirás el
                     dinero.</p>
             </x-home.grid-card>

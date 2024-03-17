@@ -19,6 +19,9 @@ class PriceFactory extends Factory
         return [
             'purchase' => $this->faker->randomFloat(4, 3.4, 3.9),
             'sales' => $this->faker->randomFloat(4, 3.4, 3.9),
+            'created_at' => now()->startOfDay()->addHours(
+                rand(0, 23)
+            )->format('Y-m-d H:i:s'),
         ];
     }
 }

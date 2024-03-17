@@ -2,8 +2,12 @@
 
 namespace App\Livewire;
 
+use App\Enums\ClaimTypeEnum;
 use App\Enums\CurrencyTypeEnum;
 use App\Enums\DocumentTypeEnum;
+use App\Enums\ResponseMediumEnum;
+use App\Enums\ServiceEnum;
+use App\Livewire\Forms\ClaimForm;
 use App\Livewire\Forms\ComplaintBookForm;
 use App\Models\LocationDepartment;
 use App\Models\LocationDistrict;
@@ -18,9 +22,7 @@ class ComplaintBook extends Component
 
     public ComplaintBookForm $form;
 
-    public ?int $departmentId = 15;
-
-    public ?int $provinceId = null;
+    public ClaimForm $claimForm;
 
     public array $provincesFound = [];
 
@@ -30,25 +32,28 @@ class ComplaintBook extends Component
 
     public array $currencies;
 
-    public array $responseMediums = [
-        ['name' => 'Correo electrónico'],
-        ['name' => 'Entrega a domicilio'],
-    ];
+    public array $responseMediums;
 
-    public array $reasons = [
-        ['name' => 'Queja'],
-        ['name' => 'Reclamo'],
-    ];
+    public array $reasons;
 
-    public array $services = [
-        ['name' => 'Cambio de moneda online'],
-        ['name' => 'Otro'],
-    ];
+    public array $services;
+
+    public function boot()
+    {
+        $this->form->withValidator(function ($validator) {
+            $validator->after(function ($validator) {
+                $this->dispatch('focus-input-error', field: array_key_first($validator->failed()) ?? null);
+            });
+        });
+    }
 
     public function mount()
     {
         $this->documentTypes = DocumentTypeEnum::getChoices();
         $this->currencies = CurrencyTypeEnum::getChoices();
+        $this->services = ServiceEnum::getChoices();
+        $this->reasons = ClaimTypeEnum::getChoices();
+        $this->responseMediums = ResponseMediumEnum::getChoices();
         $this->loadProvinces();
     }
 
@@ -72,9 +77,9 @@ class ComplaintBook extends Component
 
     private function loadProvinces()
     {
-        if (isset($this->departmentId)) {
+        if (isset($this->form->departmentId)) {
             $this->provincesFound = collect($this->provinces)
-                ->where('location_department_id', $this->departmentId)
+                ->where('location_department_id', $this->form->departmentId)
                 ->values()
                 ->toArray();
         }
@@ -82,43 +87,52 @@ class ComplaintBook extends Component
 
     private function loadDistricts()
     {
-        if (isset($this->departmentId)) {
-            if (isset($this->provinceId)) {
-                $this->districtsFound = collect($this->districts)
-                    ->where('location_province_id', $this->provinceId)
-                    ->values()
-                    ->toArray();
-            } else {
-                $this->form->districtId = null;
-                $this->districtsFound = [];
-            }
+        if (isset($this->form->provinceId)) {
+            $this->districtsFound = collect($this->districts)
+                ->where('location_province_id', $this->form->provinceId)
+                ->values()
+                ->toArray();
+        } else {
+            //$this->form->districtId = null;
+            $this->districtsFound = [];
         }
 
     }
 
-    public function updatedDepartmentId()
+    public function updated($property)
     {
-        $this->loadProvinces();
+        if ($property === 'form.departmentId') {
+            $this->loadProvinces();
+            //$this->reset('form.provinceId,form.districtId');
+        }
 
-        $this->reset('provinceId');
-        $this->form->districtId = null;
-    }
-
-    public function updatedProvinceId()
-    {
-        $this->loadDistricts();
+        if ($property === 'form.provinceId') {
+            $this->loadDistricts();
+        }
     }
 
     public function save()
     {
-        $this->form->store();
-
+        $this->form->validate();
         $this->alert('success', 'Reclamo enviado', [
             'position' => 'center',
             'toast' => false,
             'showConfirmButton' => true,
             'onConfirmed' => '',
         ]);
+    }
+
+    public function placeholder()
+    {
+        return <<<'HTML'
+        <div class="min-h-screen">
+            <div>
+                <h1 class="text-2xl font-bold text-home-primary">Cargando formulario</h1>
+            </div>
+
+            <x-mary-progress value="12" max="100" class="h-3" style="--progress-color: rgb(234,179,8)" indeterminate />
+        </div>
+        HTML;
     }
 
     public function render()

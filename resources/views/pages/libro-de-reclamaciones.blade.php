@@ -22,7 +22,7 @@ name('home.complaints-book');
     </x-home.banner-default>
     <section class="py-12 bg-white">
         <div class="max-w-screen-xl px-6 mx-auto md:px-24">
-            <livewire:complaint-book />
+            <livewire:complaint-book lazy />
         </div>
     </section>
 </x-guest-layout>

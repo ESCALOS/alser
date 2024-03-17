@@ -50,7 +50,7 @@ enum DocumentTypeEnum: string implements HasColor, HasLabel
             }
         }
 
-        return 'Value not found';
+        return null;
     }
 
     public function getColor(): string|array|null
@@ -77,13 +77,13 @@ enum DocumentTypeEnum: string implements HasColor, HasLabel
      *
      * @param  string  $documentNumber  Número de documento
      */
-    public function validateNumberDigits(string $documentNumber): bool
+    public function validateNumberLength(string $documentNumber): bool
     {
         switch ($this) {
             case self::ID:
-                return strlen($documentNumber) === 8;
+                return ctype_digit($documentNumber) && strlen($documentNumber) === 8;
             case self::TAX_NUMBER:
-                return strlen($documentNumber) === 11;
+                return ctype_digit($documentNumber) && strlen($documentNumber) === 11;
             case self::FOREIGN_CARD:
             case self::PASSPORT:
                 return strlen($documentNumber) <= 12;
@@ -92,7 +92,7 @@ enum DocumentTypeEnum: string implements HasColor, HasLabel
         }
     }
 
-    public static function validateNumberDigitsStatic(string $documentType, string $documentNumber): bool
+    public static function validateNumberLengthStatic(string $documentType, string $documentNumber): bool
     {
         switch ($documentType) {
             case self::ID:
