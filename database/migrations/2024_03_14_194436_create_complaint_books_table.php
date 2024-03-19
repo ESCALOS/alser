@@ -13,6 +13,26 @@ return new class extends Migration
     {
         Schema::create('complaint_books', function (Blueprint $table) {
             $table->id();
+            $table->unsignedTinyInteger('document_type')->comment('El tipo de documento');
+            $table->string('document_number')->comment('Número de documento');
+            $table->string('last_name_father', 20)->comment('Apellido Paterno');
+            $table->string('last_name_mother', 20)->comment('Apellido Materno');
+            $table->string('name', 50)->comment('Nombres');
+            $table->string('representative', 255)->nullable()->comment('Apoderado');
+            $table->foreignId('location_district_id')->constrained()->onDelete('restrict')->comment('Distrito');
+            $table->string('street', 255)->comment('Dirección');
+            $table->string('street_number', 10)->comment('Nro/Mz');
+            $table->string('street_lot', 100)->nullable()->comment('Lote');
+            $table->string('street_dpto', 100)->nullable()->comment('Dpto');
+            $table->string('urbanization', 100)->nullable()->comment('Urbanización');
+            $table->string('reference', 100)->nullable()->comment('Referencia');
+            $table->string('telephone', 12)->nullable()->comment('Telefono');
+            $table->string('celphone', 9)->comment('Celular');
+            $table->string('email', 255)->comment('Email');
+            $table->unsignedTinyInteger('response_medium')->comment('Medio de Respuesta');
+            $table->boolean('is_complaint')->comment('¿Es queja o  reclamo?');
+            $table->text('reason_description')->nullable()->comment('Descripción de la queja o reclamo');
+
             $table->timestamps();
         });
     }
