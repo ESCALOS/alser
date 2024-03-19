@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
         //Price::factory(10)->create();
 
         $this->call([
-            //FaqSeeder::class,
+            FaqSeeder::class,
             LocationDepartmentSeeder::class,
             LocationProvinceSeeder::class,
             LocationDistrictSeeder::class,
