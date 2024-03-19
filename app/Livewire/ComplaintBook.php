@@ -9,9 +9,12 @@ use App\Enums\ResponseMediumEnum;
 use App\Enums\ServiceEnum;
 use App\Livewire\Forms\ClaimForm;
 use App\Livewire\Forms\ComplaintBookForm;
+use App\Models\Claim;
+use App\Models\ComplaintBook as ModelsComplaintBook;
 use App\Models\LocationDepartment;
 use App\Models\LocationDistrict;
 use App\Models\LocationProvince;
+use Illuminate\Support\Facades\DB;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -24,36 +27,27 @@ class ComplaintBook extends Component
 
     public ClaimForm $claimForm;
 
-    public array $provincesFound = [];
+    public array $provinces_found = [];
 
-    public array $districtsFound = [];
+    public array $districts_found = [];
 
-    public array $documentTypes;
+    public array $document_types;
 
     public array $currencies;
 
-    public array $responseMediums;
+    public array $response_mediums;
 
     public array $reasons;
 
     public array $services;
 
-    public function boot()
-    {
-        $this->form->withValidator(function ($validator) {
-            $validator->after(function ($validator) {
-                $this->dispatch('focus-input-error', field: array_key_first($validator->failed()) ?? null);
-            });
-        });
-    }
-
     public function mount()
     {
-        $this->documentTypes = DocumentTypeEnum::getChoices();
+        $this->document_types = DocumentTypeEnum::getChoices();
         $this->currencies = CurrencyTypeEnum::getChoices();
         $this->services = ServiceEnum::getChoices();
         $this->reasons = ClaimTypeEnum::getChoices();
-        $this->responseMediums = ResponseMediumEnum::getChoices();
+        $this->response_mediums = ResponseMediumEnum::getChoices();
         $this->loadProvinces();
     }
 
@@ -77,9 +71,9 @@ class ComplaintBook extends Component
 
     private function loadProvinces()
     {
-        if (isset($this->form->departmentId)) {
-            $this->provincesFound = collect($this->provinces)
-                ->where('location_department_id', $this->form->departmentId)
+        if (isset($this->form->location_department_id)) {
+            $this->provinces_found = collect($this->provinces)
+                ->where('location_department_id', $this->form->location_department_id)
                 ->values()
                 ->toArray();
         }
@@ -87,33 +81,60 @@ class ComplaintBook extends Component
 
     private function loadDistricts()
     {
-        if (isset($this->form->provinceId)) {
-            $this->districtsFound = collect($this->districts)
-                ->where('location_province_id', $this->form->provinceId)
+        if (isset($this->form->location_province_id)) {
+            $this->districts_found = collect($this->districts)
+                ->where('location_province_id', $this->form->location_province_id)
                 ->values()
                 ->toArray();
         } else {
-            //$this->form->districtId = null;
-            $this->districtsFound = [];
+            $this->districts_found = [];
         }
 
     }
 
     public function updated($property)
     {
-        if ($property === 'form.departmentId') {
+        if ($property === 'form.location_department_id') {
             $this->loadProvinces();
-            //$this->reset('form.provinceId,form.districtId');
         }
 
-        if ($property === 'form.provinceId') {
+        if ($property === 'form.location_province_id') {
             $this->loadDistricts();
         }
     }
 
     public function save()
     {
+        $this->form->withValidator(function ($validator) {
+            $validator->after(function ($validator) {
+                if (! $this->form->is_complaint && $this->claimForm->service == 2 && (empty($this->form->reason_description) || trim($this->form->reason_description) === '')) {
+                    $validator->errors()->add('reason_description', 'Campo Obligatorio');
+                }
+                $fieldError = array_key_first($validator->failed());
+                if ($fieldError) {
+                    $this->dispatch('focus-input-error', field: $fieldError);
+                }
+            });
+        });
         $this->form->validate();
+        if (! $this->form->is_complaint) {
+            $this->claimForm->validate();
+        }
+
+        DB::transaction(function () {
+            $savedComplaint = ModelsComplaintBook::create($this->form->except(['location_department_id', 'location_province_id']));
+
+            if (! $this->form->is_complaint && $this->claimForm->service == 1) {
+                $claimFormData = $this->claimForm->all();
+                $claimFormData['amount_to_claim'] = floatval(str_replace(',', '', $claimFormData['amount_to_claim']));
+                $claimFormData['complaint_book_id'] = $savedComplaint->id;
+                Claim::create($claimFormData);
+            }
+
+        });
+
+        $this->form->reset();
+        $this->claimForm->reset();
         $this->alert('success', 'Reclamo enviado', [
             'position' => 'center',
             'toast' => false,
