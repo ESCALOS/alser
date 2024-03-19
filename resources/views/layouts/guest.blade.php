@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="keywords"
-        content="Alser Cambio, cambio de divisas, comprar dólares, comprar dolares, vender dólares, vender dolares, cambiar soles a dólares, cambiar soles a dolares, cambiar dólares a soles, cambiar dolares a soles, cambio de moneda online, tipo de cambio, transacciones monetarias, servicios financieros">
+        content="Alser Cambio, cambio de divisas, comprar dólares, comprar dólares, vender dólares, vender dólares, cambiar soles a dólares, cambiar soles a dólares, cambiar dólares a soles, cambiar dólares a soles, cambio de moneda online, tipo de cambio, transacciones monetarias, servicios financieros">
     <meta name="description"
         content="Alser Cambio es una marca registrada que ofrece servicios de cambio de divisas en línea, incluyendo compra y venta de dólares, así como el cambio de soles a dólares y viceversa.">
     <title>Alser Cambio - Servicios de cambio de divisas en línea</title>

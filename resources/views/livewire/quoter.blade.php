@@ -25,7 +25,7 @@
                     <div class="flex items-center justify-center col-span-2 rounded-l-2xl bg-indigo-50">
                         <span class="font-bold text-home-prima ry">
                             <span x-show="!purchase">Soles</span>
-                            <span x-show="purchase">Dolares</span>
+                            <span x-show="purchase">Dólares</span>
                         </span>
                     </div>
                     <div class="col-span-3 text-indigo-900">
@@ -56,7 +56,7 @@
                     <div class="flex items-center justify-center col-span-2 rounded-l-2xl bg-indigo-50">
                         <span class="font-bold text-home-primary">
                             <span x-show="purchase">Soles</span>
-                            <span x-show="!purchase">Dolares</span>
+                            <span x-show="!purchase">Dólares</span>
                         </span>
                     </div>
                     <div class="col-span-3 text-indigo-900">
