@@ -221,5 +221,8 @@
     "Outputs": "Salidas",
     "Inputs": "Ingresos",
     "Filename": "Nombre del archivo",
-    "Type": "Tipo"
+    "Type": "Tipo",
+    "New operation": "Nueva Operación",
+    "My operations": "Mis operaciones",
+    "Bank accounts": "Cuentas bancarias"
 }
