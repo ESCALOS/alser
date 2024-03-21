@@ -41,7 +41,7 @@ Alpine.data("toggle", () => ({
                 .classList.add("text-white");
             document
                 .getElementById("toggle-quoter")
-                .classList.remove("tex-gray-700");
+                .classList.remove("text-gray-700");
             document
                 .getElementById("toggle-promo")
                 .classList.remove("bg-home-primary");
@@ -50,7 +50,7 @@ Alpine.data("toggle", () => ({
                 .classList.remove("text-white");
             document
                 .getElementById("toggle-promo")
-                .classList.add("tex-gray-700");
+                .classList.add("text-gray-700");
         } else {
             //visibilidad de la promo
             document
@@ -78,14 +78,14 @@ Alpine.data("toggle", () => ({
                 .classList.remove("text-white");
             document
                 .getElementById("toggle-quoter")
-                .classList.add("tex-gray-700");
+                .classList.add("text-gray-700");
             document
                 .getElementById("toggle-promo")
                 .classList.add("bg-home-primary");
             document.getElementById("toggle-promo").classList.add("text-white");
             document
                 .getElementById("toggle-promo")
-                .classList.remove("tex-gray-700");
+                .classList.remove("text-gray-700");
         }
     },
 }));
