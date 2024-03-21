@@ -14,6 +14,7 @@ use App\Models\ComplaintBook as ModelsComplaintBook;
 use App\Models\LocationDepartment;
 use App\Models\LocationDistrict;
 use App\Models\LocationProvince;
+use App\Notifications\ComplaintBook as NotificationsComplaintBook;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Support\Facades\DB;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -176,6 +177,7 @@ class ComplaintBook extends Component
             $this->form->reset();
             $this->claimForm->reset();
             $this->savedPdf($data);
+            $savedComplaint->notify(new NotificationsComplaintBook($this->getPdfPath()));
             $this->alert('success', 'Reclamo enviado', [
                 'position' => 'center',
                 'toast' => false,
@@ -186,7 +188,6 @@ class ComplaintBook extends Component
                 'text' => 'Se le envió una copia a su correo',
             ]);
         });
-
     }
 
     private function savedPdf($data)
