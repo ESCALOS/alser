@@ -30,23 +30,24 @@
                                 return 'a';
                         }
                 }"
-                    wire:model.blur="form.document_number" clearable required />
+                    wire:model="form.document_number" clearable />
             </div>
         </div>
         <!--Nombres-->
-        <div class="flex flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0">
-            <div id="last_name_father" class="w-full md:w-1/4">
-                <x-mary-input label="Apellido paterno" wire:model.blur='form.last_name_father' required />
+        <div class="flex flex-col space-y-2 md:flex-row md:space-y-0"
+            :class="$wire.form.document_type != 2 ? 'md:space-x-2' : 'md:space-x-0'">
+            <div x-show="$wire.form.document_type != 2" x-transition id="last_name_father" class="w-full md:w-1/4">
+                <x-mary-input label="Apellido paterno" wire:model='form.last_name_father' />
             </div>
-            <div id="last_name_mother" class="w-full md:w-1/4">
-                <x-mary-input label="Apellido materno" wire:model.blur='form.last_name_mother' required />
+            <div x-show="$wire.form.document_type != 2" x-transition id="last_name_mother" class="w-full md:w-1/4">
+                <x-mary-input label="Apellido materno" wire:model='form.last_name_mother' />
             </div>
-            <div id="name" class="w-full md:w-2/4">
-                <x-mary-input label="Nombres" wire:model.blur='form.name' required />
+            <div id="name" class="w-full" :class="$wire.form.document_type != 2 ? 'md:w-1/2' : ''">
+                <x-mary-input label="Nombre" wire:model='form.name' />
             </div>
         </div>
         <!--Apoderado-->
-        <div>
+        <div x-show="$wire.form.document_type != 2" x-transition>
             <x-mary-input label="Datos del apoderado (En caso de ser menor de Edad)" wire:model='form.representative'
                 placeholder="Padre o Madre" />
         </div>
@@ -80,11 +81,11 @@
         <!--Dirección-->
         <div class="flex flex-col md:flex-row md:space-x-2">
             <div id="street" class="w-full md:w-1/2">
-                <x-mary-input label="Dirección" wire:model='form.street' placeholder="Av. / Calle / Jr." required />
+                <x-mary-input label="Dirección" wire:model='form.street' placeholder="Av. / Calle / Jr." />
             </div>
             <div class="flex w-full mt-2 space-x-2 md:w-1/2 md:mt-0">
                 <div class="w-1/3" id="street_number">
-                    <x-mary-input label="Nro/Mz" wire:model='form.street_number' required />
+                    <x-mary-input label="Nro/Mz" wire:model='form.street_number' />
                 </div>
                 <div id="street_lot" class="w-1/3">
                     <x-mary-input label="Lote" wire:model='form.street_lot' />
@@ -109,11 +110,10 @@
                     placeholder="Cód. Provincia + Nro Teléfono" />
             </div>
             <div id="celphone" class="w-full md:w-1/3">
-                <x-mary-input label="Celular" wire:model='form.celphone' x-mask="999999999" required />
+                <x-mary-input label="Celular" wire:model='form.celphone' x-mask="999999999" />
             </div>
             <div id="email" class="w-full md:w-1/3">
-                <x-mary-input label="Correo electrónico" type="email" wire:model='form.email' placeholder="___@___"
-                    required />
+                <x-mary-input label="Correo electrónico" type="email" wire:model='form.email' placeholder="___@___" />
             </div>
         </div>
         <div id="response_medium">
@@ -124,8 +124,8 @@
             Datos de la queja o reclamo
         </h1>
         <div>
-            <x-mary-radio label="Motivo de contacto" :options="$reasons" wire:model="form.is_complaint" class="w-full"
-                required />
+            <x-mary-radio label="Motivo de contacto" :options="$reasons" wire:model="form.is_complaint"
+                class="w-full" />
         </div>
         <div x-show="$wire.form.is_complaint == 0" x-transition.in id="claimForm.service">
             <div class="pt-2 pb-4 text-sm font-bold">

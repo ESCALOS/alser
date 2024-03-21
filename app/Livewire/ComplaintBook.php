@@ -14,9 +14,12 @@ use App\Models\ComplaintBook as ModelsComplaintBook;
 use App\Models\LocationDepartment;
 use App\Models\LocationDistrict;
 use App\Models\LocationProvince;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Support\Facades\DB;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class ComplaintBook extends Component
@@ -27,18 +30,27 @@ class ComplaintBook extends Component
 
     public ClaimForm $claimForm;
 
+    public $pdf_name = '';
+
+    #[Locked]
     public array $provinces_found = [];
 
+    #[Locked]
     public array $districts_found = [];
 
+    #[Locked]
     public array $document_types;
 
+    #[Locked]
     public array $currencies;
 
+    #[Locked]
     public array $response_mediums;
 
+    #[Locked]
     public array $reasons;
 
+    #[Locked]
     public array $services;
 
     public function mount()
@@ -67,6 +79,12 @@ class ComplaintBook extends Component
     public function districts(): array
     {
         return LocationDistrict::select('id', 'name', 'location_province_id')->get()->toArray();
+    }
+
+    #[Computed]
+    public function getPdfPath(): string
+    {
+        return storage_path('pdf/complaint-book/'.$this->pdf_name);
     }
 
     private function loadProvinces()
@@ -105,6 +123,9 @@ class ComplaintBook extends Component
 
     public function save()
     {
+        if (! $this->form->is_complaint && $this->claimForm->service == 1) {
+            $this->form->reason_description = '';
+        }
         $this->form->withValidator(function ($validator) {
             $validator->after(function ($validator) {
                 if (! $this->form->is_complaint && $this->claimForm->service == 2 && (empty($this->form->reason_description) || trim($this->form->reason_description) === '')) {
@@ -122,25 +143,62 @@ class ComplaintBook extends Component
         }
 
         DB::transaction(function () {
+            if ($this->form->document_type == 2) {
+                $this->form->representative = '';
+                $this->form->last_name_father = '';
+                $this->form->last_name_mother = '';
+            }
             $savedComplaint = ModelsComplaintBook::create($this->form->except(['location_department_id', 'location_province_id']));
 
+            $formData = $this->form->all();
+            $formData['id'] = str_pad($savedComplaint->id, 6, '0', STR_PAD_LEFT);
+            $formData['document_type_name'] = DocumentTypeEnum::getValueById($formData['document_type']);
+            $formData['response_medium_name'] = ResponseMediumEnum::getValueById($formData['response_medium']);
+            $formData['location_department_name'] = $this->departments()[$formData['location_department_id'] - 1]['name'];
+            $formData['location_province_name'] = $this->provinces()[$formData['location_province_id'] - 1]['name'];
+            $formData['location_district_name'] = $this->districts()[$formData['location_district_id'] - 1]['name'];
+
+            $claimFormData = [];
             if (! $this->form->is_complaint && $this->claimForm->service == 1) {
                 $claimFormData = $this->claimForm->all();
+                $claimFormData['amount_str'] = $this->claimForm->amount_to_claim;
                 $claimFormData['amount_to_claim'] = floatval(str_replace(',', '', $claimFormData['amount_to_claim']));
                 $claimFormData['complaint_book_id'] = $savedComplaint->id;
                 Claim::create($claimFormData);
+                $claimFormData['currency_type_name'] = CurrencyTypeEnum::getValueById($claimFormData['currency_type']);
             }
 
+            $data = [
+                'form' => $formData,
+                'claim' => $claimFormData,
+            ];
+
+            $this->form->reset();
+            $this->claimForm->reset();
+            $this->savedPdf($data);
+            $this->alert('success', 'Reclamo enviado', [
+                'position' => 'center',
+                'toast' => false,
+                'timer' => '',
+                'showConfirmButton' => true,
+                'onConfirmed' => 'download-pdf',
+                'confirmButtonText' => 'Descargar PDF',
+                'text' => 'Se le envió una copia a su correo',
+            ]);
         });
 
-        $this->form->reset();
-        $this->claimForm->reset();
-        $this->alert('success', 'Reclamo enviado', [
-            'position' => 'center',
-            'toast' => false,
-            'showConfirmButton' => true,
-            'onConfirmed' => '',
-        ]);
+    }
+
+    private function savedPdf($data)
+    {
+        $this->pdf_name = 'Alser-Reclamo-'.$data['form']['id'].'.pdf';
+        PDF::loadView('pdf.complaint-book', $data)->setPaper('a4')->save($this->getPdfPath());
+    }
+
+    #[On('download-pdf')]
+    public function downloadPdf()
+    {
+        return response()->download($this->getPdfPath());
     }
 
     public function placeholder()

@@ -15,10 +15,10 @@ class ComplaintBookForm extends Form
     #[Validate]
     public string $document_number = '';
 
-    #[Validate('required|string|max:20', as: 'Apellido Paterno')]
+    #[Validate('exclude_if:document_type,2|required:|string|max:20', as: 'Apellido Paterno')]
     public string $last_name_father = '';
 
-    #[Validate('required|string|max:20', as: 'Apellido Materno')]
+    #[Validate('exclude_if:document_type,2|required|string|max:20', as: 'Apellido Materno')]
     public string $last_name_mother = '';
 
     #[Validate('required|string|max:50', as: 'Nombres')]
@@ -73,6 +73,7 @@ class ComplaintBookForm extends Form
     public bool $is_complaint = true;
 
     #[Validate('required_if:is_complaint,true', message: 'Campo obligatorio')]
+    #[Validate('max:1000', message: 'Máximo de 1000 caracteres')]
     public string $reason_description = '';
 
     public function rules(): array
