@@ -14,7 +14,7 @@
             </button>
         </li>
     </ul>
-    <div class="flex justify-center p-4 h-96">
+    <div class="flex justify-center p-4 text-center h-96">
         <div class="w-full">
             <h1 class="text-xs font-semibold text-gray-700">Monto Mínimo:
                 <span x-show="purchase">$ 1.00</span>
@@ -23,7 +23,7 @@
             <div class="relative p-4">
                 <div class="grid grid-cols-5 border border-indigo-700 rounded-2xl">
                     <div class="flex items-center justify-center col-span-2 rounded-l-2xl bg-indigo-50">
-                        <span class="font-bold text-home-prima ry">
+                        <span class="font-bold text-home-primary">
                             <span x-show="!purchase">Soles</span>
                             <span x-show="purchase">Dólares</span>
                         </span>
@@ -37,7 +37,7 @@
                             </div>
                             <div>
                                 <input id="inputDolar"
-                                    class="pt-0 ml-2 text-lg text-right border-none rounded-2xl w-28 md:w-32"
+                                    class="pt-0 text-lg text-right border-none rounded-2xl w-28 md:w-32"
                                     x-model="dolarAmount" @input="updateSolAmount" style="box-shadow: none"
                                     type="text" x-mask:dynamic="$money($input)" />
                             </div>
