@@ -21,10 +21,10 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        //Price::factory(10)->create();
+        Price::factory(10)->create();
 
         $this->call([
-            //FaqSeeder::class,
+            FaqSeeder::class,
             LocationDepartmentSeeder::class,
             LocationProvinceSeeder::class,
             LocationDistrictSeeder::class,

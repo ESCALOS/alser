@@ -32,7 +32,7 @@ return new class extends Migration
             $table->unsignedTinyInteger('response_medium')->comment('Medio de Respuesta');
             $table->boolean('is_complaint')->comment('¿Es queja o  reclamo?');
             $table->text('reason_description')->nullable()->comment('Descripción de la queja o reclamo');
-
+            $table->enum('status', ['P', 'IP', 'C'])->default('P')->comment('Current status of the claim: P: PENNDING, IP: IN_PROGRESS, C: COMPLETED');
             $table->timestamps();
         });
     }
