@@ -52,18 +52,29 @@
                                  aria-current="page">{{ $route['name'] }}</a>
                          </li>
                      @endforeach
-                     <li class="{{ request()->routeIs('login') ? 'hidden' : '' }}">
-                         <a wire:navigate.hover href="{{ route('login') }}"
-                             class="{{ !request()->routeIs('login') ? 'nav-link-login' : '' }}"
-                             aria-current="page">Iniciar
-                             Sesión</a>
-                     </li>
-                     <li class="{{ request()->routeIs('register') ? 'hidden' : '' }}">
-                         <a wire:navigate.hover href="{{ route('register') }}"
-                             class="{{ !request()->routeIs('register') ? 'nav-link-register' : '' }}"
-                             aria-current="page">Crear
-                             cuenta</a>
-                     </li>
+                     @if (auth()->check())
+                         <li>
+                             <a wire:navigate.hover href="{{ route('new-operation') }}" class="nav-link-register"
+                                 aria-current="page">
+                                 Ingresar
+                             </a>
+                         </li>
+                     @else
+                         <li class="{{ request()->routeIs('login') ? 'hidden' : '' }}">
+                             <a wire:navigate.hover href="{{ route('login') }}"
+                                 class="{{ !request()->routeIs('login') ? 'nav-link-login' : '' }}" aria-current="page">
+                                 Iniciar Sesión
+                             </a>
+                         </li>
+                         <li class="{{ request()->routeIs('register') ? 'hidden' : '' }}">
+                             <a wire:navigate.hover href="{{ route('register') }}"
+                                 class="{{ !request()->routeIs('register') ? 'nav-link-register' : '' }}"
+                                 aria-current="page">
+                                 Crear cuenta
+                             </a>
+                         </li>
+                     @endif
+
                  </ul>
              </div>
          </div>
