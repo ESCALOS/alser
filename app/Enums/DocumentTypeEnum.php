@@ -57,7 +57,9 @@ enum DocumentTypeEnum: string implements HasColor, HasLabel
     {
         return match ($this) {
             self::ID => 'info',
-            self::FOREIGN_CARD => 'indigo',
+            self::TAX_NUMBER => 'warning',
+            self::FOREIGN_CARD => 'primary',
+            self::PASSPORT => 'secondary',
         };
     }
 
