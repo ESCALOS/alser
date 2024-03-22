@@ -21,6 +21,9 @@
                     <x-nav-link href="{{ route('new-operation') }}" :active="request()->routeIs('new-operation')">
                         {{ __('Bank accounts') }}
                     </x-nav-link>
+                    <x-nav-link href="{{ route('new-operation') }}" :active="request()->routeIs('new-operation')">
+                        {{ __('Profile Data') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -113,7 +116,7 @@
                             </div>
 
                             <x-dropdown-link href="{{ route('profile.show') }}">
-                                {{ __('Profile') }}
+                                {{ __('Account') }}
                             </x-dropdown-link>
 
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
@@ -164,6 +167,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('new-operation') }}" :active="request()->routeIs('new-operation')">
                 {{ __('Bank accounts') }}
+            </x-responsive-nav-link>>
+            <x-responsive-nav-link href="{{ route('new-operation') }}" :active="request()->routeIs('new-operation')">
+                {{ __('Profile Data') }}
             </x-responsive-nav-link>
         </div>
 
