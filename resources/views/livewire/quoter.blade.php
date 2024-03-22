@@ -75,7 +75,7 @@
                     </div>
                 </div>
                 <a class="block w-full px-6 py-4 my-6 text-lg text-white transition-colors duration-300 rounded-sm bg-home-primary hover:bg-violet-900"
-                    wire:navigate href="{{ route('dashboard') }}">
+                    wire:navigate href="{{ route('new-operation') }}">
                     Iniciar operación
                 </a>
                 <span class="block text-gray-500 text-md">

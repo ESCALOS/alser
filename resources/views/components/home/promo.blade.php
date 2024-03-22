@@ -3,7 +3,7 @@
         style="height: 58px">
         <h1 class="text-lg font-bold">Ninguna promo activa</h1>
     </div>
-    <div class="flex flex-col items-center justify-around p-4 h-96">
+    <div class="flex flex-col items-center justify-around p-4 text-center h-96">
         <img class="h-20 mb-4" src="{{ asset('storage/images/surprise.png') }}">
         <div>
             <div class="text-base text-gray-900 text-pretty">
@@ -15,7 +15,7 @@
                 Estas promociones son por tiempo limitado.
             </div>
             <a class="block w-full px-6 py-4 text-xl text-white transition-colors duration-300 rounded-sm bg-home-primary hover:bg-violet-900"
-                wire:navigate href="{{ route('dashboard') }}">
+                wire:navigate href="{{ route('new-operation') }}">
                 Ir al cotizador
             </a>
         </div>
