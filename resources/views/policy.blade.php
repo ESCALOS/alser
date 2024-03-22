@@ -2,7 +2,9 @@
     <div class="pt-4 bg-home-primary dark:bg-gray-900">
         <div class="flex flex-col items-center min-h-screen pt-6 sm:pt-0">
             <div>
-                <x-authentication-card-logo />
+                <a href="/">
+                    <img src="{{ asset('storage/images/logo-alser.png') }}" alt="logo" style="height: 48px">
+                </a>
             </div>
 
             <div
