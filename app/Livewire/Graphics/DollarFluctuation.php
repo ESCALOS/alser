@@ -32,22 +32,25 @@ class DollarFluctuation extends Component
             ->withDataLabels()
             ->setAnimated($this->firstRun)
             // ->withOnPointClickEvent('onPointClick')
-            ->setSmoothCurve()
-            ->addPoint('Ayer', $this->isPurchase ? $this->lastPrice->purchase : $this->lastPrice->sales);
+            ->setSmoothCurve();
+
+        if ($this->lastPrice->purchase) {
+            $chart->addPoint('Ayer', $this->isPurchase ? $this->lastPrice->purchase : $this->lastPrice->sales);
+        }
 
         foreach ($this->prices as $price) {
             $chart->addPoint($price->created_at->format('H:i'), $this->isPurchase ? $price->purchase : $price->sales);
         }
 
         $chart->setJsonConfig([
-            'tooltip.y.formatter' => '(val) => `$${val.toFixed(3)}`',
+            'tooltip.y.formatter' => '(val) => val ?`$${val.toFixed(3)}` : 0',
             'tooltip.x.show' => 'false',
             'xaxis.labels.formatter' => '(val) => {
                 const regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
                 return regex.test(val) ? `${val} hrs.` : val;
             }',
-            'yaxis.labels.formatter' => '(val) => `$${val.toFixed(3)}`',
-            'dataLabels.formatter' => '(val) => `$${val.toFixed(3)}`',
+            'yaxis.labels.formatter' => '(val) => val ?`$${val.toFixed(3)}` : 0',
+            'dataLabels.formatter' => '(val) => val ? `$${val.toFixed(3)}` : 0',
         ]);
 
         $this->firstRun = false;
