@@ -13,13 +13,18 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->default('no name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
+            $table->boolean('account_type')->default(1);
+            $table->boolean('is_admin')->default(false);
+            $table->string('celphone', 20)->nullable()->comment('Celular');
+            $table->enum('document_type', [1, 2, 3, 4])->nullable()->comment('Tipo de document: 1 => DNI, 2 => RUC, 3 => CE, 4 => PASSPORT');
+            $table->string('document_number', 12)->nullable()->comment('Número de documento');
             $table->timestamps();
         });
     }
