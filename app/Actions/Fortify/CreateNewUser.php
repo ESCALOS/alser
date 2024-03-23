@@ -20,16 +20,32 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input): User
     {
         Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
+            'account_type' => ['required', 'in:1,2'],
+            'ruc' => ['exclude_if:account_type,1', 'required', 'digits:11'],
+            'name' => ['exclude_if:account_type,1', 'required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
+        ], [
+            'account_type.in' => 'El tipo de cuenta es inválido',
+        ], [
+            'account_type' => 'Tipo de cuenta',
+            'ruc' => 'RUC',
+            'name' => 'Razón Social',
         ])->validate();
+        $data = [];
+        if ($input['account_type'] == 2) {
+            $data['document_type'] = 2;
+            $data['document_number'] = $input['ruc'];
+            $data['name'] = $input['name'];
+        }
 
-        return User::create([
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'password' => Hash::make($input['password']),
-        ]);
+        $data['name'] = $input['name'];
+        $data['email'] = $input['email'];
+        $data['password'] = Hash::make($input['password']);
+
+        $user = User::create($data);
+
+        return $user;
     }
 }

@@ -14,20 +14,38 @@
         </div>
         <x-authentication-card>
             <x-slot name="logo">
-                <x-authentication-card-logo />
+                <h1 class="text-2xl font-bold text-gray-700">Crea tu cuenta</h1>
             </x-slot>
 
             <x-validation-errors class="mb-4" />
 
-            <form method="POST" action="{{ route('register') }}">
+            <form method="POST" action="{{ route('register') }}" x-data="toggleAccountType">
                 @csrf
-
-                <div>
-                    <x-label for="name" value="{{ __('Name') }}" />
-                    <x-input id="name" class="block w-full mt-1" type="text" name="name" :value="old('name')"
-                        required autofocus autocomplete="name" />
+                <div class="flex justify-center w-full transition-all" id="tab_container">
+                    <div class="flex justify-between bg-white border-2 border-gray-300 rounded-full select-none w-96">
+                        <div id="tab_personal"
+                            class="w-1/2 py-2 text-lg font-semibold text-center transition-colors duration-300 rounded-full cursor-pointer"
+                            @click="accountType = 1">
+                            Personal</div>
+                        <div id="tab_business"
+                            class="w-1/2 py-2 text-lg font-medium text-center transition-colors duration-300 rounded-full cursor-pointer"
+                            @click="accountType = 2">
+                            Empresarial
+                        </div>
+                    </div>
                 </div>
-
+                <input type="hidden" name="account_type" x-model="accountType">
+                <div x-show="accountType == 2" x-transition class="mt-4">
+                    <x-label for="ruc" value="RUC" />
+                    <x-input id="ruc" class="block w-full mt-1" type="text" name="ruc" :value="old('ruc')"
+                        x-mask:dynamic="$input.startsWith('1') ? '10999999999' : ($input.startsWith('2') ? '20999999999' : ' ')"
+                        x-bind:required="accountType == 2" />
+                </div>
+                <div x-show="accountType == 2" x-transition class="mt-4">
+                    <x-label for="name" value="{{ __('Business Name') }}" />
+                    <x-input id="name" class="block w-full mt-1" type="text" name="name" :value="old('name')"
+                        x-bind:required="accountType == 2" autocomplete="name" />
+                </div>
                 <div class="mt-4">
                     <x-label for="email" value="{{ __('Email') }}" />
                     <x-input id="email" class="block w-full mt-1" type="email" name="email" :value="old('email')"
