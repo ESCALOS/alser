@@ -46,23 +46,78 @@
                      class="flex flex-col p-4 mt-4 space-y-2 font-medium bg-transparent border border-gray-100 rounded-lg lg:space-y-0 lg:p-0 lg:flex-row lg:space-x-8 lg:mt-0 lg:border-0 lg:bg-home-primary">
                      @foreach ($routes as $route)
                          <li
-                             class="{{ request()->routeIs($route['route']) ? 'lg:border-b lg:border-white' : 'lg:hover:border-b lg:hover:border-white' }}">
+                             class="{{ request()->routeIs($route['route']) ? 'lg:border-b lg:border-white' : 'lg:hover:border-b lg:hover:border-white' }} lg:content-center">
                              <a wire:navigate.hover href="{{ route($route['route']) }}"
                                  class="home-nav-link {{ request()->routeIs($route['route']) ? 'home-nav-link-active' : 'home-nav-link-inactive' }}"
                                  aria-current="page">{{ $route['name'] }}</a>
                          </li>
                      @endforeach
                      @if (auth()->check())
-                         <li>
-                             <a wire:navigate.hover href="{{ route('new-operation') }}" class="nav-link-register"
-                                 aria-current="page">
-                                 Ingresar
-                             </a>
-                         </li>
+                         <div class="relative ms-3">
+                             <x-dropdown align="right" width="48">
+                                 <x-slot name="trigger">
+                                     @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
+                                         <button
+                                             class="flex text-sm transition border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300">
+                                             <img class="object-cover w-8 h-8 rounded-full"
+                                                 src="{{ Auth::user()->profile_photo_url }}"
+                                                 alt="{{ Auth::user()->name }}" />
+                                         </button>
+                                     @else
+                                         <span class="inline-flex rounded-md">
+                                             <button type="button"
+                                                 class="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-md dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700">
+                                                 {{ Auth::user()->name ?? Bienvenido }}
+
+                                                 <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                     fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                     stroke="currentColor">
+                                                     <path stroke-linecap="round" stroke-linejoin="round"
+                                                         d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                                 </svg>
+                                             </button>
+                                         </span>
+                                     @endif
+                                 </x-slot>
+                                 <x-slot name="content">
+                                     <!-- Account Management -->
+                                     <div class="block px-4 py-2 text-xs text-gray-400">
+                                         {{ __('Manage Account') }}
+                                     </div>
+
+                                     <x-dropdown-link href="{{ route('profile.show') }}">
+                                         {{ __('Account') }}
+                                     </x-dropdown-link>
+
+                                     <x-dropdown-link href="{{ route('new-operation') }}">
+                                         {{ __('New operation') }}
+                                     </x-dropdown-link>
+
+                                     @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
+                                         <x-dropdown-link href="{{ route('api-tokens.index') }}">
+                                             {{ __('API Tokens') }}
+                                         </x-dropdown-link>
+                                     @endif
+
+                                     <div class="border-t border-gray-200 dark:border-gray-600"></div>
+
+                                     <!-- Authentication -->
+                                     <form method="POST" action="{{ route('logout') }}" x-data>
+                                         @csrf
+
+                                         <x-dropdown-link href="{{ route('logout') }}"
+                                             @click.prevent="$root.submit();">
+                                             {{ __('Log Out') }}
+                                         </x-dropdown-link>
+                                     </form>
+                                 </x-slot>
+                             </x-dropdown>
+                         </div>
                      @else
                          <li class="{{ request()->routeIs('login') ? 'hidden' : '' }}">
                              <a wire:navigate.hover href="{{ route('login') }}"
-                                 class="{{ !request()->routeIs('login') ? 'nav-link-login' : '' }}" aria-current="page">
+                                 class="{{ !request()->routeIs('login') ? 'nav-link-login' : '' }}"
+                                 aria-current="page">
                                  Iniciar Sesión
                              </a>
                          </li>
