@@ -8,7 +8,7 @@ Alpine.data("toggle", () => ({
     active: true,
 
     init() {
-        this.toggleQuoterClass(true);
+        this.toggleQuoterClass(this.active);
         this.$watch("active", (value) => {
             this.toggleQuoterClass(value);
         });
@@ -85,57 +85,6 @@ Alpine.data("toggle", () => ({
             document.getElementById("toggle-promo").classList.add("text-white");
             document
                 .getElementById("toggle-promo")
-                .classList.remove("text-gray-700");
-        }
-    },
-}));
-Alpine.data("toggleAccountType", () => ({
-    accountType: 1,
-
-    init() {
-        this.toggle(1);
-        this.$watch("accountType", (value) => {
-            this.toggle(value);
-        });
-    },
-
-    toggle(value) {
-        if (value == 1) {
-            document
-                .getElementById("tab_personal")
-                .classList.add("bg-home-primary");
-            document.getElementById("tab_personal").classList.add("text-white");
-            document
-                .getElementById("tab_personal")
-                .classList.remove("text-gray-700");
-            document
-                .getElementById("tab_business")
-                .classList.remove("bg-home-primary");
-            document
-                .getElementById("tab_business")
-                .classList.remove("text-white");
-            document
-                .getElementById("tab_business")
-                .classList.add("text-gray-700");
-            document
-                .getElementById("tab_container")
-                .classList.add("-translate-y-4");
-        } else {
-            document
-                .getElementById("tab_personal")
-                .classList.remove("bg-home-primary");
-            document
-                .getElementById("tab_personal")
-                .classList.remove("text-white");
-            document
-                .getElementById("tab_personal")
-                .classList.add("text-gray-700");
-            document
-                .getElementById("tab_business")
-                .classList.add("bg-home-primary");
-            document.getElementById("tab_business").classList.add("text-white");
-            document
-                .getElementById("tab_business")
                 .classList.remove("text-gray-700");
         }
     },
