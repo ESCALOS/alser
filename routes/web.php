@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Account;
 use App\Livewire\Auth\Register;
 use Illuminate\Support\Facades\Route;
 
@@ -13,4 +14,5 @@ Route::middleware([
     Route::get('/nueva-operacion', function () {
         return view('new-operation');
     })->name('new-operation');
+    Route::get('/datos-del-perfil', Account::class)->name('account');
 });

@@ -86,7 +86,7 @@
                                      </div>
 
                                      <x-dropdown-link href="{{ route('profile.show') }}">
-                                         {{ __('Account') }}
+                                         {{ __('Profile') }}
                                      </x-dropdown-link>
 
                                      <x-dropdown-link href="{{ route('new-operation') }}">

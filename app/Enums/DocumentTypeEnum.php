@@ -40,6 +40,15 @@ enum DocumentTypeEnum: string implements HasColor, HasLabel
         ];
     }
 
+    public static function getChoicesExceptRuc(): array
+    {
+        return [
+            ['id' => 1, 'name' => self::ID->value],
+            ['id' => 3, 'name' => self::FOREIGN_CARD->value],
+            ['id' => 4, 'name' => self::PASSPORT->value],
+        ];
+    }
+
     public static function getValueById(int $id): string
     {
         $choices = self::getChoices();

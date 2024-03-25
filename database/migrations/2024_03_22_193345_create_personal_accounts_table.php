@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('personal_accounts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->string('first_lastname', 20)->nullable()->comment('Primer Apellido');
-            $table->string('second_lastname', 20)->nullable()->comment('Segundo Apellido');
+            $table->string('first_surname', 20)->nullable()->comment('Primer Apellido');
+            $table->string('second_surname', 20)->nullable()->comment('Segundo Apellido');
             $table->string('nacionality')->nullable()->comment('Nacionalidad');
             $table->boolean('is_PEP')->nullable()->comment('Personas expuestas políticamente');
             $table->boolean('wife_is_PEP')->nullable()->comment('Esposa es PEP');
