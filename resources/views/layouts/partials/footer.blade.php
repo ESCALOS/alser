@@ -14,13 +14,14 @@
             </div>
             <div>
                 <h3 class="pb-2 mb-4 text-xl font-bold border-b-2 border-purple-600">MAPA DEL SITIO</h3>
-                <ul class="space-y-4 text-gray-300 text-md">
-                    <li><a wire:navigate href="{{ route('home') }}">Inicio</a></li>
-                    <li><a wire:navigate href="{{ route('home.about') }}">Nosotros</a></li>
-                    <li><a wire:navigate href="{{ route('home.companies') }}">Empresas</a></li>
-                    <li><a wire:navigate href="{{ route('home.exchange-rate') }}">Tipo de Cambio</a></li>
-                    <li><a target="_blank" href="{{ route('terms.show') }}">Términos y Condiciones</a></li>
+                <ul class="space-y-3 text-gray-300 text-md">
                     <li><a target="_blank" href="{{ route('policy.show') }}">Política de Privacidad</a></li>
+                    <li><a target="_blank" href="{{ route('terms.show') }}">Términos y Condiciones</a></li>
+                    <li class="w-48 border-4 border-gray-600">
+                        <a target="_blank" href="{{ route('home.complaints-book') }}">
+                            <img src="{{ asset('storage/images/complaint-book.jpg') }}" alt="libro de reclamaciones">
+                        </a>
+                    </li>
                 </ul>
             </div>
             <div>
