@@ -4,7 +4,7 @@
             {{ __('Profile Data') }}
         </h2>
     </x-slot>
-    <div class="max-w-4xl py-10 mx-auto sm:px-6 lg:px-8">
+    <div class="max-w-4xl py-10 mx-auto">
         @if (auth()->user()->account_type == 1)
             <livewire:account.personal />
         @else

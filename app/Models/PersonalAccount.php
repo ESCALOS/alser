@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class PersonalAccount extends Model
 {
     use HasFactory;
+
+    public function identityDocuments()
+    {
+        return $this->morphMany(IdentityDocument::class, 'imageable');
+    }
 }

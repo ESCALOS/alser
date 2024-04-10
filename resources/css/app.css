@@ -11,3 +11,6 @@ input:where(:not([type])) {
     box-shadow: none!important;
     padding-top: 0;
 }
+.tooltip {
+    width: 100%;
+}
