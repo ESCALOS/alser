@@ -96,9 +96,4 @@ class ComplaintBookForm extends Form
             'document_number.required' => 'El número de documento es obligatorio',
         ];
     }
-
-    public function save(): void
-    {
-        $this->validate();
-    }
 }

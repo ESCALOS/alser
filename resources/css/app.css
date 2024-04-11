@@ -11,6 +11,33 @@ input:where(:not([type])) {
     box-shadow: none!important;
     padding-top: 0;
 }
+
 .tooltip {
     width: 100%;
+}
+
+[type='radio']:checked {
+    background-image: none;
+}
+
+.join {
+    display: flex;
+}
+
+.home-nav-link {
+    @apply block py-2 pl-3 pr-4
+}
+.home-nav-link-active {
+    @apply bg-white text-home-primary lg:text-white border-solid rounded lg:bg-transparent lg:p-0
+}
+.home-nav-link-inactive {
+    @apply text-white rounded hover:bg-gray-100 hover:text-home-primary lg:hover:text-white lg:hover:bg-transparent lg:p-0
+}
+
+.nav-link-login {
+    @apply block items-center py-2 rounded lg:rounded-md justify-center pl-3 lg:px-3 text-base font-medium text-left text-white lg:border border-white lg:text-center hover:text-home-primary hover:bg-gray-100
+}
+
+.nav-link-register {
+    @apply block items-center justify-center pl-3 lg:px-3 text-base font-medium text-left hover:bg-gray-100 hover:text-home-primary lg:text-center bg-transparent lg:bg-white lg:border border-none lg:text-home-primary text-white focus:ring-4 focus:ring-gray-300 py-2 rounded lg:rounded-md lg:hover:border-white lg:my-0
 }

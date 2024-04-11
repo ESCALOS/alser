@@ -29,6 +29,12 @@ class PersonalForm extends Form
     #[Validate('required|exists:countries,id', as: 'Nacionalidad')]
     public $nacionality = 140;
 
+    #[Validate('required|image|max:1024|mimes:jpeg,png,jpg', as: 'La imagen')]
+    public $identity_document_front;
+
+    #[Validate('required|image|max:1024|mimes:jpeg,png,jpg', as: 'La imagen')]
+    public $identity_document_back;
+
     #[Validate('required|boolean')]
     public $is_PEP = false;
 
@@ -45,17 +51,23 @@ class PersonalForm extends Form
         ];
     }
 
-    public function validationAttributes()
+    public function validationAttributes(): array
     {
         return [
             'document_number' => 'Número de documento',
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'document_number.required' => 'El número de documento es obligatorio',
         ];
+    }
+
+    public function save()
+    {
+        $this->validate();
+
     }
 }

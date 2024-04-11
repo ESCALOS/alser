@@ -17,13 +17,8 @@ class Personal extends Component
 
     public PersonalForm $form;
 
-    public $front;
-
-    public $back;
-
     public function mount()
     {
-        $this->front['name'] = 'hola';
         $this->documentTypes = DocumentTypeEnum::getChoicesExceptRuc();
     }
 
@@ -31,6 +26,24 @@ class Personal extends Component
     public function countries(): array
     {
         return Country::select('id', 'name')->get()->toArray();
+    }
+
+    public function save()
+    {
+        $this->form->save();
+    }
+
+    public function placeholder()
+    {
+        return <<<'HTML'
+        <div class="min-h-screen">
+            <div>
+                <h1 class="text-2xl font-bold text-home-primary">Cargando formulario</h1>
+            </div>
+
+            <x-mary-progress value="12" max="100" class="h-3" style="--progress-color: rgb(234,179,8)" indeterminate />
+        </div>
+        HTML;
     }
 
     public function render()

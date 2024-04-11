@@ -21,19 +21,19 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        // User::factory([
-        //     'name' => 'Carlos Escate',
-        //     'email' => 'stornblood6969@gmail.com',
-        //     'is_admin' => true,
-        // ])->create();
-        // Price::factory(10)->create();
+        User::factory([
+            'name' => 'Carlos Escate',
+            'email' => 'stornblood6969@gmail.com',
+            'is_admin' => true,
+        ])->create();
+        Price::factory(10)->create();
 
         $this->call([
             CountrySeeder::class,
-            // FaqSeeder::class,
-            // LocationDepartmentSeeder::class,
-            // LocationProvinceSeeder::class,
-            // LocationDistrictSeeder::class,
+            FaqSeeder::class,
+            LocationDepartmentSeeder::class,
+            LocationProvinceSeeder::class,
+            LocationDistrictSeeder::class,
         ]);
     }
 }
