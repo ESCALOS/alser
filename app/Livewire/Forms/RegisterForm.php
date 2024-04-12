@@ -48,8 +48,6 @@ class RegisterForm extends Form
             $data['document_type'] = 2; //Enum RUC
             $data['document_number'] = $this->document_number;
             $data['name'] = $this->name;
-        } else {
-            dd($this->account_type);
         }
         $data['account_type'] = $this->account_type;
         $data['email'] = $this->email;

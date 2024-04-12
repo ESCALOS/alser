@@ -5,12 +5,14 @@ namespace App\Livewire\Account;
 use App\Enums\DocumentTypeEnum;
 use App\Livewire\Forms\Account\PersonalForm;
 use App\Models\Country;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
 class Personal extends Component
 {
+    use LivewireAlert;
     use WithFileUploads;
 
     public $documentTypes;
@@ -20,6 +22,7 @@ class Personal extends Component
     public function mount()
     {
         $this->documentTypes = DocumentTypeEnum::getChoicesExceptRuc();
+        $this->form->setPersonalForm();
     }
 
     #[Computed(persist: true)]
@@ -31,6 +34,14 @@ class Personal extends Component
     public function save()
     {
         $this->form->save();
+
+        $this->alert('success', 'Registro éxitoso', [
+            'position' => 'center',
+            'toast' => false,
+            'timer' => '',
+            'showConfirmButton' => true,
+            'onConfirmed' => 'OK',
+        ]);
     }
 
     public function placeholder()

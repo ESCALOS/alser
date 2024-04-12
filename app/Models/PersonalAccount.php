@@ -9,6 +9,8 @@ class PersonalAccount extends Model
 {
     use HasFactory;
 
+    protected $guarded = ['created_at', 'updated_at'];
+
     public function identityDocuments()
     {
         return $this->morphMany(IdentityDocument::class, 'imageable');

@@ -13,7 +13,7 @@
                 </x-mary-alert>
                 <x-mary-input label="Nombres" wire:model='form.name' />
                 <div class="grid grid-cols-2 gap-3">
-                    <x-mary-input label="Primer Apellido" wire:model='form.surname' />
+                    <x-mary-input label="Primer Apellido" wire:model='form.first_surname' />
                     <x-mary-input label="Segundo Apellido" wire:model='form.second_surname' />
                 </div>
                 <div class="grid gap-3 lg:grid-cols-2">
