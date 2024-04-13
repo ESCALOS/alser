@@ -2,7 +2,7 @@
     <div class="max-w-screen-xl px-6 mx-auto md:px-24">
         <div class="grid grid-cols-1 lg:grid-cols-2">
             <div class="flex items-center justify-center {{ $imgLeft ? '' : 'hidden' }}">
-                <img src="{{ asset('storage/images/' . $img) }}" alt="Imagen" class="hidden w-full px-6 lg:block">
+                <img src="{{ asset('images/faq/' . $img) }}" alt="Imagen" class="hidden w-full px-6 lg:block">
             </div>
             <div>
                 @foreach ($faqs as $faq)
@@ -13,7 +13,7 @@
                 @endforeach
             </div>
             <div class="flex items-center justify-center {{ $imgLeft ? 'hidden' : '' }}">
-                <img src="{{ asset('storage/images/' . $img) }}" alt="Imagen" class="hidden w-full px-6 lg:block">
+                <img src="{{ asset('images/faq/' . $img) }}" alt="Imagen" class="hidden w-full px-6 lg:block">
             </div>
         </div>
     </div>

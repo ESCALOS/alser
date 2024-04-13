@@ -3,7 +3,7 @@
         class="flex flex-col flex-wrap items-center justify-around space-x-4 border-gray-100 border-y text-pretty text-md">
         <div class="grid max-w-screen-xl gap-12 px-6 py-10 mx-auto md:grid-cols-3">
             <div class="space-y-8 text-md">
-                <img src="{{ asset('storage/images/logo-alser.png') }}" alt="logo">
+                <img src="{{ asset('images/logos/logo-alser.png') }}" alt="logo">
                 <p class="text-gray-300">
                     Alser Cambio es una marca registrada de Alser Cambio Fintech SAC para comprar y vender dólares y
                     cambiar soles y dólares online.
@@ -19,7 +19,7 @@
                     <li><a target="_blank" href="{{ route('terms.show') }}">Términos y Condiciones</a></li>
                     <li class="w-48 border-4 border-gray-600">
                         <a target="_blank" href="{{ route('home.complaints-book') }}">
-                            <img src="{{ asset('storage/images/complaint-book.jpg') }}" alt="libro de reclamaciones">
+                            <img src="{{ asset('images/footer/complaint-book.jpg') }}" alt="libro de reclamaciones">
                         </a>
                     </li>
                 </ul>

@@ -13,25 +13,25 @@ use Livewire\Form;
 class PersonalForm extends Form
 {
     #[Validate('required', as: 'Nombre')]
-    public string $name = '';
+    public ?string $name = '';
 
     #[Validate('required', as: 'Primer Apellido')]
-    public string $first_surname = '';
+    public ?string $first_surname = '';
 
     #[Validate('required', as: 'Segundo Apellido')]
-    public string $second_surname = '';
+    public ?string $second_surname = '';
 
     #[Validate('required|in:1,3,4')]
-    public int $document_type = 1;
+    public ?int $document_type = 1;
 
     #[Validate]
-    public string $document_number = '';
+    public ?string $document_number = '';
 
     #[Validate('required|digits:9', as: 'Celular')]
-    public string $celphone = '';
+    public ?string $celphone = '';
 
     #[Validate('required|exists:countries,id', as: 'Nacionalidad')]
-    public int $nacionality = 140;
+    public ?int $nacionality = 140;
 
     #[Validate('required|image|max:1024|mimes:jpeg,png,jpg', as: 'La imagen')]
     public $identity_document_front;
@@ -40,13 +40,13 @@ class PersonalForm extends Form
     public $identity_document_back;
 
     #[Validate('required|boolean')]
-    public bool $is_PEP = false;
+    public ?bool $is_PEP = false;
 
     #[Validate('required|boolean')]
-    public bool $wife_is_PEP = false;
+    public ?bool $wife_is_PEP = false;
 
     #[Validate('required|boolean')]
-    public bool $relative_is_PEP = false;
+    public ?bool $relative_is_PEP = false;
 
     public function setPersonalForm()
     {

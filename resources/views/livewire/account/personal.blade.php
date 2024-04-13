@@ -39,7 +39,7 @@
                     <div class="h-52">
                         <div class="h-32 rounded-t-md bg-violet-100">
                             <h3 class="pt-4 pb-1 text-lg font-semibold text-center text-violet-400">Lado Frontal</h3>
-                            <img src="{{ asset('storage/images/document_front.png') }}" class="h-24 m-auto" />
+                            <img src="{{ asset('images/defaults/document_front.png') }}" class="h-24 m-auto" />
                         </div>
                         <div class="h-20 px-4 pt-4 align-middle cursor-pointer rounded-b-md bg-violet-300">
                             <div
@@ -54,7 +54,7 @@
                     <div class="h-52">
                         <div class="h-32 rounded-t-md bg-violet-100">
                             <h3 class="pt-4 pb-1 text-lg font-semibold text-center text-violet-400">Lado Rerverso</h3>
-                            <img src="{{ asset('storage/images/document_back.png') }}" class="h-24 m-auto" />
+                            <img src="{{ asset('images/defaults/document_back.png') }}" class="h-24 m-auto" />
                         </div>
                         <div class="h-20 px-4 pt-4 align-middle cursor-pointer rounded-b-md bg-violet-300">
                             <div

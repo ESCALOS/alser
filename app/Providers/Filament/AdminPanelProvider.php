@@ -30,8 +30,8 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => '#6366f1',
             ])
             ->brandName('Alser Cambio')
-            ->brandLogo(asset('storage/images/logo-alser.png'))
-            ->favicon(asset('storage/images/logo-negro.png'))
+            ->brandLogo(asset('images/logos/logo-alser.png'))
+            ->favicon(asset('images/logos/logo-negro.png'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([

@@ -4,7 +4,7 @@
         <h1 class="text-lg font-bold">Ninguna promo activa</h1>
     </div>
     <div class="flex flex-col items-center justify-around p-4 text-center h-96">
-        <img class="h-20 mb-4" src="{{ asset('storage/images/surprise.png') }}">
+        <img class="h-20 mb-4" src="{{ asset('images/promos/surprise.png') }}">
         <div>
             <div class="text-base text-gray-900 text-pretty">
                 Los <b>ALSERPROMOS</b> te permiten acceder a un tipo de cambio insuperable, específicos

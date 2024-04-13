@@ -3,7 +3,7 @@
         <div class="flex flex-col items-center min-h-screen pt-6 sm:pt-0">
             <div>
                 <a href="/">
-                    <img src="{{ asset('storage/images/logo-alser.png') }}" alt="logo" style="height: 48px">
+                    <img src="{{ asset('images/logos/logo-alser.png') }}" alt="logo" style="height: 48px">
                 </a>
 
             </div>

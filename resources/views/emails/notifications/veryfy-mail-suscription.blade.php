@@ -2,7 +2,8 @@
 
 Estimado Usuario,
 
-Gracias por suscribirse a nuestro boletín! Estamos entusiasmados de tenerlo como parte de nuestra comunidad y esperamos compartir actualizaciones, consejos y recursos con usted.
+Gracias por suscribirse a nuestro boletín! Estamos entusiasmados de tenerlo como parte de nuestra comunidad y esperamos
+compartir actualizaciones, consejos y recursos con usted.
 
 
 Si desea darse de baja de nuestro boletín en cualquier momento, puede hacerlo haciendo clic en el siguiente enlace:
@@ -13,4 +14,4 @@ Gracias por unirse a nosotros y esperamos que nuestro boletín le resulte inform
 
 Atentamente,
 
-![Nuestra Empresa]( {{ asset('storage/images/logo-alser.png' }} )
+![Nuestra Empresa]( {{ asset('images/logos/logo-alser.png') }} )
