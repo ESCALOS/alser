@@ -2,11 +2,13 @@
 
 namespace App\Livewire\Forms\Account;
 
+use App\Enums\IdentityDocumentStatusEnum;
 use App\Models\PersonalAccount;
 use App\Models\User;
 use App\Rules\DocumentNumberValidation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -48,6 +50,9 @@ class PersonalForm extends Form
     #[Validate('required|boolean')]
     public ?bool $relative_is_PEP = false;
 
+    #[Locked]
+    public IdentityDocumentStatusEnum $identity_document_status = IdentityDocumentStatusEnum::PENDING;
+
     public function setPersonalForm()
     {
         $this->name = Auth::user()->name;
@@ -58,6 +63,7 @@ class PersonalForm extends Form
             $personalAccount = PersonalAccount::where('user_id', Auth::user()->id)->first();
             $this->first_surname = $personalAccount->first_surname;
             $this->second_surname = $personalAccount->second_surname;
+            $this->identity_document_status = IdentityDocumentStatusEnum::getSelfById($personalAccount->identity_document);
         }
     }
 
@@ -105,16 +111,20 @@ class PersonalForm extends Form
                     'relative_is_PEP' => $this->relative_is_PEP,
                 ]
             );
-            $this->identity_document_front->storeAs(path: 'identity-documents/personal_account', name: $this->getFilenameIdentityDocument('front', $this->identity_document_front->getClientOriginalName()));
-            $this->identity_document_back->storeAs(path: 'identity-documents/personal_account', name: $this->getFilenameIdentityDocument('back', $this->identity_document_back->getClientOriginalName()));
+            $this->identity_document_status = $this->getIndetityDocumentStatusEnum();
+            if ($this->identity_document_status === IdentityDocumentStatusEnum::PENDING || $this->identity_document_status === IdentityDocumentStatusEnum::REJECT) {
+                $this->identity_document_front->storeAs(path: 'identity-documents/personal_account', name: $this->getFilenameIdentityDocument('front'));
+                $this->identity_document_back->storeAs(path: 'identity-documents/personal_account', name: $this->getFilenameIdentityDocument('back'));
+            }
 
             $user->save();
             $personalAccount->save();
         });
     }
 
-    private function getFilenameIdentityDocument(string $prefix, string $fileName)
+    private function getFilenameIdentityDocument(string $prefix)
     {
+        $fileName = $this->identity_document_front->getClientOriginalName();
         $extensionSeparatorIndex = strrpos($fileName, '.');
         if ($extensionSeparatorIndex !== false) {
             $extension = substr($fileName, $extensionSeparatorIndex);
@@ -123,5 +133,10 @@ class PersonalForm extends Form
         }
 
         return $prefix.''.Auth::user()->id.''.$extension;
+    }
+
+    private function getIndetityDocumentStatusEnum()
+    {
+
     }
 }
