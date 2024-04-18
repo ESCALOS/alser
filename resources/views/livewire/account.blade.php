@@ -6,9 +6,9 @@
     </x-slot>
     <div class="max-w-4xl py-10 mx-auto">
         @if (auth()->user()->account_type == 1)
-            <livewire:account.personal />
+            <livewire:account.personal lazy />
         @else
-            <livewire:account.business />
+            <livewire:account.business lazy />
         @endif
 
     </div>
