@@ -89,7 +89,7 @@ enum IdentityDocumentStatusEnum: string implements HasColor, HasLabel
     {
         return match ($this) {
             self::PENDING => 'text-gray-500',
-            self::UPLOADED => 'text-red-500',
+            self::UPLOADED => 'text-amber-500',
             self::VALIDATED => 'text-green-500',
             self::REJECTED => 'text-red-500'
         };

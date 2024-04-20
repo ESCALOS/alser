@@ -42,7 +42,7 @@ class Personal extends Component
     public function save()
     {
         $type = 'success';
-        $message = 'Registro éxitoso';
+        $message = 'Datos guardados';
         try {
             $this->form->save();
         } catch (ValidationException $ex) {
