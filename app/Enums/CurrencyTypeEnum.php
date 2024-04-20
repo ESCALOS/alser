@@ -29,8 +29,8 @@ enum CurrencyTypeEnum: string implements HasColor, HasLabel
     public static function getChoices(): array
     {
         return [
-            ['id' => 1, 'name' => self::SOL->value],
-            ['id' => 2, 'name' => self::DOLLAR->value],
+            ['id' => 1, 'name' => self::SOL->getLabel()],
+            ['id' => 2, 'name' => self::DOLLAR->getLabel()],
         ];
     }
 

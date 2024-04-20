@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms\Account;
 
+use App\Enums\DocumentTypeEnum;
 use App\Enums\IdentityDocumentStatusEnum;
 use App\Models\PersonalAccount;
 use App\Models\User;
@@ -27,8 +28,8 @@ class PersonalForm extends Form
     #[Validate('required', as: 'Segundo Apellido')]
     public ?string $second_surname = '';
 
-    #[Validate('required|in:1,3,4')]
-    public ?int $document_type = 1;
+    #[Validate]
+    public DocumentTypeEnum $document_type = DocumentTypeEnum::ID;
 
     #[Validate]
     public ?string $document_number = '';
@@ -60,7 +61,7 @@ class PersonalForm extends Form
     public function setPersonalForm()
     {
         $this->name = Auth::user()->name;
-        $this->document_type = Auth::user()->document_type ?? 1;
+        $this->document_type = Auth::user()->document_type ?? DocumentTypeEnum::ID;
         $this->document_number = Auth::user()->document_number ?? '';
         $this->celphone = Auth::user()->celphone ?? '';
         if (PersonalAccount::where('user_id', Auth::user()->id)->exists()) {
@@ -71,14 +72,15 @@ class PersonalForm extends Form
             $this->is_PEP = $personalAccount->is_PEP;
             $this->wife_is_PEP = $personalAccount->wife_is_PEP;
             $this->relative_is_PEP = $personalAccount->relative_is_PEP;
-            $this->identity_document_status = IdentityDocumentStatusEnum::getSelfById($personalAccount->identity_document ?? 1);
+            $this->identity_document_status = $personalAccount->identity_document ?? IdentityDocumentStatusEnum::PENDING;
         }
     }
 
     public function rules(): array
     {
         return [
-            'document_number' => ['required', new DocumentNumberValidation($this->document_type ?? 0)],
+            'document_type' => ['required', Rule::enum(DocumentTypeEnum::class)->except([DocumentTypeEnum::TAX_NUMBER])],
+            'document_number' => ['required', new DocumentNumberValidation($this->document_type)],
             'identity_document_front' => [Rule::excludeIf(! $this->isIdentityDocumentRequired()), 'required', 'image', 'max:2048', 'mimes:jpeg,png,jpg'],
             'identity_document_back' => [Rule::excludeIf(! $this->isIdentityDocumentRequired()), 'required', 'image', 'max:2048', 'mimes:jpeg,png,jpg'],
         ];
@@ -123,7 +125,7 @@ class PersonalForm extends Form
             if ($this->isIdentityDocumentRequired()) {
                 $this->saveIdentityDocumentImages();
                 $this->identity_document_status = IdentityDocumentStatusEnum::UPLOADED;
-                $data['identity_document'] = IdentityDocumentStatusEnum::getIdBySelf($this->identity_document_status);
+                $data['identity_document'] = $this->identity_document_status;
             } else {
                 new Exception('La imagen no es requerida');
             }
@@ -153,20 +155,11 @@ class PersonalForm extends Form
         if (! Storage::put('identity-documents/personal-account/'.Auth::user()->id.'/back.png', (string) $imageBack->toPng())) {
             new Exception('Error al guardar la imagen');
         }
-        //Storage::putFileAs('identity-documents/personal_account/1', (string) $imageBack->toPng(), 'back.png');
-        // Storage::putFileAs('identity-documents/personal_account/1', (string) $imageBack->toPng(), 'back.png');
-        // $this->identity_document_front->storeAs(path: 'identity-documents/personal-account', name: $this->getFilenameIdentityDocument('front'));
-        // $this->identity_document_back->storeAs(path: 'identity-documents/personal-account', name: $this->getFilenameIdentityDocument('back'));
-        // $manager = ImageManager::imagick();
-        // $imageFront = $manager->read($this->identity_document_front);
-        // $imageFront = $imageFront->resize(370, 246);
-        // $imageFront->toPng()->save(base_path('public/images/ago.png'));
     }
 
     private function setIdentityDocumentStatus(): void
     {
-        $identity_document_id = PersonalAccount::where('user_id', Auth::user()->id)->first()->identity_document ?? 1;
-        $this->identity_document_status = IdentityDocumentStatusEnum::getSelfById($identity_document_id);
+        $this->identity_document_status = PersonalAccount::where('user_id', Auth::user()->id)->first()->identity_document ?? IdentityDocumentStatusEnum::PENDING;
     }
 
     public function isIdentityDocumentRequired(): bool

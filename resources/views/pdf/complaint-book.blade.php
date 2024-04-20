@@ -64,7 +64,7 @@
         <tr>
             <td>
                 <span>Número de documento</span>
-                <p>{{ $form['document_type_name'] }}</p>
+                <p>{{ $form['document_type_name']->getLabel() }}</p>
             </td>
             <td>
                 <span>Tipo de documento</span>

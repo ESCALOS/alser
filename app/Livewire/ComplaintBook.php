@@ -144,7 +144,7 @@ class ComplaintBook extends Component
         }
 
         DB::transaction(function () {
-            if ($this->form->document_type == 2) {
+            if ($this->form->document_type === DocumentTypeEnum::TAX_NUMBER) {
                 $this->form->representative = '';
                 $this->form->last_name_father = '';
                 $this->form->last_name_mother = '';
@@ -153,7 +153,7 @@ class ComplaintBook extends Component
 
             $formData = $this->form->all();
             $formData['id'] = str_pad($savedComplaint->id, 6, '0', STR_PAD_LEFT);
-            $formData['document_type_name'] = DocumentTypeEnum::getValueById($formData['document_type']);
+            $formData['document_type_name'] = $formData['document_type'];
             $formData['response_medium_name'] = ResponseMediumEnum::getValueById($formData['response_medium']);
             $formData['location_department_name'] = $this->departments()[$formData['location_department_id'] - 1]['name'];
             $formData['location_province_name'] = $this->provinces()[$formData['location_province_id'] - 1]['name'];

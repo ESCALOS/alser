@@ -5,19 +5,24 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum IdentityDocumentStatusEnum: string implements HasColor, HasLabel
+enum IdentityDocumentStatusEnum: int implements HasColor, HasLabel
 {
-    case PENDING = 'No hay';
-    case UPLOADED = 'Pendiente en validar';
-    case VALIDATED = 'Validado';
-    case REJECTED = 'Rechazado';
+    case PENDING = 1;
+    case UPLOADED = 2;
+    case VALIDATED = 3;
+    case REJECTED = 4;
 
     /**
      * Devuelve el tipo de documento
      */
     public function getLabel(): ?string
     {
-        return $this->value;
+        return match ($this) {
+            self::PENDING => 'Sin documento',
+            self::UPLOADED => 'Pendiente en validar',
+            self::VALIDATED => 'Validado',
+            self::REJECTED => 'Rechazado'
+        };
     }
 
     public static function getLabels(): array
@@ -51,6 +56,16 @@ enum IdentityDocumentStatusEnum: string implements HasColor, HasLabel
         }
 
         return null;
+    }
+
+    public function getIcon()
+    {
+        return match ($this) {
+            self::PENDING => 'm-clock',
+            self::UPLOADED => 'm-clock',
+            self::VALIDATED => 'm-check-circle',
+            self::REJECTED => 'm-x-mark-circle',
+        };
     }
 
     public function getColor(): string|array|null

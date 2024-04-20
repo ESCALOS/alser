@@ -13,6 +13,8 @@ class PersonalAccount extends Model
 
     protected $guarded = ['created_at', 'updated_at'];
 
+    protected $casts = ['identity_document' => IdentityDocumentStatusEnum::class];
+
     public function getIdentityDocumentStatusAttribute(): IdentityDocumentStatusEnum
     {
         return IdentityDocumentStatusEnum::getSelfById($this->document_type);

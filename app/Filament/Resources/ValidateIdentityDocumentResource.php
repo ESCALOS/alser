@@ -2,13 +2,13 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\IdentityDocumentStatusEnum;
 use App\Filament\Resources\ValidateIdentityDocumentResource\Pages;
 use App\Models\PersonalAccount;
 use Filament\Forms\Form;
-use Filament\Infolists\Components\Fieldset;
-use Filament\Infolists\Components\ImageEntry;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -17,7 +17,7 @@ class ValidateIdentityDocumentResource extends Resource
 {
     protected static ?string $model = PersonalAccount::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-check';
+    protected static ?string $navigationIcon = 'heroicon-o-check-circle';
 
     protected static ?string $modelLabel = 'Validar documento';
 
@@ -33,36 +33,54 @@ class ValidateIdentityDocumentResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('user.document_number')
+                    ->label('N° Documento'),
                 TextColumn::make('user.name')
-                    ->label('Nombres'),
+                    ->label('Nombres')
+                    ->searchable(),
                 TextColumn::make('first_surname')
                     ->label('Apellidos')
-                    ->formatStateUsing(fn (PersonalAccount $record) => $record->first_surname.' '.$record->second_surname),
+                    ->formatStateUsing(fn (PersonalAccount $record) => $record->first_surname.' '.$record->second_surname)
+                    ->searchable(),
                 ImageColumn::make('front')
                     ->label('Lado Frontal')
                     ->disk('s3')
                     ->defaultImageUrl(fn (PersonalAccount $record): string => url(route('image.identity-document-by-user', ['type' => 'front', 'userId' => $record->user->id])))
-                    ->openUrlInNewTab(),
+                    ->simpleLightbox(),
+                ImageColumn::make('back')
+                    ->label('Lado Posterior')
+                    ->disk('s3')
+                    ->defaultImageUrl(fn (PersonalAccount $record): string => url(route('image.identity-document-by-user', ['type' => 'back', 'userId' => $record->user->id])))
+                    ->simpleLightbox(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()
-                    ->infolist([
-                        Fieldset::make('Foto del Documento de Identidad')
-                            ->schema([
-                                ImageEntry::make('front')
-                                    ->label('Lado Frontal')
-                                    ->defaultImageUrl(fn (PersonalAccount $record): string => url(route('image.identity-document-by-user', ['type' => 'front', 'userId' => $record->user->id])))
-                                    ->size('200')
-                                    ->limitedRemainingText(size: 'lg'),
-                                ImageEntry::make('back')
-                                    ->label('Lado Posterior')
-                                    ->defaultImageUrl(fn (PersonalAccount $record): string => url(route('image.identity-document-by-user', ['type' => 'back', 'userId' => $record->user->id]))),
-                            ]),
-                    ])
-                    ->modalHeading('Datos del usuario'),
+                Action::make('validate')
+                    ->label('Validar')
+                    ->visible(fn (PersonalAccount $record): bool => $record->identity_document === IdentityDocumentStatusEnum::UPLOADED)
+                    ->requiresConfirmation()
+                    ->modalHeading('¿Desea validar el documento?')
+                    ->modalDescription('Esta acción es irreversible')
+                    ->action(function (PersonalAccount $record): void {
+                        $record->update(['identity_document' => 3]);
+                    })
+                    ->icon('heroicon-m-check')
+                    ->color('success')
+                    ->tooltip('Validar documento'),
+                Action::make('reject')
+                    ->label('Rechazar')
+                    ->visible(fn (PersonalAccount $record): bool => $record->identity_document === IdentityDocumentStatusEnum::UPLOADED)
+                    ->requiresConfirmation()
+                    ->modalHeading('¿Desea rechazar el documento?')
+                    ->modalDescription('Esta acción es irreversible')
+                    ->action(function (PersonalAccount $record): void {
+                        $record->update(['identity_document' => 4]);
+                    })
+                    ->icon('heroicon-m-x-mark')
+                    ->color('danger')
+                    ->tooltip('Rechazar documento'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

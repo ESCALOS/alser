@@ -5,7 +5,7 @@
                 <x-mary-input label="{{ __('Email') }}" class="rounded-lg" value="{{ auth()->user()->email }}"
                     disabled />
                 <p class="pt-2 text-pretty">Por resolución de la SBS, necesitas llenar los siguientes
-                    datos. {{ $form->identity_document_status }}
+                    datos.
                 </p>
                 <x-mary-alert icon="o-exclamation-circle" class="text-white bg-sky-600">
                     <span class="font-bold text-md text-pretty">Tus nombres y apellidos deben ser iguales a los que

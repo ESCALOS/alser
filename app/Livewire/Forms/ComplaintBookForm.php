@@ -2,19 +2,22 @@
 
 namespace App\Livewire\Forms;
 
+use App\Enums\DocumentTypeEnum;
 use App\Rules\DocumentNumberValidation;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class ComplaintBookForm extends Form
 {
     // Datos Personales
-    #[Validate('required|in:1,2,3,4', message: 'El tipo de documento es obligatorio')]
-    public ?int $document_type = 1;
+    #[Validate]
+    public DocumentTypeEnum $document_type = DocumentTypeEnum::ID;
 
     #[Validate]
     public string $document_number = '';
 
+    // Corregir el exclude_if para que valide el enum
     #[Validate('exclude_if:document_type,2|required:|string|max:20', as: 'Apellido Paterno')]
     public string $last_name_father = '';
 
@@ -79,13 +82,15 @@ class ComplaintBookForm extends Form
     public function rules(): array
     {
         return [
-            'document_number' => ['required', new DocumentNumberValidation($this->document_type ?? 0)],
+            'document_type' => ['required', Rule::enum(DocumentTypeEnum::class)],
+            'document_number' => ['required', new DocumentNumberValidation($this->document_type)],
         ];
     }
 
     public function validationAttributes()
     {
         return [
+            'document_type' => 'Tipo de documento',
             'document_number' => 'Número de documento',
         ];
     }
@@ -93,6 +98,7 @@ class ComplaintBookForm extends Form
     public function messages()
     {
         return [
+            'document_type.required' => 'El tipo de documento es requerido',
             'document_number.required' => 'El número de documento es obligatorio',
         ];
     }

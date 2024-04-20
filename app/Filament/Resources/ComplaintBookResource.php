@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\StatusEnum;
 use App\Filament\Resources\ComplaintBookResource\Pages;
 use App\Models\ComplaintBook;
 use Filament\Forms;
@@ -88,7 +89,7 @@ class ComplaintBookResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('document_type_enum')
+                Tables\Columns\TextColumn::make('document_type')
                     ->label('Tipo de Doc.')
                     ->badge(),
                 Tables\Columns\TextColumn::make('document_number')
@@ -109,30 +110,30 @@ class ComplaintBookResource extends Resource
             ->actions([
                 Action::make('pending')
                     ->label('A pendiente')
-                    ->visible(fn (ComplaintBook $record): bool => $record->status === 'IP')
+                    ->visible(fn (ComplaintBook $record): bool => $record->status === StatusEnum::IN_PROGRESS)
                     ->requiresConfirmation()
                     ->action(function (ComplaintBook $record): void {
-                        $record->update(['status' => 'P']);
+                        $record->update(['status' => StatusEnum::PENDING]);
                     })
                     ->icon('heroicon-m-clock')
                     ->color('danger')
                     ->tooltip('Mover a Pendiente'),
                 Action::make('inProgress')
                     ->label('Procesar')
-                    ->hidden(fn (ComplaintBook $record): bool => $record->status === 'IP')
+                    ->hidden(fn (ComplaintBook $record): bool => $record->status === StatusEnum::IN_PROGRESS)
                     ->requiresConfirmation()
                     ->action(function (ComplaintBook $record): void {
-                        $record->update(['status' => 'IP']);
+                        $record->update(['status' => StatusEnum::IN_PROGRESS]);
                     })
                     ->icon('heroicon-m-ellipsis-horizontal')
                     ->color('warning')
                     ->tooltip('Mover a proceso'),
                 Action::make('completed')
                     ->label('Completar')
-                    ->visible(fn (ComplaintBook $record): bool => $record->status === 'IP')
+                    ->visible(fn (ComplaintBook $record): bool => $record->status === StatusEnum::IN_PROGRESS)
                     ->requiresConfirmation()
                     ->action(function (ComplaintBook $record): void {
-                        $record->update(['status' => 'C']);
+                        $record->update(['status' => StatusEnum::COMPLETED]);
                     })
                     ->icon('heroicon-m-check')
                     ->color('success')

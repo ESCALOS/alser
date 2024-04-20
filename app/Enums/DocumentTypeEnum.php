@@ -5,19 +5,24 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum DocumentTypeEnum: string implements HasColor, HasLabel
+enum DocumentTypeEnum: int implements HasColor, HasLabel
 {
-    case TAX_NUMBER = 'RUC';
-    case ID = 'DNI';
-    case FOREIGN_CARD = 'Carnét de Extranjería';
-    case PASSPORT = 'Pasaporte';
+    case ID = 1;
+    case TAX_NUMBER = 2;
+    case FOREIGN_CARD = 3;
+    case PASSPORT = 4;
 
     /**
      * Devuelve el tipo de documento
      */
     public function getLabel(): ?string
     {
-        return $this->value;
+        return match ($this) {
+            self::TAX_NUMBER => 'RUC',
+            self::ID => 'DNI',
+            self::FOREIGN_CARD => 'Carnét de Extranjería',
+            self::PASSPORT => 'Pasaporte',
+        };
     }
 
     public static function getLabels(): array
@@ -33,19 +38,19 @@ enum DocumentTypeEnum: string implements HasColor, HasLabel
     public static function getChoices(): array
     {
         return [
-            ['id' => 1, 'name' => self::ID->value],
-            ['id' => 2, 'name' => self::TAX_NUMBER->value],
-            ['id' => 3, 'name' => self::FOREIGN_CARD->value],
-            ['id' => 4, 'name' => self::PASSPORT->value],
+            ['id' => 1, 'name' => self::ID->getLabel()],
+            ['id' => 2, 'name' => self::TAX_NUMBER->getLabel()],
+            ['id' => 3, 'name' => self::FOREIGN_CARD->getLabel()],
+            ['id' => 4, 'name' => self::PASSPORT->getLabel()],
         ];
     }
 
     public static function getChoicesExceptRuc(): array
     {
         return [
-            ['id' => 1, 'name' => self::ID->value],
-            ['id' => 3, 'name' => self::FOREIGN_CARD->value],
-            ['id' => 4, 'name' => self::PASSPORT->value],
+            ['id' => 1, 'name' => self::ID->getLabel()],
+            ['id' => 3, 'name' => self::FOREIGN_CARD->getLabel()],
+            ['id' => 4, 'name' => self::PASSPORT->getLabel()],
         ];
     }
 

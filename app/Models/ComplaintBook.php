@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\DocumentTypeEnum;
+use App\Enums\StatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -14,10 +15,11 @@ class ComplaintBook extends Model
 
     protected $guarded = ['created_at', 'updated_at'];
 
-    public function getDocumentTypeEnumAttribute(): DocumentTypeEnum
-    {
-        return DocumentTypeEnum::getSelfById($this->document_type);
-    }
+    protected $casts = [
+        'identity_document' => StatusEnum::class,
+        'document_type' => DocumentTypeEnum::class,
+        'status' => StatusEnum::class,
+    ];
 
     public function getFullnameAttribute(): string
     {

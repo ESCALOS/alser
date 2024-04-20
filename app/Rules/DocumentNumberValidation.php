@@ -8,9 +8,9 @@ use Illuminate\Contracts\Validation\ValidationRule;
 
 class DocumentNumberValidation implements ValidationRule
 {
-    protected $documentType;
+    protected DocumentTypeEnum $documentType;
 
-    public function __construct($documentType)
+    public function __construct(DocumentTypeEnum $documentType)
     {
         $this->documentType = $documentType;
 
@@ -18,10 +18,13 @@ class DocumentNumberValidation implements ValidationRule
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $documentTypeEnum = DocumentTypeEnum::getSelfById($this->documentType);
-        $isValidLenght = $documentTypeEnum->validateNumberLength($value);
+        if (is_null($this->documentType)) {
+            $fail(':attribute no válido.');
+        }
 
-        if (is_null($documentTypeEnum) || ! $isValidLenght) {
+        $isValidLenght = $this->documentType->validateNumberLength($value);
+
+        if (! $isValidLenght) {
             $fail(':attribute no válido.');
         }
     }
