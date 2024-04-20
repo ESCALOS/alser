@@ -5,7 +5,7 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum ServiceEnum: string implements HasColor, HasLabel
+enum StatusEnum: string implements HasColor, HasLabel
 {
     case PENDING = 'Pendiente';
     case IN_PROGRESS = 'En progreso';

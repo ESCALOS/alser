@@ -7,10 +7,10 @@ use Filament\Support\Contracts\HasLabel;
 
 enum IdentityDocumentStatusEnum: string implements HasColor, HasLabel
 {
-    case PENDING = 'Pendiente';
-    case UPLOADED = 'Subido';
+    case PENDING = 'No hay';
+    case UPLOADED = 'Pendiente en validar';
     case VALIDATED = 'Validado';
-    case REJECT = 'Rechazado';
+    case REJECTED = 'Rechazado';
 
     /**
      * Devuelve el tipo de documento
@@ -26,7 +26,7 @@ enum IdentityDocumentStatusEnum: string implements HasColor, HasLabel
             self::UPLOADED,
             self::PENDING,
             self::VALIDATED,
-            self::REJECT,
+            self::REJECTED,
         ];
     }
 
@@ -36,7 +36,7 @@ enum IdentityDocumentStatusEnum: string implements HasColor, HasLabel
             ['id' => 1, 'name' => self::UPLOADED->value],
             ['id' => 2, 'name' => self::PENDING->value],
             ['id' => 3, 'name' => self::VALIDATED->value],
-            ['id' => 4, 'name' => self::REJECT->value],
+            ['id' => 4, 'name' => self::REJECTED->value],
         ];
     }
 
@@ -59,7 +59,7 @@ enum IdentityDocumentStatusEnum: string implements HasColor, HasLabel
             self::UPLOADED => 'info',
             self::PENDING => 'warning',
             self::VALIDATED => 'primary',
-            self::REJECT => 'secondary',
+            self::REJECTED => 'secondary',
         };
     }
 
@@ -69,8 +69,29 @@ enum IdentityDocumentStatusEnum: string implements HasColor, HasLabel
             1 => self::UPLOADED,
             2 => self::PENDING,
             3 => self::VALIDATED,
-            4 => self::REJECT,
+            4 => self::REJECTED,
             default => null,
+        };
+    }
+
+    public static function getIdBySelf(self $self): ?int
+    {
+        return match ($self) {
+            self::UPLOADED => 1,
+            self::PENDING => 2,
+            self::VALIDATED => 3,
+            self::REJECTED => 4,
+            default => null,
+        };
+    }
+
+    public function getTextColorTailwind()
+    {
+        return match ($this) {
+            self::PENDING => 'text-gray-500',
+            self::UPLOADED => 'text-red-500',
+            self::VALIDATED => 'text-green-500',
+            self::REJECTED => 'text-red-500'
         };
     }
 }

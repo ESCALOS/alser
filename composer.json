@@ -13,6 +13,7 @@
         "barryvdh/laravel-dompdf": "^2.1",
         "filament/filament": "^3.2",
         "guzzlehttp/guzzle": "^7.2",
+        "intervention/image-laravel": "^1.2",
         "jantinnerezo/livewire-alert": "^3.0",
         "laravel/folio": "^1.1",
         "laravel/framework": "^10.10",

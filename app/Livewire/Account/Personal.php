@@ -3,8 +3,10 @@
 namespace App\Livewire\Account;
 
 use App\Enums\DocumentTypeEnum;
+use App\Enums\IdentityDocumentStatusEnum;
 use App\Livewire\Forms\Account\PersonalForm;
 use App\Models\Country;
+use Illuminate\Validation\ValidationException;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -31,14 +33,33 @@ class Personal extends Component
         return Country::select('id', 'name')->get()->toArray();
     }
 
+    #[Computed]
+    public function isIdentityDocumentRequired(): bool
+    {
+        return $this->form->identity_document_status === IdentityDocumentStatusEnum::PENDING || $this->form->identity_document_status === IdentityDocumentStatusEnum::REJECTED;
+    }
+
     public function save()
     {
-        $this->form->save();
+        $type = 'success';
+        $message = 'Registro éxitoso';
+        try {
+            $this->form->save();
+        } catch (ValidationException $ex) {
+            $type = 'error';
+            $message = $ex->getMessage();
+            foreach ($ex->errors() as $field => $errorMessage) {
+                $this->addError($field, $errorMessage);
+            }
+        } catch (\Exception $ex) {
+            $type = 'error';
+            $message = $ex->getMessage();
+        }
 
-        $this->alert('success', 'Registro éxitoso', [
+        $this->alert($type, $message, [
             'position' => 'center',
             'toast' => false,
-            'timer' => '',
+            'timer' => null,
             'showConfirmButton' => true,
             'onConfirmed' => 'OK',
         ]);

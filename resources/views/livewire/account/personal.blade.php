@@ -35,42 +35,52 @@
             </div>
             <!--Fotos del documento-->
             <div class="grid gap-3 my-10 md:grid-cols-2">
-                <x-mary-file wire:model="form.identity_document_front" accept="image/*" change-text="Cambiar">
-                    <div class="h-52">
-                        <div class="h-32 rounded-t-md bg-violet-100">
-                            <h3 class="pt-4 pb-1 text-lg font-semibold text-center text-violet-400">Lado Frontal</h3>
-                            <img src="{{ asset('images/defaults/document_front.png') }}" class="h-24 m-auto" />
-                        </div>
-                        <div class="h-20 px-4 pt-4 align-middle cursor-pointer rounded-b-md bg-violet-300">
-                            <div
-                                class="content-center w-full h-12 font-semibold text-center bg-white rounded-sm text-violet-500">
-                                <x-mary-icon name="m-camera" />
-                                <span>Foto del documento</span>
+                @if ($this->isIdentityDocumentRequired)
+                    <x-mary-file wire:model="form.identity_document_front" accept="image/*" change-text="Cambiar"
+                        crop-after-change crop-text="Recortar" crop-title-text="Recortar imagen"
+                        crop-cancel-text="Cancelar" crop-save-text="Recortar">
+                        <div class="h-52">
+                            <div class="h-32 rounded-t-md bg-violet-100">
+                                <h3 class="pt-4 pb-1 text-lg font-semibold text-center text-violet-400">Lado Frontal
+                                </h3>
+                                <img src="{{ asset('images/defaults/document_front.png') }}" class="h-24 m-auto" />
+                            </div>
+                            <div class="h-20 px-4 pt-4 align-middle rounded-b-md bg-violet-300">
+                                <div
+                                    class="content-center w-full h-12 font-semibold text-center bg-white rounded-sm text-violet-500">
+                                    <x-mary-icon name="m-camera" />
+                                    <span>Foto del documento</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </x-mary-file>
-                <x-mary-file wire:model="form.identity_document_back" accept="image/*" change-text="Cambiar">
-                    <div class="h-52">
-                        <div class="h-32 rounded-t-md bg-violet-100">
-                            <h3 class="pt-4 pb-1 text-lg font-semibold text-center text-violet-400">Lado Rerverso</h3>
-                            <img src="{{ asset('images/defaults/document_back.png') }}" class="h-24 m-auto" />
-                        </div>
-                        <div class="h-20 px-4 pt-4 align-middle cursor-pointer rounded-b-md bg-violet-300">
-                            <div
-                                class="content-center w-full h-12 font-semibold text-center bg-white rounded-sm text-violet-500">
-                                <x-mary-icon name="m-camera" />
-                                <span>Foto del documento</span>
+                    </x-mary-file>
+                    <x-mary-file wire:model="form.identity_document_back" accept="image/*" change-text="Cambiar"
+                        crop-after-change crop-text="Recortar" crop-title-text="Recortar imagen"
+                        crop-cancel-text="Cancelar" crop-save-text="Recortar">
+                        <div class="h-52">
+                            <div class="h-32 rounded-t-md bg-violet-100">
+                                <h3 class="pt-4 pb-1 text-lg font-semibold text-center text-violet-400">Lado Rerverso
+                                </h3>
+                                <img src="{{ asset('images/defaults/document_back.png') }}" class="h-24 m-auto" />
+                            </div>
+                            <div class="h-20 px-4 pt-4 align-middle rounded-b-md bg-violet-300">
+                                <div
+                                    class="content-center w-full h-12 font-semibold text-center bg-white rounded-sm text-violet-500">
+                                    <x-mary-icon name="m-camera" />
+                                    <span>Foto del documento</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </x-mary-file>
+                    </x-mary-file>
+                @else
+                    <x-identity-document-viewer-status :status="$form->identity_document_status" />
+                @endif
             </div>
             <!--Datos de PEP-->
             <div class="space-y-6">
                 <div>
                     <label class="inline-flex items-center cursor-pointer">
-                        <input type="checkbox" class="sr-only peer" wire:mode='form.is_PEP'>
+                        <input type="checkbox" class="sr-only peer" wire:model='form.is_PEP'>
                         <div
                             class="relative w-16 h-8 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-violet-300 rounded-full peer peer-checked:after:translate-x-8 peer-checked:before:-translate-x-5 rtl:peer-checked:before:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-7 after:w-7 after:transition-all after:duration-500
                                 before:content-['No'] peer-checked:before:content-['Sí'] before:font-semibold before:top-[.25rem] before:start-[2rem] before:text-white before:absolute before:transition-all before:duration-500 peer-checked:bg-violet-600">

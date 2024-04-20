@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('nacionality')->nullable()->comment('Nacionalidad');
             $table->boolean('is_PEP')->nullable()->comment('Personas expuestas políticamente');
             $table->boolean('wife_is_PEP')->nullable()->comment('Esposa es PEP');
-            $table->enum('identity_document', [1, 2, 3, 4])->default(1);
             $table->boolean('relative_is_PEP')->nullable()->comment('Parentezco con PEP');
+            $table->enum('identity_document', [1, 2, 3, 4])->default(1);
             $table->timestamps();
         });
     }

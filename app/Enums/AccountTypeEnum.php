@@ -5,7 +5,7 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum CurrencyTypeEnum: string implements HasColor, HasLabel
+enum AccountTypeEnum: string implements HasColor, HasLabel
 {
     case PERSONAL = 'Personal';
     case BUSINESS = 'Empresarial';
