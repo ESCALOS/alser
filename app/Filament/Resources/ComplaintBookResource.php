@@ -15,7 +15,7 @@ class ComplaintBookResource extends Resource
 {
     protected static ?string $model = ComplaintBook::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-book-open';
 
     protected static ?string $modelLabel = 'Libro de reclamaciones';
 

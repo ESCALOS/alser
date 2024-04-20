@@ -23,8 +23,8 @@ enum IdentityDocumentStatusEnum: string implements HasColor, HasLabel
     public static function getLabels(): array
     {
         return [
-            self::UPLOADED,
             self::PENDING,
+            self::UPLOADED,
             self::VALIDATED,
             self::REJECTED,
         ];
@@ -33,8 +33,8 @@ enum IdentityDocumentStatusEnum: string implements HasColor, HasLabel
     public static function getChoices(): array
     {
         return [
-            ['id' => 1, 'name' => self::UPLOADED->value],
-            ['id' => 2, 'name' => self::PENDING->value],
+            ['id' => 1, 'name' => self::PENDING->value],
+            ['id' => 2, 'name' => self::UPLOADED->value],
             ['id' => 3, 'name' => self::VALIDATED->value],
             ['id' => 4, 'name' => self::REJECTED->value],
         ];
@@ -56,18 +56,18 @@ enum IdentityDocumentStatusEnum: string implements HasColor, HasLabel
     public function getColor(): string|array|null
     {
         return match ($this) {
-            self::UPLOADED => 'info',
-            self::PENDING => 'warning',
-            self::VALIDATED => 'primary',
-            self::REJECTED => 'secondary',
+            self::PENDING => 'info',
+            self::UPLOADED => 'warning',
+            self::VALIDATED => 'success',
+            self::REJECTED => 'danger',
         };
     }
 
     public static function getSelfById(int $id): ?self
     {
         return match ($id) {
-            1 => self::UPLOADED,
-            2 => self::PENDING,
+            1 => self::PENDING,
+            2 => self::UPLOADED,
             3 => self::VALIDATED,
             4 => self::REJECTED,
             default => null,
@@ -77,8 +77,8 @@ enum IdentityDocumentStatusEnum: string implements HasColor, HasLabel
     public static function getIdBySelf(self $self): ?int
     {
         return match ($self) {
-            self::UPLOADED => 1,
-            self::PENDING => 2,
+            self::PENDING => 1,
+            self::UPLOADED => 2,
             self::VALIDATED => 3,
             self::REJECTED => 4,
             default => null,

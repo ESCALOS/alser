@@ -3,21 +3,18 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\FaqResource\Pages;
-use App\Filament\Resources\FaqResource\RelationManagers;
 use App\Models\Faq;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class FaqResource extends Resource
 {
     protected static ?string $model = Faq::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-question-mark-circle';
 
     public static function form(Form $form): Form
     {
@@ -28,7 +25,7 @@ class FaqResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\MarkdownEditor::make('answer')
-                ->label('Respuesta')
+                    ->label('Respuesta')
                     ->required()
                     ->columnSpanFull(),
             ]);
@@ -40,7 +37,7 @@ class FaqResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('question')
                     ->label('Pregunta')
-                    ->description(fn (Faq $record):string => $record->answer)
+                    ->description(fn (Faq $record): string => $record->answer)
                     ->wrap()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
