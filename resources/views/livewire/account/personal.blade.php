@@ -130,6 +130,24 @@
                     </label>
                 </div>
             </div>
+            <div>
+                <p class="text-sm font-medium text-center text-violet-800">
+                    <a href="{{ asset('pdfs/Formato PEP AlserCambio.pdf') }}" download>
+                        Descargar el formato PEP
+                    </a>
+                </p>
+                <p class="mt-6 text-center cursor-pointer select-none text-violet-800"
+                    x-on:click="$refs.pdfPEP.click()">
+                    <span class="px-4 py-2 mr-2 border rounded-lg">
+                        Subir documento PEP
+                        <i class="fa-solid fa-upload"></i>
+                    </span>
+                </p>
+                <input x-ref="pdfPEP" type="file" class="hidden" wire:model='form.pdf_PEP' accept="application/pdf">
+                <p class="mt-3 text-sm text-center text-gray-900">
+                    Asegúrate de llenar correctamente el documento PEP
+                </p>
+            </div>
             <x-slot:actions>
                 <x-mary-button label="Guardar"
                     class="w-full text-lg text-white transition-colors duration-300 bg-violet-800 hover:bg-violet-900"

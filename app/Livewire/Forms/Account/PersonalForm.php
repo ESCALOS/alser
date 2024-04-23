@@ -55,6 +55,9 @@ class PersonalForm extends Form
     #[Validate('required|boolean')]
     public bool $relative_is_PEP = false;
 
+    #[Validate('required|file|mimes:pdf', as: 'PDF de PEP')]
+    public $pdf_PEP;
+
     #[Locked]
     public IdentityDocumentStatusEnum $identity_document_status = IdentityDocumentStatusEnum::PENDING;
 
