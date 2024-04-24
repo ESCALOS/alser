@@ -16,7 +16,6 @@ class ComplaintBook extends Model
     protected $guarded = ['created_at', 'updated_at'];
 
     protected $casts = [
-        'identity_document' => StatusEnum::class,
         'document_type' => DocumentTypeEnum::class,
         'status' => StatusEnum::class,
     ];

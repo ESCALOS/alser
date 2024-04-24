@@ -75,7 +75,7 @@ class PersonalForm extends Form
             $this->is_PEP = $personalAccount->is_PEP;
             $this->wife_is_PEP = $personalAccount->wife_is_PEP;
             $this->relative_is_PEP = $personalAccount->relative_is_PEP;
-            $this->identity_document_status = $personalAccount->identity_document ?? IdentityDocumentStatusEnum::PENDING;
+            $this->identity_document_status = $personalAccount->identity_document_status ?? IdentityDocumentStatusEnum::PENDING;
         }
     }
 
@@ -128,7 +128,7 @@ class PersonalForm extends Form
             if ($this->isIdentityDocumentRequired()) {
                 $this->saveIdentityDocumentImages();
                 $this->identity_document_status = IdentityDocumentStatusEnum::UPLOADED;
-                $data['identity_document'] = $this->identity_document_status;
+                $data['identity_document_status'] = $this->identity_document_status;
             } else {
                 new Exception('La imagen no es requerida');
             }
@@ -162,7 +162,7 @@ class PersonalForm extends Form
 
     private function setIdentityDocumentStatus(): void
     {
-        $this->identity_document_status = PersonalAccount::where('user_id', Auth::user()->id)->first()->identity_document ?? IdentityDocumentStatusEnum::PENDING;
+        $this->identity_document_status = PersonalAccount::where('user_id', Auth::user()->id)->first()->_status ?? IdentityDocumentStatusEnum::PENDING;
     }
 
     public function isIdentityDocumentRequired(): bool

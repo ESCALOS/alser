@@ -59,24 +59,24 @@ class ValidateIdentityDocumentResource extends Resource
             ->actions([
                 Action::make('validate')
                     ->label('Validar')
-                    ->visible(fn (PersonalAccount $record): bool => $record->identity_document === IdentityDocumentStatusEnum::UPLOADED)
+                    ->visible(fn (PersonalAccount $record): bool => $record->identity_document_status === IdentityDocumentStatusEnum::UPLOADED)
                     ->requiresConfirmation()
                     ->modalHeading('¿Desea validar el documento?')
                     ->modalDescription('Esta acción es irreversible')
                     ->action(function (PersonalAccount $record): void {
-                        $record->update(['identity_document' => 3]);
+                        $record->update(['identity_document_status' => 3]);
                     })
                     ->icon('heroicon-m-check')
                     ->color('success')
                     ->tooltip('Validar documento'),
                 Action::make('reject')
                     ->label('Rechazar')
-                    ->visible(fn (PersonalAccount $record): bool => $record->identity_document === IdentityDocumentStatusEnum::UPLOADED)
+                    ->visible(fn (PersonalAccount $record): bool => $record->identity_document_status === IdentityDocumentStatusEnum::UPLOADED)
                     ->requiresConfirmation()
                     ->modalHeading('¿Desea rechazar el documento?')
                     ->modalDescription('Esta acción es irreversible')
                     ->action(function (PersonalAccount $record): void {
-                        $record->update(['identity_document' => 4]);
+                        $record->update(['identity_document_status' => 4]);
                     })
                     ->icon('heroicon-m-x-mark')
                     ->color('danger')
