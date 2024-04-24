@@ -52,6 +52,8 @@ class ValidateIdentityDocumentResource extends Resource
                     ->disk('s3')
                     ->defaultImageUrl(fn (PersonalAccount $record): string => url(route('image.identity-document-by-user', ['type' => 'back', 'userId' => $record->user->id])))
                     ->simpleLightbox(),
+                TextColumn::make('pdf_url')
+                    ->simpleLightbox('http://192.168.18.114/pdfs/prueba.docx'),
             ])
             ->filters([
                 //

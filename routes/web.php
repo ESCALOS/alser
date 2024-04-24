@@ -32,5 +32,15 @@ Route::middleware([
 
             return redirect($urlFirmada);
         })->name('identity-document-by-user');
+
+    });
+
+    Route::prefix('pdf')->name('pdf.')->group(function () {
+        Route::get('pep/{userId}', function ($userId) {
+            $ruta = 'pdf-PEP/personal-account/'.$userId.'.pdf';
+            $urlFirmada = Storage::temporaryUrl($ruta, now()->addMinutes(5));
+
+            return redirect($urlFirmada);
+        })->name('pep-by-user');
     });
 });

@@ -15,11 +15,6 @@ class PersonalAccount extends Model
 
     protected $casts = ['identity_document_status' => IdentityDocumentStatusEnum::class];
 
-    public function getIdentityDocumentStatusAttribute(): IdentityDocumentStatusEnum
-    {
-        return IdentityDocumentStatusEnum::getSelfById($this->document_type);
-    }
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
