@@ -5,24 +5,27 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum CurrencyTypeEnum: string implements HasColor, HasLabel
+enum CurrencyTypeEnum: int implements HasColor, HasLabel
 {
-    case SOL = 'SOLES';
-    case DOLLAR = 'DÓLARES';
+    case SOL = 1;
+    case DOLLAR = 2;
 
     /**
      * Devuelve el tipo de documento
      */
     public function getLabel(): ?string
     {
-        return $this->value;
+        return match ($this) {
+            self::SOL => 'SOLES',
+            self::DOLLAR => 'DÓLARES',
+        };
     }
 
     public static function getLabels(): array
     {
         return [
-            self::SOL,
-            self::DOLLAR,
+            self::SOL->getLabel(),
+            self::DOLLAR->getLabel(),
         ];
     }
 
@@ -34,33 +37,11 @@ enum CurrencyTypeEnum: string implements HasColor, HasLabel
         ];
     }
 
-    public static function getValueById(int $id): string
-    {
-        $choices = self::getChoices();
-
-        foreach ($choices as $choice) {
-            if ($choice['id'] === $id) {
-                return $choice['name'];
-            }
-        }
-
-        return 'Value not found';
-    }
-
     public function getColor(): string|array|null
     {
         return match ($this) {
             self::SOL => 'info',
             self::DOLLAR => 'indigo',
-        };
-    }
-
-    public static function getSelfById(int $id): ?self
-    {
-        return match ($id) {
-            1 => self::SOL,
-            2 => self::DOLLAR,
-            default => null,
         };
     }
 }

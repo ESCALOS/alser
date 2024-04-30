@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('claims', function (Blueprint $table) {
             $table->id();
             $table->foreignId('complaint_book_id')->comment('Cabecera del libro de reclamaciones')->constrained()->onDelete('cascade');
-            $table->unsignedTinyInteger('service')->comment('Servicio contratado');
-            $table->unsignedTinyInteger('currency_type')->comment('Tipo de moneda');
+            $table->enum('service', [1, 2])->comment('Servicio contratado');
+            $table->enum('currency_type', [1, 2])->comment('Tipo de moneda');
             $table->string('operation_code', 10)->comment('Código de operación');
             $table->decimal('amount_to_claim', 10, 2)->comment('Cantidad a reclamar');
             $table->timestamps();

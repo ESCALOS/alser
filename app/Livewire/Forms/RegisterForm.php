@@ -3,6 +3,8 @@
 namespace App\Livewire\Forms;
 
 use App\Actions\Fortify\PasswordValidationRules;
+use App\Enums\AccountTypeEnum;
+use App\Enums\DocumentTypeEnum;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\Validate;
@@ -44,8 +46,8 @@ class RegisterForm extends Form
     {
         $this->validate();
         $data = [];
-        if ($this->account_type == 2) {
-            $data['document_type'] = 2; //Enum RUC
+        if ($this->account_type == AccountTypeEnum::BUSINESS) {
+            $data['document_type'] = DocumentTypeEnum::TAX_NUMBER;
             $data['document_number'] = $this->document_number;
             $data['name'] = $this->name;
         }

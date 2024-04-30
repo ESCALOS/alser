@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
             LocationDepartmentSeeder::class,
             LocationProvinceSeeder::class,
             LocationDistrictSeeder::class,
+            BankSeeder::class,
         ]);
     }
 }

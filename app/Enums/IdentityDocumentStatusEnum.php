@@ -28,34 +28,21 @@ enum IdentityDocumentStatusEnum: int implements HasColor, HasLabel
     public static function getLabels(): array
     {
         return [
-            self::PENDING,
-            self::UPLOADED,
-            self::VALIDATED,
-            self::REJECTED,
+            self::PENDING->getLabel(),
+            self::UPLOADED->getLabel(),
+            self::VALIDATED->getLabel(),
+            self::REJECTED->getLabel(),
         ];
     }
 
     public static function getChoices(): array
     {
         return [
-            ['id' => 1, 'name' => self::PENDING->value],
-            ['id' => 2, 'name' => self::UPLOADED->value],
-            ['id' => 3, 'name' => self::VALIDATED->value],
-            ['id' => 4, 'name' => self::REJECTED->value],
+            ['id' => 1, 'name' => self::PENDING->getLabel()],
+            ['id' => 2, 'name' => self::UPLOADED->getLabel()],
+            ['id' => 3, 'name' => self::VALIDATED->getLabel()],
+            ['id' => 4, 'name' => self::REJECTED->getLabel()],
         ];
-    }
-
-    public static function getValueById(int $id): string
-    {
-        $choices = self::getChoices();
-
-        foreach ($choices as $choice) {
-            if ($choice['id'] === $id) {
-                return $choice['name'];
-            }
-        }
-
-        return null;
     }
 
     public function getIcon()
@@ -75,28 +62,6 @@ enum IdentityDocumentStatusEnum: int implements HasColor, HasLabel
             self::UPLOADED => 'warning',
             self::VALIDATED => 'success',
             self::REJECTED => 'danger',
-        };
-    }
-
-    public static function getSelfById(int $id): ?self
-    {
-        return match ($id) {
-            1 => self::PENDING,
-            2 => self::UPLOADED,
-            3 => self::VALIDATED,
-            4 => self::REJECTED,
-            default => null,
-        };
-    }
-
-    public static function getIdBySelf(self $self): ?int
-    {
-        return match ($self) {
-            self::PENDING => 1,
-            self::UPLOADED => 2,
-            self::VALIDATED => 3,
-            self::REJECTED => 4,
-            default => null,
         };
     }
 

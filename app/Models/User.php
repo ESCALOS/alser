@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\DocumentTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -71,5 +72,10 @@ class User extends Authenticatable
     public function personalAccount(): HasOne
     {
         return $this->hasOne(PersonalAccount::class);
+    }
+
+    public function bankAccounts(): HasMany
+    {
+        return $this->hasMany(BankAccount::class);
     }
 }

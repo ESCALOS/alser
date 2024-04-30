@@ -12,16 +12,16 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('new-operation') }}" :active="request()->routeIs('new-operation')">
+                    <x-nav-link wire:navigate.hover href="{{ route('new-operation') }}" :active="request()->routeIs('new-operation')">
                         {{ __('New operation') }}
                     </x-nav-link>
-                    <x-nav-link href="{{ route('new-operation') }}" :active="request()->routeIs('new-operation')">
+                    <x-nav-link wire:navigate.hover href="{{ route('new-operation') }}" :active="request()->routeIs('new-operation')">
                         {{ __('My operations') }}
                     </x-nav-link>
-                    <x-nav-link href="{{ route('new-operation') }}" :active="request()->routeIs('new-operation')">
+                    <x-nav-link wire:navigate.hover href="{{ route('bank-account') }}" :active="request()->routeIs('bank-account')">
                         {{ __('Bank accounts') }}
                     </x-nav-link>
-                    <x-nav-link href="{{ route('account') }}" :active="request()->routeIs('account')">
+                    <x-nav-link wire:navigate.hover href="{{ route('account') }}" :active="request()->routeIs('account')">
                         {{ __('Profile Data') }}
                     </x-nav-link>
                 </div>
@@ -104,16 +104,16 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link href="{{ route('new-operation') }}" :active="request()->routeIs('new-operation')">
+            <x-responsive-nav-link wire:navigate.hover href="{{ route('new-operation') }}" :active="request()->routeIs('new-operation')">
                 {{ __('New operation') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('new-operation') }}" :active="request()->routeIs('new-operation')">
+            <x-responsive-nav-link wire:navigate.hover href="{{ route('new-operation') }}" :active="request()->routeIs('new-operation')">
                 {{ __('My operations') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('new-operation') }}" :active="request()->routeIs('new-operation')">
+            <x-responsive-nav-link wire:navigate.hover href="{{ route('bank-account') }}" :active="request()->routeIs('bank-account')">
                 {{ __('Bank accounts') }}
-            </x-responsive-nav-link>>
-            <x-responsive-nav-link href="{{ route('account') }}" :active="request()->routeIs('account')">
+            </x-responsive-nav-link>
+            <x-responsive-nav-link wire:navigate.hover href="{{ route('account') }}" :active="request()->routeIs('account')">
                 {{ __('Profile Data') }}
             </x-responsive-nav-link>
         </div>

@@ -28,10 +28,10 @@ enum DocumentTypeEnum: int implements HasColor, HasLabel
     public static function getLabels(): array
     {
         return [
-            self::ID,
-            self::TAX_NUMBER,
-            self::FOREIGN_CARD,
-            self::PASSPORT,
+            self::ID->getLabel(),
+            self::TAX_NUMBER->getLabel(),
+            self::FOREIGN_CARD->getLabel(),
+            self::PASSPORT->getLabel(),
         ];
     }
 
@@ -54,19 +54,6 @@ enum DocumentTypeEnum: int implements HasColor, HasLabel
         ];
     }
 
-    public static function getValueById(int $id): string
-    {
-        $choices = self::getChoices();
-
-        foreach ($choices as $choice) {
-            if ($choice['id'] === $id) {
-                return $choice['name'];
-            }
-        }
-
-        return null;
-    }
-
     public function getColor(): string|array|null
     {
         return match ($this) {
@@ -74,17 +61,6 @@ enum DocumentTypeEnum: int implements HasColor, HasLabel
             self::TAX_NUMBER => 'warning',
             self::FOREIGN_CARD => 'primary',
             self::PASSPORT => 'secondary',
-        };
-    }
-
-    public static function getSelfById(int $id): ?self
-    {
-        return match ($id) {
-            1 => self::ID,
-            2 => self::TAX_NUMBER,
-            3 => self::FOREIGN_CARD,
-            4 => self::PASSPORT,
-            default => null,
         };
     }
 

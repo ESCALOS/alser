@@ -2,6 +2,7 @@
 
 use App\Livewire\Account;
 use App\Livewire\Auth\Register;
+use App\Livewire\BankAccount;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
@@ -17,6 +18,8 @@ Route::middleware([
         return view('new-operation');
     })->name('new-operation');
     Route::get('/datos-del-perfil', Account::class)->name('account');
+
+    Route::get('/cuentas-bancarias', BankAccount::class)->name('bank-account');
 
     Route::prefix('image')->name('image.')->group(function () {
         Route::get('identity_document/{type}', function ($type) {

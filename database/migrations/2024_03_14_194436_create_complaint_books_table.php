@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('complaint_books', function (Blueprint $table) {
             $table->id();
-            $table->unsignedTinyInteger('document_type')->comment('El tipo de documento');
+            $table->enum('document_type', [1, 2, 3, 4])->comment('El tipo de documento');
             $table->string('document_number')->comment('Número de documento');
             $table->string('last_name_father', 20)->comment('Apellido Paterno');
             $table->string('last_name_mother', 20)->comment('Apellido Materno');
@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('telephone', 12)->nullable()->comment('Telefono');
             $table->string('celphone', 9)->comment('Celular');
             $table->string('email', 255)->comment('Email');
-            $table->unsignedTinyInteger('response_medium')->comment('Medio de Respuesta');
+            $table->enum('response_medium', [1, 2])->comment('Medio de Respuesta');
             $table->boolean('is_complaint')->comment('¿Es queja o  reclamo?');
             $table->text('reason_description')->nullable()->comment('Descripción de la queja o reclamo');
             $table->enum('status', ['P', 'IP', 'C'])->default('P')->comment('Current status of the claim: P: PENNDING, IP: IN_PROGRESS, C: COMPLETED');

@@ -5,46 +5,36 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum ServiceEnum: string implements HasColor, HasLabel
+enum ServiceEnum: int implements HasColor, HasLabel
 {
-    case CAMBIO_MONEDA = 'Cambio de moneda online';
-    case OTROS = 'Otro';
+    case CAMBIO_MONEDA = 1;
+    case OTROS = 2;
 
     /**
      * Devuelve el tipo de documento
      */
     public function getLabel(): ?string
     {
-        return $this->value;
+        return match ($this) {
+            self::CAMBIO_MONEDA => 'Cambio de moneda online',
+            self::OTROS => 'Otro'
+        };
     }
 
     public static function getLabels(): array
     {
         return [
-            self::CAMBIO_MONEDA,
-            self::OTROS,
+            self::CAMBIO_MONEDA->getLabel(),
+            self::OTROS->getLabel(),
         ];
     }
 
     public static function getChoices(): array
     {
         return [
-            ['id' => 1, 'name' => self::CAMBIO_MONEDA->value],
-            ['id' => 2, 'name' => self::OTROS->value],
+            ['id' => 1, 'name' => self::CAMBIO_MONEDA->getLabel()],
+            ['id' => 2, 'name' => self::OTROS->getLabel()],
         ];
-    }
-
-    public static function getValueById(int $id): string
-    {
-        $choices = self::getChoices();
-
-        foreach ($choices as $choice) {
-            if ($choice['id'] === $id) {
-                return $choice['name'];
-            }
-        }
-
-        return 'Value not found';
     }
 
     public function getColor(): string|array|null
@@ -52,15 +42,6 @@ enum ServiceEnum: string implements HasColor, HasLabel
         return match ($this) {
             self::CAMBIO_MONEDA => 'info',
             self::OTROS => 'indigo',
-        };
-    }
-
-    public static function getSelfById(int $id): ?self
-    {
-        return match ($id) {
-            1 => self::CAMBIO_MONEDA,
-            2 => self::OTROS,
-            default => null,
         };
     }
 }

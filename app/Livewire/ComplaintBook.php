@@ -154,7 +154,7 @@ class ComplaintBook extends Component
             $formData = $this->form->all();
             $formData['id'] = str_pad($savedComplaint->id, 6, '0', STR_PAD_LEFT);
             $formData['document_type_name'] = $formData['document_type'];
-            $formData['response_medium_name'] = ResponseMediumEnum::getValueById($formData['response_medium']);
+            $formData['response_medium_name'] = ResponseMediumEnum::tryFrom($formData['response_medium'])->getLabel();
             $formData['location_department_name'] = $this->departments()[$formData['location_department_id'] - 1]['name'];
             $formData['location_province_name'] = $this->provinces()[$formData['location_province_id'] - 1]['name'];
             $formData['location_district_name'] = $this->districts()[$formData['location_district_id'] - 1]['name'];
@@ -166,7 +166,7 @@ class ComplaintBook extends Component
                 $claimFormData['amount_to_claim'] = floatval(str_replace(',', '', $claimFormData['amount_to_claim']));
                 $claimFormData['complaint_book_id'] = $savedComplaint->id;
                 Claim::create($claimFormData);
-                $claimFormData['currency_type_name'] = CurrencyTypeEnum::getValueById($claimFormData['currency_type']);
+                $claimFormData['currency_type_name'] = CurrencyTypeEnum::tryFrom($claimFormData['currency_type'])->getLabel();
             }
 
             $data = [

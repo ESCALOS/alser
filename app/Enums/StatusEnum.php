@@ -28,10 +28,10 @@ enum StatusEnum: string implements HasColor, HasLabel
     public static function getLabels(): array
     {
         return [
-            self::PENDING,
-            self::IN_PROGRESS,
-            self::COMPLETED,
-            self::REJECT,
+            self::PENDING->getLabel(),
+            self::IN_PROGRESS->getLabel(),
+            self::COMPLETED->getLabel(),
+            self::REJECT->getLabel(),
         ];
     }
 

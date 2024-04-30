@@ -61,7 +61,6 @@ class Personal extends Component
             'toast' => false,
             'timer' => null,
             'showConfirmButton' => true,
-            'onConfirmed' => 'OK',
         ]);
     }
 
