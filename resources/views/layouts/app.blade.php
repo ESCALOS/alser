@@ -28,7 +28,7 @@
 
 </head>
 
-<body class="font-sans antialiased">
+<body class="overflow-x-hidden font-sans antialiased">
     <x-banner />
 
     <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
