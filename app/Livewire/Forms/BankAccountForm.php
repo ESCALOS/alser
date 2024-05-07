@@ -2,29 +2,71 @@
 
 namespace App\Livewire\Forms;
 
+use App\Enums\BankAccountTypeEnum;
+use App\Enums\CurrencyTypeEnum;
 use App\Models\BankAccount;
-use Livewire\Attributes\Locked;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Form;
 
 class BankAccountForm extends Form
 {
-    #[Locked]
-    public int $user_id;
+    public int $bankAccountId = 0;
 
-    public int $location_department_id = 15;
+    public int $locationDepartmentId = 15;
 
-    public int $bank_id = 1;
+    public int $bankId = 1;
 
-    public int $bank_account_type = 1;
+    public BankAccountTypeEnum $bankAccountType = BankAccountTypeEnum::SAVING;
 
-    public int $currency_type = 1;
+    public CurrencyTypeEnum $currencyType = CurrencyTypeEnum::SOL;
 
-    public string $account_number = '';
+    public string $accountNumber = '';
 
     public string $name = '';
 
+    public function fillFields(int $bankAccountId)
+    {
+        $bankAccount = BankAccount::find($bankAccountId);
+
+        if ($bankAccount->user_id === Auth::user()->id) {
+            $this->bankAccountId = $bankAccountId;
+            $this->locationDepartmentId = $bankAccount->location_department_id;
+            $this->bankId = $bankAccount->bank_id;
+            $this->bankAccountType = $bankAccount->bank_account_type;
+            $this->currencyType = $bankAccount->currency_type;
+            $this->accountNumber = $bankAccount->account_number;
+            $this->name = $bankAccount->name;
+        }
+
+    }
+
     public function save()
     {
-        BankAccount::create($this->all());
+        if ($this->bankAccountId == 0) {
+            $bankAccount = new BankAccount();
+        } else {
+            $bankAccount = BankAccount::find($this->bankAccountId);
+            if ($bankAccount->user_id !== Auth::user()->id) {
+                return;
+            }
+        }
+        $bankAccount->user_id = Auth::user()->id;
+        $bankAccount->location_department_id = $this->locationDepartmentId;
+        $bankAccount->bank_id = $this->bankId;
+        $bankAccount->bank_account_type = $this->bankAccountType;
+        $bankAccount->currency_type = $this->currencyType;
+        $bankAccount->account_number = $this->accountNumber;
+        $bankAccount->name = $this->name;
+
+        $bankAccount->save();
+    }
+
+    public function delete()
+    {
+        $bankAccount = BankAccount::find($this->bankAccountId);
+        if ($bankAccount->user_id !== Auth::user()->id) {
+            return;
+        }
+        $bankAccount->delete();
     }
 }
