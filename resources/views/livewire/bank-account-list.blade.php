@@ -24,7 +24,7 @@
     </div>
     <x-mary-drawer wire:model="showDrawer" title="Nueva Cuenta Bancaria"
         subtitle="Añade la cuenta bancaria desde donde quieres enviar o recibir tu dinero" right separator
-        class="w-11/12 lg:w-3/5">
+        class="w-11/12 lg:w-2/3">
         <x-mary-form wire:submit="save">
             <div class="grid gap-3 md:grid-cols-2">
                 <input type="hidden" wire:model='form.bankAccountId' />
