@@ -61,9 +61,9 @@ class BankAccountForm extends Form
         $bankAccount->save();
     }
 
-    public function delete()
+    public function delete($bankAccountId)
     {
-        $bankAccount = BankAccount::find($this->bankAccountId);
+        $bankAccount = BankAccount::find($bankAccountId);
         if ($bankAccount->user_id !== Auth::user()->id) {
             return;
         }

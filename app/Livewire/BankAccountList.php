@@ -48,20 +48,10 @@ class BankAccountList extends Component
         // usleep(1000000);
     }
 
-    #[On('confirmDelete')]
-    public function confirmDelete($bankAccountId, $name)
-    {
-        $this->form->bankAccountId = $bankAccountId;
-        $this->confirm('¿Desea eliminar la cuenta <b>"'.$name.'"</b>?', [
-            'onConfirmed' => 'delete',
-            'confirmButtonText' => 'Sí',
-        ]);
-    }
-
     #[On('delete')]
-    public function delete()
+    public function delete($bankAccountId)
     {
-        $this->form->delete();
+        $this->form->delete($bankAccountId);
     }
 
     public function save()
