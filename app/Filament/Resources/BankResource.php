@@ -25,6 +25,7 @@ class BankResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->label('Nombre')
                     ->required()
+                    ->unique()
                     ->maxLength(255),
             ]);
     }

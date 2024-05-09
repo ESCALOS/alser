@@ -43,6 +43,7 @@ class BankAccountList extends Component
     #[On('fill-fields')]
     public function fillFields($bankAccountId)
     {
+        $this->resetValidation();
         $this->form->fillFields($bankAccountId);
         $this->showDrawer = true;
         // usleep(1000000);
@@ -74,8 +75,12 @@ class BankAccountList extends Component
 
     public function render()
     {
-        return view('livewire.bank-account-list', [
-            'todos' => BankAccount::where('user_id', Auth::user()->id)->get(),
-        ]);
+        $todos = BankAccount::where('user_id', Auth::user()->id)->get();
+        $solAccounts = $todos->filter(fn ($cuenta) => $cuenta->currency_type === CurrencyTypeEnum::SOL);
+        $dollarAccounts = $todos->filter(fn ($cuenta) => $cuenta->currency_type === CurrencyTypeEnum::DOLLAR);
+
+        $haveBothTypes = $solAccounts->isNotEmpty() && $dollarAccounts->isNotEmpty();
+
+        return view('livewire.bank-account-list', compact('todos', 'haveBothTypes'));
     }
 }

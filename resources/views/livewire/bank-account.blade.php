@@ -1,7 +1,34 @@
 <div>
-    <x-mary-card title="{{ $item->name }}" subtitle="{{ $item->bank->name }} - {{ $item->currency_type->getLabel() }}"
-        separator progress-indicator>
-        <x-slot:menu>
+    <x-mary-card separator progress-indicator>
+        <div class="flex justify-between">
+            <div>
+                <x-mary-icon name="o-credit-card" class="w-8 mr-2 text-lime-500" />
+                <span class="text-lg font-semibold text-blue-900">
+                    {{ $item->name }}
+                    <x-mary-icon name="s-pencil" class="w-5 ml-4 cursor-pointer"
+                        wire:click="$dispatch('fill-fields', { bankAccountId: {{ $item->id }} })" />
+                </span>
+            </div>
+            <div wire:click="$dispatch('delete', { bankAccountId: {{ $item->id }} })"
+                wire:confirm="¿Desea eliminar la cuenta {{ $item->name }}?">
+                <x-mary-icon name="o-trash" class="w-5 text-red-600 cursor-pointer" />
+            </div>
+        </div>
+        <div class="grid grid-cols-1 pt-4 md:grid-cols-3">
+            <div class="hidden text-sm text-blue-900 md:block">
+                <span>N° de cuenta:</span>
+                <span class="font-bold">{{ $item->account_number }}</span>
+            </div>
+            <div class="text-sm text-blue-900">
+                <span>Entidad bancaria:</span>
+                <span class="font-bold">{{ $item->bank->name }}</span>
+            </div>
+            <div class="text-sm text-blue-900">
+                <span>Tipo de Moneda:</span>
+                <span class="font-bold">{{ $item->currency_type->getLabel() }}</span>
+            </div>
+        </div>
+        {{-- <x-slot:menu>
             <x-mary-button tooltip="Editar" icon="o-pencil"
                 wire:click="$dispatch('fill-fields', { bankAccountId: {{ $item->id }} })"
                 class="text-amber-500 btn-circle btn-sm btn-outline hover:border-amber-500 hover:bg-amber-500 hover:text-white" />
@@ -9,6 +36,6 @@
                 class="text-red-500 btn-circle btn-outline btn-sm hover:bg-red-500 hover:border-red-500 hover:text-white"
                 wire:click="$dispatch('delete', { bankAccountId: {{ $item->id }} })"
                 wire:confirm="¿Desea eliminar la cuenta {{ $item->name }}?" />
-        </x-slot:menu>
+        </x-slot:menu> --}}
     </x-mary-card>
 </div>

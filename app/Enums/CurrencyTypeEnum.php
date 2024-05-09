@@ -16,8 +16,8 @@ enum CurrencyTypeEnum: int implements HasColor, HasLabel
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::SOL => 'SOLES',
-            self::DOLLAR => 'DÓLARES',
+            self::SOL => 'Soles',
+            self::DOLLAR => 'Dólares',
         };
     }
 

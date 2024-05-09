@@ -22,6 +22,9 @@ return new class extends Migration
             $table->string('name');
             $table->boolean('is_owner')->default(true);
             $table->timestamps();
+
+            $table->unique(['user_id', 'name']);
+            $table->unique(['user_id', 'account_number']);
         });
     }
 

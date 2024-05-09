@@ -37,4 +37,9 @@ class BankAccount extends Model
     {
         return $this->belongsTo(Bank::class);
     }
+
+    public function department(): BelongsTo
+    {
+        return $this->belongsTo(LocationDepartment::class, 'location_department_id');
+    }
 }

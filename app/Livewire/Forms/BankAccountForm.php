@@ -5,24 +5,79 @@ namespace App\Livewire\Forms;
 use App\Enums\BankAccountTypeEnum;
 use App\Enums\CurrencyTypeEnum;
 use App\Models\BankAccount;
+use App\Rules\BankAccountLength;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
+use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class BankAccountForm extends Form
 {
+    #[Validate('required')]
     public int $bankAccountId = 0;
 
+    #[Validate('required|exists:location_departments,id', as: 'Departamento')]
     public int $locationDepartmentId = 15;
 
+    #[Validate('required|exists:banks,id')]
     public int $bankId = 1;
 
+    #[Validate]
     public BankAccountTypeEnum $bankAccountType = BankAccountTypeEnum::SAVING;
 
+    #[Validate]
     public CurrencyTypeEnum $currencyType = CurrencyTypeEnum::SOL;
 
+    #[Validate]
     public string $accountNumber = '';
 
+    #[Validate]
     public string $name = '';
+
+    public function rules(): array
+    {
+        return [
+            'bankAccountType' => [
+                'required',
+                Rule::enum(BankAccountTypeEnum::class),
+            ],
+            'currencyType' => [
+                'required',
+                Rule::enum(CurrencyTypeEnum::class),
+            ],
+            'accountNumber' => [
+                'required',
+                Rule::unique('bank_accounts', 'account_number')->where('user_id', Auth::user()->id)->ignore($this->bankAccountId),
+                new BankAccountLength($this->bankId),
+            ],
+            'name' => [
+                'required',
+                Rule::unique('bank_accounts')->where('user_id', Auth::user()->id)->ignore($this->bankAccountId),
+            ],
+        ];
+    }
+
+    public function validationAttributes()
+    {
+        return [
+            'bankAccountType' => 'Tipo de cuenta bancaria',
+            'currencyType' => 'Tipo de moneda',
+            'accountNumber' => 'Número de cuenta',
+            'name' => 'Alias',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'bankAccountType.required' => 'El tipo de cuenta es requerido',
+            'currencyType.required' => 'El tipo de moneda es obligatorio',
+            'accountNumber.unique' => 'Ya se ha registrado este número de cuenta',
+            'accountNumber.min' => 'Número de cuenta no válido',
+            'accountNumber.max' => 'Número de cuenta no válido',
+            'name.unique' => 'El alias ya existe',
+        ];
+    }
 
     public function fillFields(int $bankAccountId)
     {
@@ -42,6 +97,7 @@ class BankAccountForm extends Form
 
     public function save()
     {
+        $this->validate();
         if ($this->bankAccountId == 0) {
             $bankAccount = new BankAccount();
         } else {

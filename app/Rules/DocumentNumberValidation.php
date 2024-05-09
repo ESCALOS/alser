@@ -8,12 +8,9 @@ use Illuminate\Contracts\Validation\ValidationRule;
 
 class DocumentNumberValidation implements ValidationRule
 {
-    protected DocumentTypeEnum $documentType;
-
-    public function __construct(DocumentTypeEnum $documentType)
-    {
-        $this->documentType = $documentType;
-
+    public function __construct(
+        private DocumentTypeEnum $documentType
+    ) {
     }
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
