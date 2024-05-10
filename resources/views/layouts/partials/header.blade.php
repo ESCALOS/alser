@@ -41,9 +41,9 @@
                  class="absolute right-0 z-10 w-full bg-home-primary lg:relative lg:flex lg:w-auto lg:order-1"
                  x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
                  x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-300"
-                 x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90">
+                 x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90" x-cloak>
                  <ul
-                     class="flex flex-col p-4 mt-4 space-y-2 font-medium bg-transparent border border-gray-100 rounded-lg lg:space-y-0 lg:p-0 lg:flex-row lg:space-x-8 lg:mt-0 lg:border-0 lg:bg-home-primary">
+                     class="flex flex-col p-4 mt-5 space-y-2 font-medium bg-transparent border border-gray-100 rounded-b-lg lg:space-y-0 lg:p-0 lg:flex-row lg:space-x-8 lg:mt-0 lg:border-0 lg:bg-home-primary">
                      @foreach ($routes as $route)
                          <li
                              class="{{ request()->routeIs($route['route']) ? 'lg:border-b lg:border-white' : 'lg:hover:border-b lg:hover:border-white' }} lg:content-center">
@@ -67,7 +67,7 @@
                                          <span class="inline-flex rounded-md">
                                              <button type="button"
                                                  class="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-md dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700">
-                                                 {{ Auth::user()->name ?? Bienvenido }}
+                                                 {{ Auth::user()->name ?? 'Bienvenido' }}
 
                                                  <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                                      fill="none" viewBox="0 0 24 24" stroke-width="1.5"

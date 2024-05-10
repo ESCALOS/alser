@@ -5,6 +5,6 @@
     </a>
     <a href="https://bit.ly/4ac783W" target="_blank"
         class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-white border border-white rounded-lg hover:text-home-primary hover:bg-gray-100 focus:ring-4 focus:ring-gray-400">
-        <span class="mr-2">Contactenos</span> <i class="fa-brands fa-whatsapp"></i>
+        <span class="mr-2">Contáctenos</span> <i class="fa-brands fa-whatsapp"></i>
     </a>
 </div>

@@ -1,5 +1,5 @@
-<div class="absolute flex flex-auto w-full mx-auto lg:px-24" x-show="open" x-transition.duration.500ms>
-    <div class="flex content-around w-full p-2 text-indigo-100 bg-violet-900 lg:rounded-full lg:px-auto" role="alert">
+<div class="absolute flex flex-auto w-full mx-auto" x-show="open" x-transition.duration.500ms>
+    <div class="flex content-around w-full p-3 text-indigo-100 bg-violet-900" role="alert">
         <div class="flex-auto w-48 pl-4 text-lg lg:w-64 text-pretty">¡Cambia dólares para tu <span
                 class="text-2xl font-black text-yellow-500">Empresa</span> con los mejores beneficios!</div>
         <div class="relative flex items-center justify-around w-48">

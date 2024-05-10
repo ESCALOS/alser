@@ -1,4 +1,4 @@
-<div class="pb-8 text-left">
+<div class="hidden pb-8 text-left md:block">
     <h4 class="text-xl font-extrabold text-white md:text-2xl lg:text-3xl">
         Transacciones de manera
     </h4>
