@@ -7,6 +7,7 @@ use App\Enums\AccountTypeEnum;
 use App\Enums\DocumentTypeEnum;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -14,13 +15,13 @@ class RegisterForm extends Form
 {
     use PasswordValidationRules;
 
-    #[Validate('required|in:1,2', as: 'Tipo de cuenta')]
-    public $account_type = 1;
+    #[Validate]
+    public $account_type = AccountTypeEnum::PERSONAL;
 
-    #[Validate('exclude_if:account_type,1|required|digits:11|unique:users', as: 'RUC')]
+    #[Validate]
     public $document_number = '';
 
-    #[Validate('exclude_if:account_type,1|required|string|max:255', as: 'Razón Social')]
+    #[Validate]
     public $name = '';
 
     #[Validate('required|string|email|max:255|unique:users')]
@@ -39,6 +40,18 @@ class RegisterForm extends Form
     {
         return [
             'password' => $this->passwordRules(),
+            'account_type' => ['required', Rule::enum(AccountTypeEnum::class)],
+            'document_number' => [Rule::excludeIf(fn () => $this->account_type == AccountTypeEnum::PERSONAL), 'required', 'string', 'digits:11', 'unique:users'],
+            'name' => [Rule::excludeIf(fn () => $this->account_type == AccountTypeEnum::PERSONAL), 'required', 'string', 'max:255'],
+        ];
+    }
+
+    public function validationAttributes()
+    {
+        return [
+            'account_type' => 'Tipo de cuenta',
+            'document_number' => 'RUC',
+            'name' => 'Razón Social',
         ];
     }
 
