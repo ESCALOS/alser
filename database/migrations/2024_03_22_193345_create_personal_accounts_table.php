@@ -14,13 +14,14 @@ return new class extends Migration
         Schema::create('personal_accounts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->string('first_surname', 20)->nullable()->comment('Primer Apellido');
-            $table->string('second_surname', 20)->nullable()->comment('Segundo Apellido');
-            $table->string('nacionality')->nullable()->comment('Nacionalidad');
+            $table->string('first_lastname', 20)->nullable()->comment('Primer Apellido');
+            $table->string('second_lastname', 20)->nullable()->comment('Segundo Apellido');
+            $table->foreignId('country_id')->default(140)->comment('Nacionalidad');
             $table->boolean('is_PEP')->nullable()->comment('Personas expuestas políticamente');
             $table->boolean('wife_is_PEP')->nullable()->comment('Esposa es PEP');
             $table->boolean('relative_is_PEP')->nullable()->comment('Parentezco con PEP');
-            $table->enum('identity_document_status', [1, 2, 3, 4])->default(1);
+            $table->enum('identity_document_status', [1, 2, 3, 4])->default(1)->comment('Estado de validación del documento de identidad');
+            $table->enum('pdf_PEP_status', [1, 2, 3, 4])->default(1)->comment('Estado de validación del formato PEP');
             $table->timestamps();
         });
     }

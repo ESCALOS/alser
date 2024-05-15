@@ -14,17 +14,18 @@ return new class extends Migration
         Schema::create('legal_representatives', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
+            $table->string('name')->comment('Nombres');
             $table->string('first_lastname', 20)->nullable()->comment('Primer Apellido');
             $table->string('second_lastname', 20)->nullable()->comment('Segundo Apellido');
             $table->enum('document_type', [1, 3, 4])->nullable()->comment('Tipo de document: 1 => DNI, 3 => CE, 4 => PASSPORT');
             $table->string('document_number', 12)->nullable()->comment('Número de documento');
-            $table->string('nacionality')->nullable()->comment('Nacionalidad');
-            $table->string('celphone', 20)->nullable()->comment('Celular');
+            $table->foreignId('country_id')->default(140)->comment('Nacionalidad');
             $table->boolean('is_PEP')->nullable()->comment('Personas expuestas políticamente');
             $table->boolean('wife_is_PEP')->nullable()->comment('Esposa es PEP');
             $table->boolean('relative_is_PEP')->nullable()->comment('Parentezco con PEP');
-            $table->enum('identity_document_status', [1, 2, 3, 4])->default(1);
-            $table->enum('representation_type', [1, 2, 3])->nullable();
+            $table->enum('identity_document_status', [1, 2, 3, 4])->default(1)->comment('Estado de validación del documento de identidad');
+            $table->enum('pdf_PEP_status', [1, 2, 3, 4])->default(1)->comment('Estado de validación del formato PEP');
+            $table->enum('representation_type', [1, 2, 3])->default(1)->nullable();
             $table->timestamps();
         });
     }

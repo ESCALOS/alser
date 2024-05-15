@@ -23,14 +23,14 @@ Route::middleware([
 
     Route::prefix('image')->name('image.')->group(function () {
         Route::get('identity_document/{type}', function ($type) {
-            $ruta = 'identity-documents/personal-account/'.Auth::user()->id.'/'.$type.'.png';
+            $ruta = 'identity-documents/'.Auth::user()->id.'/'.$type.'.png';
             $urlFirmada = Storage::temporaryUrl($ruta, now()->addMinutes(5));
 
             return redirect($urlFirmada);
         })->name('identity-document-current-user');
 
         Route::get('identity_document/{type}/{userId}', function ($type, $userId) {
-            $ruta = 'identity-documents/personal-account/'.$userId.'/'.$type.'.png';
+            $ruta = 'identity-documents/'.$userId.'/'.$type.'.png';
             $urlFirmada = Storage::temporaryUrl($ruta, now()->addMinutes(5));
 
             return redirect($urlFirmada);
@@ -40,7 +40,7 @@ Route::middleware([
 
     Route::prefix('pdf')->name('pdf.')->group(function () {
         Route::get('pep/{userId}', function ($userId) {
-            $ruta = 'pdf-PEP/personal-account/'.$userId.'.pdf';
+            $ruta = 'pdf-PEP/'.$userId.'.pdf';
             $urlFirmada = Storage::temporaryUrl($ruta, now()->addMinutes(5));
 
             return redirect($urlFirmada);

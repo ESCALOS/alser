@@ -154,14 +154,14 @@ class PersonalForm extends Form
         $imageFront = $managerFront
             ->read($this->identity_document_front);
         if (! Storage::put('identity-documents/personal-account/'.Auth::user()->id.'/front.png', (string) $imageFront->toPng())) {
-            new Exception('Error al guardar la imagen');
+            throw new Exception('Error al guardar la imagen');
         }
 
         $managerBack = ImageManager::imagick();
         $imageBack = $managerBack
             ->read($this->identity_document_back);
         if (! Storage::put('identity-documents/personal-account/'.Auth::user()->id.'/back.png', (string) $imageBack->toPng())) {
-            new Exception('Error al guardar la imagen');
+            throw new Exception('Error al guardar la imagen');
         }
     }
 
@@ -172,7 +172,7 @@ class PersonalForm extends Form
         }
 
         if (! $this->pdf_PEP->storeAs('pdf-PEP/personal-account', Auth::user()->id.'.pdf', 's3')) {
-            new Exception('Error al guardar el pdf');
+            throw new Exception('Error al guardar el pdf');
         }
     }
 
