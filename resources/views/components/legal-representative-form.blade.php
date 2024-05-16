@@ -11,7 +11,8 @@
         </div>
 
         @foreach (auth()->user()->shareHolders as $shareHolder)
-            <h3 class="font-semibold border-b-2 border-gray-900 text-md">Accionista 1
+            <h3 class="font-semibold border-b-2 border-gray-900 text-md">
+                Accionista {{ $loop->index + 1 }}
             </h3>
             <div class="grid grid-cols-2 gap-2 py-4 md:grid-cols-4">
                 <div class="col-span-2">
