@@ -76,6 +76,11 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasOne(PersonalAccount::class);
     }
 
+    public function shareHolders(): HasMany
+    {
+        return $this->hasMany(ShareHolder::class);
+    }
+
     public function bankAccounts(): HasMany
     {
         return $this->hasMany(BankAccount::class);

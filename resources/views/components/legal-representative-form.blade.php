@@ -9,6 +9,21 @@
             <x-mary-input label="Razón Social" value="{{ auth()->user()->name }}" readonly />
             <x-mary-input label="Celular" value="{{ auth()->user()->celphone }}" readonly />
         </div>
+
+        @foreach (auth()->user()->shareHolders as $shareHolder)
+            <h3 class="font-semibold border-b-2 border-gray-900 text-md">Accionista 1
+            </h3>
+            <div class="grid grid-cols-2 gap-2 py-4 md:grid-cols-4">
+                <div class="col-span-2">
+                    <x-mary-input label="Nombres o Razón Social" value="{{ $shareHolder->fullname }}" readonly />
+                </div>
+                <x-mary-input label="Tipo de documento" value="{{ $shareHolder->document_type->getLabel() }}"
+                    readonly />
+                <x-mary-input label="Número de documento" value="{{ $shareHolder->document_number }}" readonly />
+            </div>
+        @endforeach
+
+
         <x-mary-alert icon="o-exclamation-circle" class="text-white bg-amber-600">
             <span class="font-bold text-md text-pretty">Sus datos están siendo validados.</span>
         </x-mary-alert>

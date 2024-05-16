@@ -24,7 +24,6 @@ return new class extends Migration
             $table->boolean('wife_is_PEP')->nullable()->comment('Esposa es PEP');
             $table->boolean('relative_is_PEP')->nullable()->comment('Parentezco con PEP');
             $table->enum('identity_document_status', [1, 2, 3, 4])->default(1)->comment('Estado de validación del documento de identidad');
-            $table->enum('pdf_PEP_status', [1, 2, 3, 4])->default(1)->comment('Estado de validación del formato PEP');
             $table->enum('representation_type', [1, 2, 3])->default(1)->nullable();
             $table->timestamps();
         });

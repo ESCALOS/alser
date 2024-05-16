@@ -13,6 +13,47 @@
                         <x-mary-input label="Razón Social" value="{{ auth()->user()->name }}" readonly />
                         <x-mary-input label="Celular" wire:model='form.celphone' x-mask='999999999' />
                     </div>
+                    <h3 class="text-xl font-semibold">Datos de los accionistas</h3>
+                    <p class="text-md">
+                        Según los requerimientos de la SBS, indica los accionistas, socios o asociados que tengan
+                        directa o indirectamente más del 25% del capital social, aporte o participación de la persona
+                        jurídica.
+                    </p>
+
+                    @for ($i = 0; $i < 3; $i++)
+                        <h3 class="font-semibold border-b-2 border-gray-900 text-md">Accionista {{ $i + 1 }}
+                        </h3>
+                        <div class="grid grid-cols-2 gap-2 py-4 md:grid-cols-4">
+                            <div class="col-span-2">
+                                <x-mary-input label="Nombres o Razón Social"
+                                    wire:model='form.shareHolders.{{ $i }}.name' />
+                            </div>
+                            <x-mary-choices-offline label="Tipo de Documento" :options="$documentTypes"
+                                wire:model='form.shareHolders.{{ $i }}.documentType' single />
+                            <x-mary-input label="Número de documento"
+                                wire:model='form.shareHolders.{{ $i }}.documentNumber'
+                                x-mask:dynamic="(value) => {
+                            switch ($wire.form.documentType) {
+                                case 1:
+                                    return '99999999';
+                                case 2:
+                                    if (value.startsWith('1')) {
+                                        return '10999999999';
+                                    }
+                                    if(value.startsWith('2')) {
+                                        return '20999999999'
+                                    }
+                                    return 'a';
+                                case 3:
+                                case 4:
+                                    return '************';
+                                default:
+                                    return 'a';
+                            }
+                    }" />
+                        </div>
+                    @endfor
+
                     <x-mary-alert icon="o-exclamation-circle" class="text-white bg-sky-600">
                         <span class="font-bold text-md text-pretty">Tus nombres y apellidos deben ser iguales a los que
                             figuran en tu documento de identidad.</span>
@@ -24,7 +65,7 @@
                         <x-mary-input label="Segundo Apellido" wire:model='form.secondLastname' />
                     </div>
                     <div class="grid gap-3 lg:grid-cols-2">
-                        <x-mary-choices-offline label="Tipo de Documento" :options="$documentTypes"
+                        <x-mary-choices-offline label="Tipo de Documento" :options="$documentTypesExceptRuc"
                             wire:model='form.documentType' single />
                         <x-mary-input label="Número de documento" wire:model='form.documentNumber'
                             x-mask:dynamic="(value) => {
@@ -133,7 +174,8 @@
                             Completar sólo el punto 1. del formato con los datos del cónyuge/concubino.
                         </p>
                         <p class="mt-2 text-xs font-semibold text-violet-700"
-                            x-show="$wire.form.wifeIsPEP && $wire.form.isPEP && !$wire.form.relativeIsPEP" x-transition>
+                            x-show="$wire.form.wifeIsPEP && $wire.form.isPEP && !$wire.form.relativeIsPEP"
+                            x-transition>
                             Completar todos los puntos de la página 1 del formato con los datos del titular.<br>
                             Completar la página 2 del formato con los datos del cónyuge/concubino.
                         </p>
@@ -153,7 +195,8 @@
                                 consanguinidad y/o de afinidad que sea PEP?</span>
                         </label>
                         <p class="mt-2 text-xs font-semibold text-violet-700"
-                            x-show="$wire.form.isPEP && $wire.form.relativeIsPEP && !$wire.form.wifeIsPEP" x-transition>
+                            x-show="$wire.form.isPEP && $wire.form.relativeIsPEP && !$wire.form.wifeIsPEP"
+                            x-transition>
                             Completar todos los puntos de la página 1 del formato con los datos del titular.<br>
                             Completar la página 2 del formato de acuerdo al número de familiares PEP que tenga.
                         </p>

@@ -4,7 +4,6 @@ namespace App\Livewire\Forms\Account;
 
 use App\Enums\DocumentTypeEnum;
 use App\Enums\IdentityDocumentStatusEnum;
-use App\Enums\PdfPEPStatusEnum;
 use App\Enums\RepresentationTypeEnum;
 use App\Models\LegalRepresentative;
 use App\Rules\DocumentNumberValidation;
@@ -19,6 +18,12 @@ use Livewire\Form;
 class LegalRepresentativeForm extends Form
 {
     public ?LegalRepresentative $legalRepresentative;
+
+    #[Validate('required|digits:9', as: 'Celular')]
+    public ?string $celphone = '';
+
+    #[Validate]
+    public $shareHolders = [];
 
     #[Validate('required', as: 'Nombre')]
     public ?string $name = '';
@@ -59,18 +64,17 @@ class LegalRepresentativeForm extends Form
     #[Validate]
     public $pdfPEP;
 
-    #[Validate('required|digits:9', as: 'Celular')]
-    public ?string $celphone = '';
-
     #[Locked]
     public IdentityDocumentStatusEnum $identityDocumentStatus = IdentityDocumentStatusEnum::PENDING;
-
-    #[Locked]
-    public PdfPEPStatusEnum $pdfPEPStatusEnum = PdfPEPStatusEnum::PENDING;
 
     public function setLegalRepresentativeForm()
     {
         $this->celphone = Auth::user()->celphone ?? '';
+
+        for ($i = 0; $i < 3; $i++) {
+            $this->shareHolders[$i]['documentType'] = DocumentTypeEnum::ID;
+        }
+        $this->shareHolders;
         if (LegalRepresentative::where('user_id', Auth::user()->id)->exists()) {
             $this->legalRepresentative = LegalRepresentative::where('user_id', Auth::user()->id)->first();
 
@@ -85,13 +89,15 @@ class LegalRepresentativeForm extends Form
             $this->wifeIsPEP = $this->legalRepresentative->wife_is_PEP;
             $this->relativeIsPEP = $this->legalRepresentative->relative_is_PEP;
             $this->identityDocumentStatus = $this->legalRepresentative->identity_document_status;
-            $this->pdfPEPStatusEnum = $this->legalRepresentative->pdf_PEP_status ?? PdfPEPStatusEnum::PENDING;
         }
     }
 
     public function rules(): array
     {
         return [
+            'shareHolders.*.name' => ['required_with:shareHolders.*.documentNumber'],
+            'shareHolders.*.documentType' => ['required', Rule::enum(DocumentTypeEnum::class)],
+            'shareHolders.*.documentNumber' => ['required_with:shareHolders.*.name', new DocumentNumberValidation($this->documentType)],
             'documentType' => ['required', Rule::enum(DocumentTypeEnum::class)->except([DocumentTypeEnum::TAX_NUMBER])],
             'documentNumber' => ['required', new DocumentNumberValidation($this->documentType)],
             'representationType' => ['required', Rule::enum(RepresentationTypeEnum::class)],
@@ -114,6 +120,8 @@ class LegalRepresentativeForm extends Form
     public function messages(): array
     {
         return [
+            'shareHolders.*.name.required_with' => 'El nombre del accionista es obligatorio',
+            'shareHolders.*.documentNumber.required_with' => 'El número de documento del accionista es obligatorio',
             'documentNumber.required' => 'El número de documento es obligatorio',
             'pdfPEP.file' => 'El documento PEP es obligatorio',
         ];
@@ -134,8 +142,6 @@ class LegalRepresentativeForm extends Form
                 if (! Storage::put('identity-documents/'.Auth::user()->id.'/back.png', (string) $imageBack->toPng())) {
                     throw new \Exception('Error al guardar la imagen');
                 }
-
-                $legalRepresentative->identity_document_status = IdentityDocumentStatusEnum::UPLOADED;
             } catch (\Exception $e) {
                 $errorMessage = $e->getMessage();
                 throw new \Exception($errorMessage);
@@ -145,7 +151,7 @@ class LegalRepresentativeForm extends Form
 
     public function savePdfPEP($legalRepresentative): void
     {
-        if (! $legalRepresentative->isPdfPEPRequired()) {
+        if (! $legalRepresentative->isIdentityDocumentRequired()) {
             return;
         }
         if (! ($this->isPEP || $this->wifeIsPEP || $this->relativeIsPEP)) {
@@ -155,8 +161,6 @@ class LegalRepresentativeForm extends Form
         if (! $this->pdfPEP->storeAs('pdf-PEP/', Auth::user()->id.'.pdf', 's3')) {
             new \Exception('Error al guardar el pdf');
         }
-
-        $legalRepresentative->pdf_PEP_status = PdfPEPStatusEnum::UPLOADED;
     }
 
     public function setIdentityDocumentStatus(): void

@@ -8,6 +8,7 @@ use App\Enums\RepresentationTypeEnum;
 use App\Livewire\Forms\Account\LegalRepresentativeForm;
 use App\Models\Country;
 use App\Models\LegalRepresentative;
+use App\Models\ShareHolder;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -24,13 +25,16 @@ class Business extends Component
 
     public $documentTypes;
 
+    public $documentTypesExceptRuc;
+
     public LegalRepresentativeForm $form;
 
     public array $representationTypes;
 
     public function mount()
     {
-        $this->documentTypes = DocumentTypeEnum::getChoicesExceptRuc();
+        $this->documentTypes = DocumentTypeEnum::getChoices();
+        $this->documentTypesExceptRuc = DocumentTypeEnum::getChoicesExceptRuc();
         $this->representationTypes = RepresentationTypeEnum::getChoices();
         $this->form->setLegalRepresentativeForm();
 
@@ -71,10 +75,23 @@ class Business extends Component
 
             $this->form->saveIdentityDocumentImages($legalRepresentative);
             $this->form->savePdfPEP($legalRepresentative);
-
+            $legalRepresentative->identity_document_status = IdentityDocumentStatusEnum::UPLOADED;
             DB::transaction(function () use ($legalRepresentative) {
                 $user = User::find(Auth::user()->id);
                 $user->celphone = $this->form->celphone;
+
+                ShareHolder::where('user_id', auth()->user()->id)->delete();
+                foreach ($this->form->shareHolders as $input) {
+                    if (! empty($input['name'])) {
+                        ShareHolder::create([
+                            'fullname' => $input['name'],
+                            'document_type' => $input['documentType'],
+                            'document_number' => $input['documentNumber'],
+                            'user_id' => auth()->user()->id,
+                        ]);
+                    }
+                }
+
                 $user->save();
                 $legalRepresentative->save();
             });

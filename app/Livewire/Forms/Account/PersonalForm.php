@@ -19,14 +19,16 @@ use Livewire\Form;
 
 class PersonalForm extends Form
 {
+    public ?PersonalAccount $personalAccount;
+
     #[Validate('required', as: 'Nombre')]
     public ?string $name = '';
 
     #[Validate('required', as: 'Primer Apellido')]
-    public ?string $first_surname = '';
+    public ?string $first_lastname = '';
 
     #[Validate('required', as: 'Segundo Apellido')]
-    public ?string $second_surname = '';
+    public ?string $second_lastname = '';
 
     #[Validate]
     public DocumentTypeEnum $document_type = DocumentTypeEnum::ID;
@@ -68,14 +70,14 @@ class PersonalForm extends Form
         $this->document_number = Auth::user()->document_number ?? '';
         $this->celphone = Auth::user()->celphone ?? '';
         if (PersonalAccount::where('user_id', Auth::user()->id)->exists()) {
-            $personalAccount = PersonalAccount::where('user_id', Auth::user()->id)->first();
-            $this->first_surname = $personalAccount->first_surname;
-            $this->second_surname = $personalAccount->second_surname;
-            $this->nacionality = $personalAccount->nacionality;
-            $this->is_PEP = $personalAccount->is_PEP;
-            $this->wife_is_PEP = $personalAccount->wife_is_PEP;
-            $this->relative_is_PEP = $personalAccount->relative_is_PEP;
-            $this->identity_document_status = $personalAccount->identity_document_status ?? IdentityDocumentStatusEnum::PENDING;
+            $this->personalAccount = PersonalAccount::where('user_id', Auth::user()->id)->first();
+            $this->first_lastname = $this->personalAccount->first_lastname;
+            $this->second_lastname = $this->personalAccount->second_lastname;
+            $this->nacionality = $this->personalAccount->nacionality;
+            $this->is_PEP = $this->personalAccount->is_PEP;
+            $this->wife_is_PEP = $this->personalAccount->wife_is_PEP;
+            $this->relative_is_PEP = $this->personalAccount->relative_is_PEP;
+            $this->identity_document_status = $this->personalAccount->identity_document_status ?? IdentityDocumentStatusEnum::PENDING;
         }
     }
 
@@ -121,8 +123,8 @@ class PersonalForm extends Form
             $user->celphone = $this->celphone;
 
             $data = [
-                'first_surname' => $this->first_surname,
-                'second_surname' => $this->second_surname,
+                'first_lastname' => $this->first_lastname,
+                'second_lastname' => $this->second_lastname,
                 'nacionality' => $this->nacionality,
                 'is_PEP' => $this->is_PEP,
                 'wife_is_PEP' => $this->wife_is_PEP,
