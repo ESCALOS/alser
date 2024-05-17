@@ -130,21 +130,17 @@ class LegalRepresentativeForm extends Form
     public function saveIdentityDocumentImages(LegalRepresentative $legalRepresentative): void
     {
         if ($legalRepresentative->isIdentityDocumentRequired()) {
-            try {
-                $managerFront = ImageManager::imagick();
-                $imageFront = $managerFront->read($this->identityDocumentFront);
-                if (! Storage::put('identity-documents/'.Auth::user()->id.'/front.png', (string) $imageFront->toPng())) {
-                    throw new \Exception('Error al guardar la imagen');
-                }
 
-                $managerBack = ImageManager::imagick();
-                $imageBack = $managerBack->read($this->identityDocumentBack);
-                if (! Storage::put('identity-documents/'.Auth::user()->id.'/back.png', (string) $imageBack->toPng())) {
-                    throw new \Exception('Error al guardar la imagen');
-                }
-            } catch (\Exception $e) {
-                $errorMessage = $e->getMessage();
-                throw new \Exception($errorMessage);
+            $managerFront = ImageManager::imagick();
+            $imageFront = $managerFront->read($this->identityDocumentFront);
+            if (! Storage::put('identity-documents/'.Auth::user()->id.'/front.png', (string) $imageFront->toPng())) {
+                throw new \Exception('Error al guardar la imagen');
+            }
+
+            $managerBack = ImageManager::imagick();
+            $imageBack = $managerBack->read($this->identityDocumentBack);
+            if (! Storage::put('identity-documents/'.Auth::user()->id.'/back.png', (string) $imageBack->toPng())) {
+                throw new \Exception('Error al guardar la imagen');
             }
         }
     }

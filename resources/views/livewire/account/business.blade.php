@@ -19,9 +19,10 @@
                         directa o indirectamente más del 25% del capital social, aporte o participación de la persona
                         jurídica.
                     </p>
-
+                    {{-- Accionistas --}}
                     @for ($i = 0; $i < 3; $i++)
-                        <h3 class="font-semibold border-b-2 border-gray-900 text-md">Accionista {{ $i + 1 }}
+                        <h3 class="font-semibold border-b-2 border-gray-900 text-md">
+                            Accionista {{ $i + 1 }}
                         </h3>
                         <div class="grid grid-cols-2 gap-2 py-4 md:grid-cols-4">
                             <div class="col-span-2">
@@ -33,30 +34,31 @@
                             <x-mary-input label="Número de documento"
                                 wire:model='form.shareHolders.{{ $i }}.documentNumber'
                                 x-mask:dynamic="(value) => {
-                            switch ($wire.form.documentType) {
-                                case 1:
-                                    return '99999999';
-                                case 2:
-                                    if (value.startsWith('1')) {
-                                        return '10999999999';
+                                    switch ($wire.form.documentType) {
+                                        case 1:
+                                            return '99999999';
+                                        case 2:
+                                            if (value.startsWith('1')) {
+                                                return '10999999999';
+                                            }
+                                            if(value.startsWith('2')) {
+                                                return '20999999999'
+                                            }
+                                            return 'a';
+                                        case 3:
+                                        case 4:
+                                            return '************';
+                                        default:
+                                            return 'a';
                                     }
-                                    if(value.startsWith('2')) {
-                                        return '20999999999'
-                                    }
-                                    return 'a';
-                                case 3:
-                                case 4:
-                                    return '************';
-                                default:
-                                    return 'a';
-                            }
-                    }" />
+                                }" />
                         </div>
                     @endfor
 
                     <x-mary-alert icon="o-exclamation-circle" class="text-white bg-sky-600">
-                        <span class="font-bold text-md text-pretty">Tus nombres y apellidos deben ser iguales a los que
-                            figuran en tu documento de identidad.</span>
+                        <span class="font-bold text-md text-pretty">
+                            Tus nombres y apellidos deben ser iguales a los que figuran en tu documento de identidad.
+                        </span>
                     </x-mary-alert>
                     <h3 class="text-2xl font-semibold">Datos del representante legal</h3>
                     <x-mary-input label="Nombres" wire:model='form.name' />
@@ -132,18 +134,14 @@
                             </div>
                             <span class="font-medium text-gray-900 text-md ms-3">¿Es usted PEP?</span>
                         </label>
-                        <p class="text-xs text-justify text-gray-800">Personas expuestas políticamente (PEP): personas
-                            naturales,
-                            nacionales o extranjeras, que cumplen o que en los últimos cinco (5) años hayan cumplido
-                            funciones públicas destacadas o funciones prominentes en una organización internacional, sea
-                            en
-                            el territorio nacional o extranjero, y cuyas circunstancias financieras puedan ser objeto de
-                            un
-                            interés público. Para más información revisar el Anexo – Resolución SBS N° 4349-2016, Lista
-                            de
-                            funciones y cargos ocupados por personas expuestas políticamente (PEP) en materia de
-                            prevención
-                            del lavado de activos y del financiamiento del terrorismo.
+                        <p class="text-xs text-justify text-gray-800">
+                            Personas expuestas políticamente (PEP): personas naturales, nacionales o extranjeras, que
+                            cumplen o que en los últimos cinco (5) años hayan cumplido funciones públicas destacadas o
+                            funciones prominentes en una organización internacional, sea en el territorio nacional o
+                            extranjero, y cuyas circunstancias financieras puedan ser objeto de un interés público. Para
+                            más información revisar el Anexo – Resolución SBS N° 4349-2016, Lista de funciones y cargos
+                            ocupados por personas expuestas políticamente (PEP) en materia de prevención del lavado de
+                            activos y del financiamiento del terrorismo.
                             <a target="_blank" class="text-violet-700"
                                 href="https://www.sbs.gob.pe/prevencion-de-lavado-activos/listas-de-interes">
                                 Disponible aquí
@@ -164,10 +162,10 @@
                             </div>
                             <span class="font-medium text-gray-900 text-md ms-3">¿Su cónyuge/concubino es PEP?</span>
                         </label>
-                        <p class="text-xs text-gray-800">Aquel varón o mujer que mantiene una unión de hecho por dos
-                            años,
-                            de
-                            acuerdo con lo establecido en el artículo 326 del Código Civil.</p>
+                        <p class="text-xs text-gray-800">
+                            Aquel varón o mujer que mantiene una unión de hecho por dos años, de acuerdo con lo
+                            establecido en el artículo 326 del Código Civil.
+                        </p>
                         <p class="mt-2 text-xs font-semibold text-violet-700"
                             x-show="$wire.form.wifeIsPEP && !($wire.form.isPEP || $wire.form.relativeIsPEP)"
                             x-transition>
@@ -188,12 +186,15 @@
                                 before:content-['No'] peer-checked:before:content-['Sí'] before:font-semibold before:top-[.25rem] before:start-[2rem] before:text-white before:absolute before:transition-all before:duration-500 peer-checked:bg-violet-600">
                             </div>
                             <span
-                                class="font-medium text-gray-900 max-w-52 min-[425px]:max-w-72 md:max-w-[100%] min-[375px]:max-w-64 text-md ms-3">¿Tiene
-                                un
-                                familiar
-                                hasta 2do grado de
-                                consanguinidad y/o de afinidad que sea PEP?</span>
+                                class="font-medium text-gray-900 max-w-52 min-[425px]:max-w-72 md:max-w-[100%] min-[375px]:max-w-64 text-md ms-3">
+                                ¿Tiene un familiar hasta 2do grado de consanguinidad y/o de afinidad que sea PEP?</span>
                         </label>
+                        <p class="mt-2 text-xs font-semibold text-violet-700"
+                            x-show="!$wire.form.isPEP && $wire.form.relativeIsPEP && !$wire.form.wifeIsPEP"
+                            x-transition>
+                            Completar el punto 1. del formato con los datos del 1er familiar PEP.<br>
+                            En caso de tener más de 1 familiar PEP completar la página 2 según corresponda.
+                        </p>
                         <p class="mt-2 text-xs font-semibold text-violet-700"
                             x-show="$wire.form.isPEP && $wire.form.relativeIsPEP && !$wire.form.wifeIsPEP"
                             x-transition>

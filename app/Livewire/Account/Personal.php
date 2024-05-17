@@ -6,6 +6,10 @@ use App\Enums\DocumentTypeEnum;
 use App\Enums\IdentityDocumentStatusEnum;
 use App\Livewire\Forms\Account\PersonalForm;
 use App\Models\Country;
+use App\Models\PersonalAccount;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Computed;
@@ -44,7 +48,32 @@ class Personal extends Component
         $type = 'success';
         $message = 'Datos guardados';
         try {
-            $this->form->save();
+            $this->form->resetValidation();
+            $this->form->setIdentityDocumentStatus();
+            $this->form->validate();
+
+            $personaAccount = PersonalAccount::firstOrNew(['user_id' => Auth::user()->id]);
+            $personaAccount->user_id = Auth::user()->id;
+            $personaAccount->fill($this->form->getPersonalForm());
+
+            $this->form->saveIdentityDocumentImages($personaAccount);
+            $this->form->savePdfPEP($personaAccount);
+            $personaAccount->identity_document_status = IdentityDocumentStatusEnum::UPLOADED;
+
+            DB::transaction(function () use ($personaAccount) {
+                $user = User::find(Auth::user()->id);
+                $user->fill($this->form->only([
+                    'name',
+                    'document_type',
+                    'document_number',
+                    'celphone',
+                ]))->save();
+                $personaAccount->save();
+            });
+
+            $this->form->identity_document_status = IdentityDocumentStatusEnum::UPLOADED;
+            $this->form->personalAccount = $personaAccount;
+
         } catch (ValidationException $ex) {
             $type = 'error';
             $message = $ex->getMessage();
