@@ -5,7 +5,6 @@ namespace App\Livewire\Forms;
 use App\Enums\BankAccountTypeEnum;
 use App\Enums\CurrencyTypeEnum;
 use App\Models\BankAccount;
-use App\Rules\BankAccountLength;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
@@ -48,7 +47,6 @@ class BankAccountForm extends Form
             'accountNumber' => [
                 'required',
                 Rule::unique('bank_accounts', 'account_number')->where('user_id', Auth::user()->id)->ignore($this->bankAccountId),
-                new BankAccountLength($this->bankId),
             ],
             'name' => [
                 'required',

@@ -53,17 +53,7 @@
                     <x-mary-choices-offline label="Tipo de moneda" wire:model="form.currencyType" :options="$currencies"
                         single />
                     <div class="col-span-1 md:col-span-2">
-                        <x-mary-input label="Número de cuenta" wire:model="form.accountNumber"
-                            x-mask:dynamic="(value) => {
-                                switch ($wire.form.bankId) {
-                                    case 1:
-                                        return '999-99999999-9-99';
-                                    case 2:
-                                        return '999-9999999999';
-                                    default:
-                                        return '9999999999999999999999999';
-                                }
-                            }" />
+                        <x-mary-input label="Número de cuenta" wire:model="form.accountNumber" />
                     </div>
                     <div class="col-span-1 md:col-span-2">
                         <x-mary-input label="Alias de la cuenta" wire:model="form.name" />
