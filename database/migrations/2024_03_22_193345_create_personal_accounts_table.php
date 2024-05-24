@@ -20,7 +20,6 @@ return new class extends Migration
             $table->boolean('is_PEP')->nullable()->comment('Personas expuestas políticamente');
             $table->boolean('wife_is_PEP')->nullable()->comment('Esposa es PEP');
             $table->boolean('relative_is_PEP')->nullable()->comment('Parentezco con PEP');
-            $table->enum('identity_document_status', [1, 2, 3, 4])->default(1)->comment('Estado de validación del documento de identidad');
             $table->timestamps();
         });
     }

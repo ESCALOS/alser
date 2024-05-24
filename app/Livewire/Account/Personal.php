@@ -25,10 +25,18 @@ class Personal extends Component
 
     public PersonalForm $form;
 
+    public bool $verificationLinkSent = false;
+
     public function mount()
     {
         $this->documentTypes = DocumentTypeEnum::getChoicesExceptRuc();
         $this->form->setPersonalForm();
+    }
+
+    #[Computed]
+    public function user(): User
+    {
+        return User::find(Auth::id());
     }
 
     #[Computed(persist: true)]
@@ -37,10 +45,14 @@ class Personal extends Component
         return Country::select('id', 'name')->get()->toArray();
     }
 
-    #[Computed]
-    public function isIdentityDocumentRequired(): bool
+    public function sendEmailVerification()
     {
-        return $this->form->identity_document_status === IdentityDocumentStatusEnum::PENDING || $this->form->identity_document_status === IdentityDocumentStatusEnum::REJECTED;
+        $this->user->forceFill([
+            'email_verified_at' => null,
+        ])->save();
+
+        $this->user->sendEmailVerificationNotification();
+        $this->verificationLinkSent = true;
     }
 
     public function save()
@@ -49,36 +61,45 @@ class Personal extends Component
         $message = 'Datos guardados';
         try {
             $this->form->resetValidation();
-            $this->form->setIdentityDocumentStatus();
             $this->form->validate();
+            unset($this->user);
+            if (! $this->user->identity_document_status === IdentityDocumentStatusEnum::UPLOADED) {
+                throw new \Exception('Datos en proceso de validación');
+            }
 
-            $personaAccount = PersonalAccount::firstOrNew(['user_id' => Auth::user()->id]);
-            $personaAccount->user_id = Auth::user()->id;
+            if (! $this->user->identity_document_status === IdentityDocumentStatusEnum::VALIDATED) {
+                throw new \Exception('Datos validados');
+            }
+
+            $personaAccount = PersonalAccount::firstOrNew(['user_id' => Auth::id()]);
+            $personaAccount->user_id = $this->user->id;
             $personaAccount->fill($this->form->getPersonalForm());
 
             $this->form->saveIdentityDocumentImages($personaAccount);
             $this->form->savePdfPEP($personaAccount);
-            $personaAccount->identity_document_status = IdentityDocumentStatusEnum::UPLOADED;
 
             DB::transaction(function () use ($personaAccount) {
-                $user = User::find(Auth::user()->id);
-                $user->fill($this->form->only([
+
+                $this->user->fill($this->form->only([
                     'name',
                     'document_type',
                     'document_number',
                     'celphone',
-                ]))->save();
+                ]));
+                $this->user->identity_document_status = IdentityDocumentStatusEnum::UPLOADED;
+                $this->user->save();
                 $personaAccount->save();
             });
-
-            $this->form->identity_document_status = IdentityDocumentStatusEnum::UPLOADED;
             $this->form->personalAccount = $personaAccount;
 
         } catch (ValidationException $ex) {
             $type = 'error';
-            $message = $ex->getMessage();
+            $message = '';
             foreach ($ex->errors() as $field => $errorMessage) {
                 $this->addError($field, $errorMessage);
+                if ($message === '') {
+                    $message = $errorMessage[0];
+                }
             }
         } catch (\Exception $ex) {
             $type = 'error';

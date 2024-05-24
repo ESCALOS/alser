@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('celphone', 20)->nullable()->comment('Celular');
             $table->enum('document_type', [1, 2, 3, 4])->nullable()->comment('Tipo de document: 1 => DNI, 2 => RUC, 3 => CE, 4 => PASSPORT');
             $table->string('document_number', 12)->nullable()->comment('Número de documento');
+            $table->enum('identity_document_status', [1, 2, 3, 4])->default(1)->comment('Estado de validación del documento de identidad');
             $table->timestamps();
         });
     }

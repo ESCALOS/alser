@@ -231,5 +231,10 @@
     "Personal data": "Datos personales",
     "Personal Data": "Datos Personales",
     "Bank Account": "Cuenta Bancaria",
-    "Bank Accounts": "Cuentas Bancarias"
+    "Bank Accounts": "Cuentas Bancarias",
+    "Before continuing, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.": "Antes de continuar, ¿podría verificar su dirección de correo electrónico haciendo clic en el enlace que le acabamos de enviar por correo electrónico? Si no recibió el correo electrónico, con gusto le enviaremos otro.",
+    "Edit Profile": "Editar Perfil",
+    "Your email address is unverified.": "Su dirección de correo electrónico no está verificada.",
+    "Click here to re-send the verification email.": "Haga clic aquí para volver a enviar el correo electrónico de verificación.",
+    "A new verification link has been sent to your email address.": "Se ha enviado un nuevo enlace de verificación a su dirección de correo electrónico."
 }

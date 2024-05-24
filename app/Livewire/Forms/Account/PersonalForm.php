@@ -3,15 +3,14 @@
 namespace App\Livewire\Forms\Account;
 
 use App\Enums\DocumentTypeEnum;
-use App\Enums\IdentityDocumentStatusEnum;
 use App\Models\PersonalAccount;
+use App\Models\User;
 use App\Rules\DocumentNumberValidation;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Intervention\Image\ImageManager;
-use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -58,31 +57,27 @@ class PersonalForm extends Form
     #[Validate]
     public $pdf_PEP;
 
-    #[Locked]
-    public IdentityDocumentStatusEnum $identity_document_status = IdentityDocumentStatusEnum::PENDING;
-
     public function setPersonalForm()
     {
-        $this->name = Auth::user()->name;
-        $this->document_type = Auth::user()->document_type ?? DocumentTypeEnum::ID;
-        $this->document_number = Auth::user()->document_number ?? '';
-        $this->celphone = Auth::user()->celphone ?? '';
-        if (PersonalAccount::where('user_id', Auth::user()->id)->exists()) {
-            $this->personalAccount = PersonalAccount::where('user_id', Auth::user()->id)->first();
+        $this->name = auth()->user()->name;
+        $this->document_type = auth()->user()->document_type ?? DocumentTypeEnum::ID;
+        $this->document_number = auth()->user()->document_number ?? '';
+        $this->celphone = auth()->user()->celphone ?? '';
+        if (PersonalAccount::where('user_id', Auth::id())->exists()) {
+            $this->personalAccount = PersonalAccount::where('user_id', Auth::id())->first();
             $this->first_lastname = $this->personalAccount->first_lastname;
             $this->second_lastname = $this->personalAccount->second_lastname;
             $this->nacionality = $this->personalAccount->country_id;
             $this->is_PEP = $this->personalAccount->is_PEP;
             $this->wife_is_PEP = $this->personalAccount->wife_is_PEP;
             $this->relative_is_PEP = $this->personalAccount->relative_is_PEP;
-            $this->identity_document_status = $this->personalAccount->identity_document_status ?? IdentityDocumentStatusEnum::PENDING;
         }
     }
 
     public function getPersonalForm(): array
     {
         return [
-            'user_id' => Auth::user()->id,
+            'user_id' => Auth::id(),
             'first_lastname' => $this->first_lastname,
             'second_lastname' => $this->second_lastname,
             'country_id' => $this->nacionality,
@@ -94,11 +89,13 @@ class PersonalForm extends Form
 
     public function rules(): array
     {
+        $user = User::find(Auth::id());
+
         return [
             'document_type' => ['required', Rule::enum(DocumentTypeEnum::class)->except([DocumentTypeEnum::TAX_NUMBER])],
             'document_number' => ['required', new DocumentNumberValidation($this->document_type)],
-            'identity_document_front' => [Rule::excludeIf(! $this->isIdentityDocumentRequired()), 'required', 'image', 'max:2048', 'mimes:jpeg,png,jpg'],
-            'identity_document_back' => [Rule::excludeIf(! $this->isIdentityDocumentRequired()), 'required', 'image', 'max:2048', 'mimes:jpeg,png,jpg'],
+            'identity_document_front' => ['required', 'image', 'max:2048', 'mimes:jpeg,png,jpg'],
+            'identity_document_back' => ['required', 'image', 'max:2048', 'mimes:jpeg,png,jpg'],
             'pdf_PEP' => [Rule::excludeIf(! ($this->is_PEP || $this->wife_is_PEP || $this->relative_is_PEP)), 'file', 'mimes:pdf'],
         ];
     }
@@ -121,29 +118,23 @@ class PersonalForm extends Form
         ];
     }
 
-    public function saveIdentityDocumentImages(PersonalAccount $personalAccount): void
+    public function saveIdentityDocumentImages(): void
     {
-        if ($personalAccount->isIdentityDocumentRequired()) {
-            $managerFront = ImageManager::imagick();
-            $imageFront = $managerFront->read($this->identity_document_front);
-            if (! Storage::put('identity-documents/'.Auth::user()->id.'/front.png', (string) $imageFront->toPng())) {
-                throw new Exception('Error al guardar la imagen');
-            }
+        $managerFront = ImageManager::imagick();
+        $imageFront = $managerFront->read($this->identity_document_front);
+        if (! Storage::put('identity-documents/'.Auth::user()->id.'/front.png', (string) $imageFront->toPng())) {
+            throw new Exception('Error al guardar la imagen');
+        }
 
-            $managerBack = ImageManager::imagick();
-            $imageBack = $managerBack->read($this->identity_document_back);
-            if (! Storage::put('identity-documents/'.Auth::user()->id.'/back.png', (string) $imageBack->toPng())) {
-                throw new Exception('Error al guardar la imagen');
-            }
+        $managerBack = ImageManager::imagick();
+        $imageBack = $managerBack->read($this->identity_document_back);
+        if (! Storage::put('identity-documents/'.Auth::user()->id.'/back.png', (string) $imageBack->toPng())) {
+            throw new Exception('Error al guardar la imagen');
         }
     }
 
-    public function savePdfPEP(PersonalAccount $personalAccount): void
+    public function savePdfPEP(): void
     {
-        if (! $personalAccount->isIdentityDocumentRequired()) {
-            return;
-        }
-
         if (! ($this->is_PEP || $this->wife_is_PEP || $this->relative_is_PEP)) {
             return;
         }
@@ -151,15 +142,5 @@ class PersonalForm extends Form
         if (! $this->pdf_PEP->storeAs('pdf-PEP/', Auth::user()->id.'.pdf', 's3')) {
             throw new Exception('Error al guardar el pdf');
         }
-    }
-
-    public function setIdentityDocumentStatus(): void
-    {
-        $this->identity_document_status = PersonalAccount::where('user_id', Auth::user()->id)->first()->_status ?? IdentityDocumentStatusEnum::PENDING;
-    }
-
-    public function isIdentityDocumentRequired(): bool
-    {
-        return $this->identity_document_status === IdentityDocumentStatusEnum::PENDING || $this->identity_document_status === IdentityDocumentStatusEnum::REJECTED;
     }
 }

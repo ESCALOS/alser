@@ -1,16 +1,33 @@
 <div>
     <div class="space-y-4">
-        <x-mary-input label="{{ __('Email') }}" class="rounded-lg" value="{{ auth()->user()->email }}" disabled />
+        <x-mary-input label="{{ __('Email') }}" class="rounded-lg" value="{{ $user->email }}" disabled />
+        @if (!$this->user->hasVerifiedEmail())
+            <p class="mt-2 text-sm text-red-600">
+                {{ __('Your email address is unverified.') }}
+
+                <button wire:loading.remove wire:target='sendEmailVerification' type="button"
+                    class="text-sm text-gray-600 underline rounded-md dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                    wire:click.prevent="sendEmailVerification">
+                    {{ __('Click here to re-send the verification email.') }}
+                </button>
+                <span class="text-blue-500" wire:loading wire:target='sendEmailVerification'>Enviando...</span>
+            </p>
+            @if ($verificationLinkSent)
+                <p class="mt-2 text-sm font-medium text-green-600 dark:text-green-400">
+                    {{ __('A new verification link has been sent to your email address.') }}
+                </p>
+            @endif
+        @endif
         <p class="pt-2 text-pretty">Por resolución de la SBS, necesitas llenar los siguientes
             datos.
         </p>
-        <x-mary-input label="RUC" value="{{ auth()->user()->document_number }}" readonly />
+        <x-mary-input label="RUC" value="{{ $user->document_number }}" readonly />
         <div class="grid grid-cols-2 gap-3">
-            <x-mary-input label="Razón Social" value="{{ auth()->user()->name }}" readonly />
-            <x-mary-input label="Celular" value="{{ auth()->user()->celphone }}" readonly />
+            <x-mary-input label="Razón Social" value="{{ $user->name }}" readonly />
+            <x-mary-input label="Celular" value="{{ $user->celphone }}" readonly />
         </div>
 
-        @foreach (auth()->user()->shareHolders as $shareHolder)
+        @foreach ($user->shareHolders as $shareHolder)
             <h3 class="font-semibold border-b-2 border-gray-900 text-md">
                 Accionista {{ $loop->index + 1 }}
             </h3>
@@ -44,12 +61,12 @@
         </div>
     </div>
     <div class="grid gap-3 my-10 md:grid-cols-2">
-        <x-identity-document-viewer-status :status="$legalRepresentative->identity_document_status" />
+        <x-identity-document-viewer-status :status="$user->identity_document_status" />
     </div>
     <!--Datos de PEP-->
     <div class="space-y-6">
         <div>
-            <label class="inline-flex items-center cursor-pointer">
+            <label class="inline-flex items-center cursor-not-allowed">
                 <input type="checkbox" class="sr-only peer" @checked($legalRepresentative->is_PEP) disabled>
                 <div
                     class="relative w-16 h-8 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-violet-300 rounded-full peer peer-checked:after:translate-x-8 peer-checked:before:-translate-x-5 rtl:peer-checked:before:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-7 after:w-7 after:transition-all after:duration-500
@@ -76,7 +93,7 @@
             </p>
         </div>
         <div>
-            <label class="inline-flex items-center cursor-pointer">
+            <label class="inline-flex items-center cursor-not-allowed">
                 <input type="checkbox" class="sr-only peer" @checked($legalRepresentative->wife_is_PEP) disabled>
                 <div
                     class="relative w-16 h-8 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-violet-300 rounded-full peer peer-checked:after:translate-x-8 peer-checked:before:-translate-x-5 rtl:peer-checked:before:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-7 after:w-7 after:transition-all after:duration-500
@@ -90,7 +107,7 @@
                 acuerdo con lo establecido en el artículo 326 del Código Civil.</p>
         </div>
         <div>
-            <label class="inline-flex items-center cursor-pointer">
+            <label class="inline-flex items-center cursor-not-allowed">
                 <input type="checkbox" class="sr-only peer" @checked($legalRepresentative->relative_is_PEP) disabled>
                 <div
                     class="relative w-16 h-8 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-violet-300 rounded-full peer peer-checked:after:translate-x-8 peer-checked:before:-translate-x-5 rtl:peer-checked:before:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-7 after:w-7 after:transition-all after:duration-500

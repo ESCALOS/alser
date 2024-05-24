@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\DocumentTypeEnum;
+use App\Enums\IdentityDocumentStatusEnum;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -59,6 +60,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'document_type' => DocumentTypeEnum::class,
+        'identity_document_status' => IdentityDocumentStatusEnum::class,
     ];
 
     /**
@@ -83,6 +85,11 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     public function bankAccounts(): HasMany
     {
         return $this->hasMany(BankAccount::class);
+    }
+
+    public function isIdentityDocumentRequired(): bool
+    {
+        return $this->identity_document_status === IdentityDocumentStatusEnum::PENDING || $this->identity_document_status === IdentityDocumentStatusEnum::REJECTED;
     }
 
     public function canAccessPanel(Panel $panel): bool

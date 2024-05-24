@@ -3,15 +3,14 @@
 namespace App\Livewire\Forms\Account;
 
 use App\Enums\DocumentTypeEnum;
-use App\Enums\IdentityDocumentStatusEnum;
 use App\Enums\RepresentationTypeEnum;
 use App\Models\LegalRepresentative;
+use App\Models\User;
 use App\Rules\DocumentNumberValidation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Intervention\Image\ImageManager;
-use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -64,19 +63,15 @@ class LegalRepresentativeForm extends Form
     #[Validate]
     public $pdfPEP;
 
-    #[Locked]
-    public IdentityDocumentStatusEnum $identityDocumentStatus = IdentityDocumentStatusEnum::PENDING;
-
     public function setLegalRepresentativeForm()
     {
-        $this->celphone = Auth::user()->celphone ?? '';
-
+        $this->celphone = auth()->user()->celphone ?? '';
         for ($i = 0; $i < 3; $i++) {
             $this->shareHolders[$i]['documentType'] = DocumentTypeEnum::ID;
         }
         $this->shareHolders;
-        if (LegalRepresentative::where('user_id', Auth::user()->id)->exists()) {
-            $this->legalRepresentative = LegalRepresentative::where('user_id', Auth::user()->id)->first();
+        if (LegalRepresentative::where('user_id', Auth::id())->exists()) {
+            $this->legalRepresentative = LegalRepresentative::where('user_id', Auth::id())->first();
 
             $this->name = $this->legalRepresentative->name;
             $this->firstLastname = $this->legalRepresentative->first_lastname;
@@ -88,12 +83,13 @@ class LegalRepresentativeForm extends Form
             $this->isPEP = $this->legalRepresentative->is_PEP;
             $this->wifeIsPEP = $this->legalRepresentative->wife_is_PEP;
             $this->relativeIsPEP = $this->legalRepresentative->relative_is_PEP;
-            $this->identityDocumentStatus = $this->legalRepresentative->identity_document_status;
         }
     }
 
     public function rules(): array
     {
+        $user = User::find(Auth::id());
+
         return [
             'shareHolders.*.name' => ['required_with:shareHolders.*.documentNumber'],
             'shareHolders.*.documentType' => ['required', Rule::enum(DocumentTypeEnum::class)],
@@ -101,8 +97,8 @@ class LegalRepresentativeForm extends Form
             'documentType' => ['required', Rule::enum(DocumentTypeEnum::class)->except([DocumentTypeEnum::TAX_NUMBER])],
             'documentNumber' => ['required', new DocumentNumberValidation($this->documentType)],
             'representationType' => ['required', Rule::enum(RepresentationTypeEnum::class)],
-            'identityDocumentFront' => [Rule::excludeIf(! $this->isIdentityDocumentRequired()), 'required', 'image', 'max:2048', 'mimes:jpeg,png,jpg'],
-            'identityDocumentBack' => [Rule::excludeIf(! $this->isIdentityDocumentRequired()), 'required', 'image', 'max:2048', 'mimes:jpeg,png,jpg'],
+            'identityDocumentFront' => ['required', 'image', 'max:2048', 'mimes:jpeg,png,jpg'],
+            'identityDocumentBack' => ['required', 'image', 'max:2048', 'mimes:jpeg,png,jpg'],
             'pdfPEP' => [Rule::excludeIf(! ($this->isPEP || $this->wifeIsPEP || $this->relativeIsPEP)), 'file', 'mimes:pdf'],
         ];
     }
@@ -127,45 +123,33 @@ class LegalRepresentativeForm extends Form
         ];
     }
 
-    public function saveIdentityDocumentImages(LegalRepresentative $legalRepresentative): void
+    public function saveIdentityDocumentImages(): void
     {
-        if ($legalRepresentative->isIdentityDocumentRequired()) {
+        $managerFront = ImageManager::imagick();
+        $imageFront = $managerFront->read($this->identityDocumentFront);
+        if (! Storage::put('identity-documents/'.Auth::user()->id.'/front.png', (string) $imageFront->toPng())) {
+            throw new \Exception('Error al guardar la imagen');
+        }
 
-            $managerFront = ImageManager::imagick();
-            $imageFront = $managerFront->read($this->identityDocumentFront);
-            if (! Storage::put('identity-documents/'.Auth::user()->id.'/front.png', (string) $imageFront->toPng())) {
-                throw new \Exception('Error al guardar la imagen');
-            }
-
-            $managerBack = ImageManager::imagick();
-            $imageBack = $managerBack->read($this->identityDocumentBack);
-            if (! Storage::put('identity-documents/'.Auth::user()->id.'/back.png', (string) $imageBack->toPng())) {
-                throw new \Exception('Error al guardar la imagen');
-            }
+        $managerBack = ImageManager::imagick();
+        $imageBack = $managerBack->read($this->identityDocumentBack);
+        if (! Storage::put('identity-documents/'.Auth::user()->id.'/back.png', (string) $imageBack->toPng())) {
+            throw new \Exception('Error al guardar la imagen');
         }
     }
 
-    public function savePdfPEP($legalRepresentative): void
+    public function savePdfPEP(): void
     {
-        if (! $legalRepresentative->isIdentityDocumentRequired()) {
+        if (! ($this->isPEP || $this->wifeIsPEP || $this->relativeIsPEP)) {
             return;
         }
-        if (! ($this->isPEP || $this->wifeIsPEP || $this->relativeIsPEP)) {
+
+        if (! $this->pdfPEP) {
             return;
         }
 
         if (! $this->pdfPEP->storeAs('pdf-PEP/', Auth::user()->id.'.pdf', 's3')) {
             new \Exception('Error al guardar el pdf');
         }
-    }
-
-    public function setIdentityDocumentStatus(): void
-    {
-        $this->identityDocumentStatus = LegalRepresentative::where('user_id', Auth::user()->id)->first()->identity_document_status ?? IdentityDocumentStatusEnum::PENDING;
-    }
-
-    public function isIdentityDocumentRequired(): bool
-    {
-        return $this->identityDocumentStatus === IdentityDocumentStatusEnum::PENDING || $this->identityDocumentStatus === IdentityDocumentStatusEnum::REJECTED;
     }
 }

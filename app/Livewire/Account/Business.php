@@ -31,13 +31,21 @@ class Business extends Component
 
     public array $representationTypes;
 
+    public bool $verificationLinkSent = false;
+
     public function mount()
     {
         $this->documentTypes = DocumentTypeEnum::getChoices();
         $this->documentTypesExceptRuc = DocumentTypeEnum::getChoicesExceptRuc();
         $this->representationTypes = RepresentationTypeEnum::getChoices();
-        $this->form->setLegalRepresentativeForm();
+        $this->form->setLegalRepresentativeForm($this->user);
 
+    }
+
+    #[Computed]
+    public function user(): User
+    {
+        return User::find(Auth::id());
     }
 
     #[Computed(persist: true)]
@@ -46,10 +54,14 @@ class Business extends Component
         return Country::select('id', 'name')->get()->toArray();
     }
 
-    #[Computed]
-    public function isIdentityDocumentRequired(): bool
+    public function sendEmailVerification()
     {
-        return $this->form->identityDocumentStatus === IdentityDocumentStatusEnum::PENDING || $this->form->identityDocumentStatus === IdentityDocumentStatusEnum::REJECTED;
+        $this->user->forceFill([
+            'email_verified_at' => null,
+        ])->save();
+
+        $this->user->sendEmailVerificationNotification();
+        $this->verificationLinkSent = true;
     }
 
     public function save()
@@ -58,10 +70,18 @@ class Business extends Component
         $message = 'Datos guardados';
         try {
             $this->form->resetValidation();
-            $this->form->setIdentityDocumentStatus();
             $this->form->validate();
+            unset($this->user);
 
-            $legalRepresentative = LegalRepresentative::firstOrNew(['user_id' => Auth::user()->id]);
+            if (! $this->user->identity_document_status === IdentityDocumentStatusEnum::UPLOADED) {
+                throw new \Exception('Datos en proceso de validación');
+            }
+
+            if (! $this->user->identity_document_status === IdentityDocumentStatusEnum::VALIDATED) {
+                throw new \Exception('Datos validados');
+            }
+
+            $legalRepresentative = LegalRepresentative::firstOrNew(['user_id' => Auth::id()]);
             $legalRepresentative->name = $this->form->name;
             $legalRepresentative->first_lastname = $this->form->firstLastname;
             $legalRepresentative->second_lastname = $this->form->secondLastname;
@@ -73,30 +93,28 @@ class Business extends Component
             $legalRepresentative->relative_is_PEP = $this->form->relativeIsPEP;
             $legalRepresentative->representation_type = $this->form->representationType;
 
-            $this->form->saveIdentityDocumentImages($legalRepresentative);
-            $this->form->savePdfPEP($legalRepresentative);
-            $legalRepresentative->identity_document_status = IdentityDocumentStatusEnum::UPLOADED;
-            DB::transaction(function () use ($legalRepresentative) {
-                $user = User::find(Auth::user()->id);
-                $user->celphone = $this->form->celphone;
+            $this->form->saveIdentityDocumentImages();
+            $this->form->savePdfPEP();
 
-                ShareHolder::where('user_id', auth()->user()->id)->delete();
+            DB::transaction(function () use ($legalRepresentative) {
+                $this->user->celphone = $this->form->celphone;
+                $this->user->identity_document_status = IdentityDocumentStatusEnum::UPLOADED;
+                ShareHolder::where('user_id', $this->user->id)->delete();
                 foreach ($this->form->shareHolders as $input) {
                     if (! empty($input['name'])) {
                         ShareHolder::create([
                             'fullname' => $input['name'],
                             'document_type' => $input['documentType'],
                             'document_number' => $input['documentNumber'],
-                            'user_id' => auth()->user()->id,
+                            'user_id' => $this->user->id,
                         ]);
                     }
                 }
 
-                $user->save();
+                $this->user->save();
                 $legalRepresentative->save();
             });
 
-            $this->form->identityDocumentStatus = IdentityDocumentStatusEnum::UPLOADED;
             $this->form->legalRepresentative = $legalRepresentative;
 
         } catch (ValidationException $ex) {

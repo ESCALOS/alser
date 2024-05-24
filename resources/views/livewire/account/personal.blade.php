@@ -1,10 +1,28 @@
 <div>
     <x-mary-card title="Datos del Perfil" shadow>
-        @if ($this->isIdentityDocumentRequired)
+        @if ($this->user->isIdentityDocumentRequired())
             <x-mary-form wire:submit='save'>
                 <div class="space-y-4">
-                    <x-mary-input label="{{ __('Email') }}" class="rounded-lg" value="{{ auth()->user()->email }}"
+                    <x-mary-input label="{{ __('Email') }}" class="rounded-lg" value="{{ $this->user->email }}"
                         disabled />
+                    @if (!$this->user->hasVerifiedEmail())
+                        <p class="mt-2 text-sm text-red-600">
+                            {{ __('Your email address is unverified.') }}
+
+                            <button wire:loading.remove wire:target='sendEmailVerification' type="button"
+                                class="text-sm text-gray-600 underline rounded-md dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                                wire:click.prevent="sendEmailVerification">
+                                {{ __('Click here to re-send the verification email.') }}
+                            </button>
+                            <span class="text-blue-500" wire:loading
+                                wire:target='sendEmailVerification'>Enviando...</span>
+                        </p>
+                        @if ($verificationLinkSent)
+                            <p class="mt-2 text-sm font-medium text-green-600 dark:text-green-400">
+                                {{ __('A new verification link has been sent to your email address.') }}
+                            </p>
+                        @endif
+                    @endif
                     <p class="pt-2 text-pretty">Por resolución de la SBS, necesitas llenar los siguientes
                         datos.
                     </p>
@@ -221,7 +239,7 @@
                 </x-slot:actions>
             </x-mary-form>
         @else
-            <x-profile-data-form :personal-account="$form->personalAccount" />
+            <x-profile-data-form :personal-account="$form->personalAccount" :verification-link-sent="$verificationLinkSent" :user="$this->user" />
         @endif
     </x-mary-card>
 </div>
