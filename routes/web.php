@@ -21,6 +21,7 @@ Route::middleware([
 
     Route::get('/cuentas-bancarias', BankAccountList::class)->name('bank-account');
 
+    //  Ruta de imagenes de Documento de identidad
     Route::prefix('image')->name('image.')->group(function () {
         Route::get('identity_document/{type}', function ($type) {
             $ruta = 'identity-documents/'.Auth::user()->id.'/'.$type.'.png';
@@ -37,7 +38,7 @@ Route::middleware([
         })->name('identity-document-by-user');
 
     });
-
+    //Ruta de pdf PEP
     Route::prefix('pdf')->name('pdf.')->group(function () {
         Route::get('pep/{userId}', function ($userId) {
             $ruta = 'pdf-PEP/'.$userId.'.pdf';
