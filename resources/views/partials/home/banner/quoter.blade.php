@@ -8,15 +8,15 @@
             </div>
         </div>
     </div>
-    <div class="flex">
-        <div class="flex justify-center w-full mt-2" id="container-quoter" x-show="active"
+    <div class="flex justify-center">
+        <div class="flex justify-center w-96 mt-2" id="container-quoter" x-show="active"
             x-transition:enter="transition-all ease-out duration-300"
             x-transition:enter-start="opacity-0 translate-x-full" x-transition:enter-end="opacity-100 translate-x-0"
             x-transition:leave="transition-all ease-in duration-300"
             x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-full">
             <livewire:quoter />
         </div>
-        <div class="absolute flex justify-center w-full mt-2 -z-10" id="container-promo" x-show="!active"
+        <div class="absolute flex justify-center w-96 mt-2 -z-10" id="container-promo" x-show="!active"
             x-transition:enter="transition-all ease-out duration-300"
             x-transition:enter-start="opacity-0 translate-x-full" x-transition:enter-end="opacity-100 translate-x-0"
             x-transition:leave="transition-all ease-in duration-300"
