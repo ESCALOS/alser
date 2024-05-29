@@ -1,4 +1,4 @@
-<div class="bg-white border border-gray-200 rounded-lg shadow w-full" x-data="quoter">
+<div class="w-full bg-white border border-gray-200 rounded-lg shadow" x-data="quoter">
     <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 rounded-t-lg select-none justify-evenly bg-gray-50"
         role="tablist">
         <li class="me-2">
@@ -92,8 +92,8 @@
             purchase: true,
             dolarAmount: 1000,
             solAmount: 0,
-            purchasePrice: {{ $purchaseFactor }},
-            salesPrice: {{ $salesFactor }},
+            purchasePrice: $wire.purchaseFactor,
+            salesPrice: $wire.salesFactor,
 
             init() {
                 this.solAmount = (1000 * this.purchasePrice).toFixed(2);
