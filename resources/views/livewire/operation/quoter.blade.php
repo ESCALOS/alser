@@ -61,21 +61,41 @@
                     </div>
                 </div>
                 <div class="my-4">
-                    <div>
-                        <x-mary-choices label="¿En qué cuenta deseas recibir los soles?" wire:model="form.solAccount"
-                            :options="$solAccounts" option-label="name" option-sub-label="account_number"
-                            option-avatar="bank_logo" icon="o-credit-card" height="max-h-96" single />
-                        <p class="my-4 font-semibold text-right cursor-pointer text-violet-700">
-                            Agregar nueva cuenta bancaria dólares <x-mary-icon class="w-7" name="o-plus-circle" />
-                        </p>
+                    <div id="solAccount" class="transition-all"
+                        :class="$wire.form.isPurchase ? '-translate-y-100' : 'translate-y-100'">
+                        <div x-show='$wire.solAccounts'>
+                            <x-mary-choices label="¿En qué cuenta deseas recibir los soles?"
+                                wire:model="form.solAccount" :options="$solAccounts" option-label="name"
+                                option-sub-label="account_number" option-avatar="bank_logo" icon="o-credit-card"
+                                height="max-h-96" single />
+                            <p class="my-4 font-semibold text-right cursor-pointer text-violet-700">
+                                Agregar nueva cuenta bancaria dólares
+                                <x-mary-icon class="w-7" name="o-plus-circle" />
+                            </p>
+                        </div>
+                        <div x-show='!$wire.solAccounts'>
+                            <x-mary-button label="Agregar nueva cuenta bancaria soles" icon='o-plus-circle'
+                                class="w-full mt-4 text-lg bg-white hover:bg-white transition-colors duration-300 border border-violet-900 text-violet-900"
+                                type="submit" />
+                        </div>
                     </div>
-                    <div>
-                        <x-mary-choices label="¿En qué cuenta deseas recibir los soles?" wire:model="form.dollarAccount"
-                            :options="$dollarAccounts" option-label="name" option-sub-label="account_number"
-                            option-avatar="bank_logo" icon="o-credit-card" height="max-h-96" single />
-                        <p class="my-4 font-semibold text-right cursor-pointer text-violet-700">
-                            Agregar nueva cuenta bancaria soles <x-mary-icon class="w-7" name="o-plus-circle" />
-                        </p>
+                    <div class="transition-all" id="dollarAccount"
+                        :class="$wire.form.isPurchase ? 'translate-y-100' : '-translate-y-100'">
+                        <div x-show="$wire.dollarAccounts">
+                            <x-mary-choices label="¿En qué cuenta deseas recibir los soles?"
+                                wire:model="form.dollarAccount" :options="$dollarAccounts" option-label="name"
+                                option-sub-label="account_number" option-avatar="bank_logo" icon="o-credit-card"
+                                height="max-h-96" single />
+                            <p class="my-4 font-semibold text-right cursor-pointer text-violet-700">
+                                Agregar nueva cuenta bancaria soles
+                                <x-mary-icon class="w-7" name="o-plus-circle" />
+                            </p>
+                        </div>
+                        <div x-show='!$wire.dollarAccounts'>
+                            <x-mary-button label="Agregar nueva cuenta bancaria dólares" icon='o-plus-circle'
+                                class="w-full mt-4 text-lg bg-white transition-colors duration-300 border border-violet-900 text-violet-900"
+                                type="submit" />
+                        </div>
                     </div>
                 </div>
                 <p class="my-4 text-left">

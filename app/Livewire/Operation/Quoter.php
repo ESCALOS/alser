@@ -6,6 +6,7 @@ use App\Enums\CurrencyTypeEnum;
 use App\Livewire\Forms\OperationForm;
 use App\Models\BankAccount;
 use App\Models\Price;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
@@ -21,9 +22,9 @@ class Quoter extends Component
     #[Locked]
     public $salesFactor = 0;
 
-    public array $solAccounts = [];
+    public ?Collection $solAccounts = null;
 
-    public array $dollarAccounts = [];
+    public ?Collection $dollarAccounts = null;
 
     #[Locked]
     public int $version = 0;
@@ -48,11 +49,8 @@ class Quoter extends Component
                 'name' => $bankAccount->name,
                 'account_number' => $bankAccount->account_number,
                 'bank_logo' => $bankAccount->bank->logo,
-            ])->values()->toArray();
-
-        if ($this->solAccounts !== []) {
-            $this->form->solAccount = $this->solAccounts[0]['id'];
-        }
+            ])->values();
+        $this->form->solAccount = $this->solAccounts->first()?->id;
 
         $this->dollarAccounts = $bankAccounts->filter(fn ($bankAccount) => $bankAccount->currency_type === CurrencyTypeEnum::DOLLAR)
             ->map(fn ($bankAccount) => [
@@ -60,11 +58,9 @@ class Quoter extends Component
                 'name' => $bankAccount->name,
                 'account_number' => $bankAccount->account_number,
                 'bank_logo' => $bankAccount->bank->logo,
-            ])->values()->toArray();
+            ])->values();
 
-        if ($this->dollarAccounts !== []) {
-            $this->form->dollarAccount = $this->dollarAccounts[0]['id'];
-        }
+        $this->form->dollarAccount = $this->dollarAccounts->first()?->id;
     }
 
     public function getPrices()
@@ -85,7 +81,15 @@ class Quoter extends Component
                 redirectTo: null                    // optional (uri)
             );
         }
+    }
 
+    public function save()
+    {
+        $bankAccount = BankAccount::create([
+            'name' => 'Otra cuenta generada',
+            'bank_id' => 1,
+            'account_number' => '1238891821',
+        ]);
     }
 
     public function render()
