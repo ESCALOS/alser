@@ -10,4 +10,11 @@ class Bank extends Model
     use HasFactory;
 
     protected $fillable = ['name'];
+
+    public function getLogoAttribute()
+    {
+        $uri = env('APP_URL').'/images/logos/';
+
+        return $uri.strtolower($this->name).'.jpg';
+    }
 }
