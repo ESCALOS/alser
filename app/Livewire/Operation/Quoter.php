@@ -50,7 +50,9 @@ class Quoter extends Component
                 'account_number' => $bankAccount->account_number,
                 'bank_logo' => $bankAccount->bank->logo,
             ])->values();
-        $this->form->solAccount = $this->solAccounts->first()?->id;
+        if (! $this->solAccounts->isEmpty()) {
+            $this->form->solAccount = $this->solAccounts->first()['id'];
+        }
 
         $this->dollarAccounts = $bankAccounts->filter(fn ($bankAccount) => $bankAccount->currency_type === CurrencyTypeEnum::DOLLAR)
             ->map(fn ($bankAccount) => [
@@ -59,8 +61,9 @@ class Quoter extends Component
                 'account_number' => $bankAccount->account_number,
                 'bank_logo' => $bankAccount->bank->logo,
             ])->values();
-
-        $this->form->dollarAccount = $this->dollarAccounts->first()?->id;
+        if (! $this->dollarAccounts->isEmpty()) {
+            $this->form->dollarAccount = $this->dollarAccounts->first()['id'];
+        }
     }
 
     public function getPrices()
