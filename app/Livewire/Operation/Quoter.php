@@ -5,6 +5,7 @@ namespace App\Livewire\Operation;
 use App\Enums\CurrencyTypeEnum;
 use App\Livewire\Forms\OperationForm;
 use App\Models\BankAccount;
+use App\Models\Operation;
 use App\Models\Price;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -46,7 +47,7 @@ class Quoter extends Component
 
         $this->solAccounts = $bankAccounts->filter(fn ($bankAccount) => $bankAccount->currency_type === CurrencyTypeEnum::SOL)
             ->map(fn ($bankAccount) => [
-                'id' => $bankAccount->id,
+                'id' => $bankAccount->account_number,
                 'name' => $bankAccount->name,
                 'account_number' => $bankAccount->account_number,
                 'bank_logo' => $bankAccount->bank->logo,
@@ -56,7 +57,7 @@ class Quoter extends Component
         }
         $this->dollarAccounts = $bankAccounts->filter(fn ($bankAccount) => $bankAccount->currency_type === CurrencyTypeEnum::DOLLAR)
             ->map(fn ($bankAccount) => [
-                'id' => $bankAccount->id,
+                'id' => $bankAccount->account_number,
                 'name' => $bankAccount->name,
                 'account_number' => $bankAccount->account_number,
                 'bank_logo' => $bankAccount->bank->logo,
@@ -115,10 +116,19 @@ class Quoter extends Component
 
     public function save()
     {
-        $bankAccount = BankAccount::create([
-            'name' => 'Otra cuenta generada',
-            'bank_id' => 1,
-            'account_number' => '1238891821',
+        $this->form->resetValidation();
+        $this->form->validate();
+
+        $accountFromSend = $this->form->isPurchase ? $this->form->dollarAccount : $this->form->solAccount;
+        $accountToReceive = $this->form->isPurchase ? $this->form->solAccount : $this->form->dollarAccount;
+
+        Operation::create([
+            'user_id' => auth()->user()->id,
+            'is_purchase' => $this->form->isPurchase,
+            'amount_to_send' => $this->form->amountToSend,
+            'amount_to_receive' => $this->form->amountToReceive,
+            'account_from_send' => $this->form->isPurchase ? $this->form->dollarAccount : $this->form->solAccount,
+            'account_from_send' => $this->form->isPurchase ? $this->form->dollarAccount : $this->form->solAccount,
         ]);
     }
 
