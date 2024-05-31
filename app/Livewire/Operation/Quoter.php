@@ -9,6 +9,7 @@ use App\Models\Price;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Mary\Traits\Toast;
 
@@ -22,9 +23,9 @@ class Quoter extends Component
     #[Locked]
     public $salesFactor = 0;
 
-    public ?Collection $solAccounts = null;
+    public Collection $solAccounts;
 
-    public ?Collection $dollarAccounts = null;
+    public Collection $dollarAccounts;
 
     #[Locked]
     public int $version = 0;
@@ -53,7 +54,6 @@ class Quoter extends Component
         if (! $this->solAccounts->isEmpty()) {
             $this->form->solAccount = $this->solAccounts->first()['id'];
         }
-
         $this->dollarAccounts = $bankAccounts->filter(fn ($bankAccount) => $bankAccount->currency_type === CurrencyTypeEnum::DOLLAR)
             ->map(fn ($bankAccount) => [
                 'id' => $bankAccount->id,
@@ -63,6 +63,33 @@ class Quoter extends Component
             ])->values();
         if (! $this->dollarAccounts->isEmpty()) {
             $this->form->dollarAccount = $this->dollarAccounts->first()['id'];
+        }
+    }
+
+    #[On('account-created')]
+    public function newBankAccount($bankAccount)
+    {
+        $currencyType = CurrencyTypeEnum::from($bankAccount['currency_type']);
+        $data = [
+            'id' => $bankAccount['id'],
+            'name' => $bankAccount['name'],
+            'account_number' => $bankAccount['account_number'],
+            'bank_logo' => $bankAccount['bank_logo'],
+        ];
+        if ($currencyType === CurrencyTypeEnum::SOL) {
+            if ($this->solAccounts->isEmpty()) {
+                $this->solAccounts = collect([$data]);
+            } else {
+                $this->solAccounts->push($data);
+            }
+            $this->form->solAccount = $bankAccount['id'];
+        } else {
+            if ($this->dollarAccounts->isEmpty()) {
+                $this->dollarAccounts = collect([$data]);
+            } else {
+                $this->dollarAccounts->push($data);
+            }
+            $this->form->dollarAccount = $bankAccount['id'];
         }
     }
 

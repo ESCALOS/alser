@@ -93,7 +93,7 @@ class BankAccountForm extends Form
 
     }
 
-    public function save()
+    public function save(): ?BankAccount
     {
         $this->validate();
         if ($this->bankAccountId == 0) {
@@ -101,7 +101,7 @@ class BankAccountForm extends Form
         } else {
             $bankAccount = BankAccount::find($this->bankAccountId);
             if ($bankAccount->user_id !== Auth::user()->id) {
-                return;
+                return null;
             }
         }
         $bankAccount->user_id = Auth::user()->id;
@@ -113,6 +113,8 @@ class BankAccountForm extends Form
         $bankAccount->name = $this->name;
 
         $bankAccount->save();
+
+        return $bankAccount;
     }
 
     public function delete($bankAccountId)

@@ -64,5 +64,6 @@
                 </div>
             </div>
         </div>
+        <livewire:bank-account-modal />
     </div>
 </x-app-layout>

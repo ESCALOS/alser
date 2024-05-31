@@ -1,4 +1,4 @@
-<div x-data="modal">
+<div>
     <x-mary-drawer wire:model="showDrawer" title="Nueva Cuenta Bancaria"
         subtitle="Añade la cuenta bancaria desde donde quieres enviar o recibir tu dinero" right separator
         class="w-11/12 lg:w-2/3">
@@ -28,24 +28,15 @@
 </div>
 @script
     <script>
-        Alpine.data('modal', () => ({
-            showDrawer: $wire.showDrawer,
-            init() {
-                this.$watch('', value => {
-                    if (value) {
-                        let inputErrrors = document.getElementsByClassName('input-error');
-                        let errors = document.getElementsByClassName('text-red-500');
-                        for (let i = 0; i < inputErrrors.length; i++) {
-                            inputErrrors[i].classList.remove('input-error');
-                        }
-                        for (let i = 0; i < errors.length; i++) {
-                            errors[i].classList.add('hidden');
-                        }
-                    }
-                })
-            }
-        }))
         Livewire.on('openModal', (currency) => {
+            let inputErrrors = document.getElementsByClassName('input-primary');
+            let errors = document.getElementsByClassName('text-red-500');
+            for (let i = 0; i < inputErrrors.length; i++) {
+                inputErrrors[i].classList.remove('input-error');
+            }
+            for (let i = 0; i < errors.length; i++) {
+                errors[i].classList.add('hidden');
+            }
             $wire.form.bankAccountId = 0
             $wire.form.accountNumber = ''
             $wire.form.name = ''

@@ -28,5 +28,5 @@
             @endforeach
         </div>
     </div>
-    <livewire:bank-account-modal />
+    <livewire:bank-account-modal @account-created="$refresh" @account-deleted="$refresh" />
 </div>

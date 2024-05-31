@@ -51,13 +51,23 @@ class BankAccountModal extends Component
     public function delete($bankAccountId)
     {
         $this->form->delete($bankAccountId);
+        $this->dispatch('account-deleted');
     }
 
     public function save()
     {
-        $this->form->save();
+        $bankAccount = $this->form->save();
         if ($this->form->bankAccountId > 0) {
             $this->dispatch('account-updated.'.$this->form->bankAccountId);
+        } else {
+            $data = [
+                'id' => $bankAccount->id,
+                'name' => $bankAccount->name,
+                'account_number' => $bankAccount->account_number,
+                'bank_logo' => $bankAccount->bank->logo,
+                'currency_type' => $bankAccount->currency_type,
+            ];
+            $this->dispatch('account-created', bankAccount: $data);
         }
         $this->showDrawer = false;
 
