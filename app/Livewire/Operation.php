@@ -14,7 +14,7 @@ class Operation extends Component
 {
     use Toast;
 
-    public $lastOperation;
+    public ?ModelsOperation $lastOperation;
 
     public function mount()
     {
