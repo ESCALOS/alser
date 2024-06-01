@@ -19,11 +19,25 @@
     <div class="grid grid-cols-2 mt-6 mb-1 border border-gray-300 rounded-md">
         <div class="py-1 pl-2 bg-gray-200">
             <p>Enviarás <i class="rotate-45 fa-solid fa-arrow-up text-violet-900"></i> </p>
-            <p class="font-bold">$ 3.746.00</p>
+            <p class="font-bold">
+                @if ($operation->is_purchase)
+                    $
+                @else
+                    S/.
+                @endif
+                {{ number_format($operation->amount_to_send, 2) }}
+            </p>
         </div>
         <div class="py-1 pl-2">
             <p>Recibirás <i class="fa-solid fa-arrow-down text-lime-500"></i></p>
-            <p class="font-bold text-lime-500">S/. 13,901.41</p>
+            <p class="font-bold text-lime-500">
+                @if (!$operation->is_purchase)
+                    $
+                @else
+                    S/.
+                @endif
+                {{ number_format($operation->amount_to_receive, 2) }}
+            </p>
         </div>
     </div>
 </x-mary-card>

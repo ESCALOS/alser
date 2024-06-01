@@ -20,8 +20,13 @@ return new class extends Migration
             $table->double('factor', 8, 4);
             $table->string('account_from_send', 30);
             $table->string('account_to_receive', 30);
+            $table->unsignedBigInteger('origin_bank');
+            $table->unsignedBigInteger('destination_bank');
             $table->enum('status', [1, 2, 3, 4, 5])->default(1);
             $table->timestamps();
+
+            $table->foreign('origin_bank')->references('id')->on('banks')->onDelete('restrict');
+            $table->foreign('destination_bank')->references('id')->on('banks')->onDelete('restrict');
         });
     }
 

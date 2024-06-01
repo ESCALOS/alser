@@ -1,16 +1,16 @@
 <div>
-    <div class="w-1/3 space-y-4">
+    <div class="w-full space-y-4 lg:w-1/3">
         <div>
-            <livewire:operation.summary :$operation />
+            <x-operation.summary :$operation />
         </div>
         <div>
             <x-operation.no-cash />
         </div>
         <div>
-            <x-operation.important />
+            <x-operation.important :originBank="$operation->originBank->name" :destinationBank="$operation->destinationBank->name" />
         </div>
     </div>
-    <div class="w-2/3">
+    <div class="w-full lg:w-2/3">
 
     </div>
 </div>
