@@ -20,6 +20,7 @@ return new class extends Migration
             $table->double('factor', 8, 4);
             $table->string('account_from_send', 30);
             $table->string('account_to_receive', 30);
+            $table->enum('status', [1, 2, 3, 4, 5])->default(1);
             $table->timestamps();
         });
     }

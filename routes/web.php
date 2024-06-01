@@ -3,6 +3,7 @@
 use App\Livewire\Account;
 use App\Livewire\Auth\Register;
 use App\Livewire\BankAccountList;
+use App\Livewire\Operation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
@@ -14,9 +15,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     // 'verified',
 ])->group(function () {
-    Route::get('/nueva-operacion', function () {
-        return view('new-operation');
-    })->name('new-operation');
+    Route::get('/nueva-operacion', Operation::class)->name('new-operation');
     Route::get('/datos-del-perfil', Account::class)->name('account');
 
     Route::get('/cuentas-bancarias', BankAccountList::class)->name('bank-account');
