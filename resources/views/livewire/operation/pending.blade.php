@@ -1,15 +1,27 @@
-<div>
-    <div class="w-full space-y-4 lg:w-1/3">
+<div class="grid grid-cols-3 gap-4">
+    <div class="col-span-3 space-y-4 lg:col-span-1">
         <x-operation.summary :$operation />
         <x-operation.no-cash />
         <x-operation.important :originBank="$operation->originBank->name" :destinationBank="$operation->destinationBank->name" />
     </div>
-    <div class="w-full lg:w-2/3">
-        <div>
-
+    <div class="col-span-3 lg:col-span-2">
+        <div class="flex justify-between mb-8">
+            <div>
+                <span class="text-gray-600 text-md">Mi cambio</span>
+                <h2 class="text-2xl font-semibold leading-none text-violet-700">Transferencia bancaria</h2>
+                <div class="grid w-40 grid-cols-3">
+                    <div class="h-1 mt-2 rounded-lg w-11 bg-violet-700"></div>
+                    <div class="h-1 mt-2 bg-gray-300 rounded-lg w-11"></div>
+                    <div class="h-1 mt-2 bg-gray-300 rounded-lg w-11"></div>
+                </div>
+            </div>
+            <div>
+                contador
+            </div>
         </div>
-        <div>
-
+        <x-operation.wire :bank="$operation->originBank->name" :account="$operation->account_from_send" :amount="$operation->amount_to_send" :is-purchase="$operation->is_purchase" />
+        <div class="mt-4">
+            <livewire:operation.number />
         </div>
     </div>
 </div>
