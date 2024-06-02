@@ -15,9 +15,7 @@
                     <div class="h-1 mt-2 bg-gray-300 rounded-lg w-11"></div>
                 </div>
             </div>
-            <div>
-                contador
-            </div>
+            <livewire:operation.countdown :created-at="$operation->created_at" />
         </div>
         <x-operation.wire :bank="$operation->originBank->name" :account="$operation->account_from_send" :amount="$operation->amount_to_send" :is-purchase="$operation->is_purchase" />
         <div class="mt-4">
