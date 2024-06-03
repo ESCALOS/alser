@@ -19,7 +19,7 @@
         </div>
         <x-operation.wire :bank="$operation->originBank->name" :account="$operation->account_from_send" :amount="$operation->amount_to_send" :is-purchase="$operation->is_purchase" />
         <div class="mt-4">
-            <livewire:operation.number />
+            <livewire:operation.number :$operation />
         </div>
     </div>
 </div>

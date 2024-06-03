@@ -10,13 +10,16 @@
             formattedTime: '',
             createdAt: $wire.createdAt,
             hasDispatched: false,
+            intervalId: null,
             init() {
                 const endTime = new Date(new Date(this.createdAt).getTime() + 15 * 60000);
-                this.updateTimeLeft(endTime);
 
-                setInterval(() => {
-                    this.updateTimeLeft(endTime);
-                }, 1000);
+                if (this.updateTimeLeft(endTime)) {
+                    this.intervalId = setInterval(() => {
+                        this.updateTimeLeft(endTime);
+                    }, 1000);
+                }
+
             },
             updateTimeLeft(endTime) {
                 const now = new Date();
@@ -24,7 +27,11 @@
 
                 if (timeDiff <= 0) {
                     this.formattedTime = '00:00';
-                    console.log('Se te acabó el tiempo')
+                    $wire.dispatch('operation-cancelled')
+                    if (this.intervalId) {
+                        clearInterval(this.intervalId);
+                    }
+                    return false;
                 } else {
                     const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
                     const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
@@ -35,6 +42,7 @@
                         this.hasDispatched = true;
                     }
                 }
+                return true;
             },
             pad(num) {
                 return num < 10 ? '0' + num : num;

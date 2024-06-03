@@ -12,4 +12,20 @@
     <div>
         <input type="text" class="w-full py-2 rounded-md" placeholder="Número de operación" />
     </div>
+    <button class="bg-violet-100 text-violet-700 font-bold text-sm py-2 px-4 mt-10 mb-4 rounded-sm">
+        Agregar más transferencias
+        <x-mary-icon name="s-plus-circle" />
+    </button>
+    <hr class="border-t-2 border-gray-300 border-dotted my-4">
+    <div class="flex justify-between">
+        <x-mary-button type="button"
+            class="py-2 px-4 border text-sm rounded-sm border-gray-400 text-gray-400 bg-white font-bold hover:bg-white"
+            x-on:click="$wire.dispatch('operation-cancelled')">
+            Cancelar Operación
+        </x-mary-button>
+        <x-mary-button type="button"
+            class="py-2 px-4 border text-sm rounded-sm bg-violet-700 hover:bg-violet-800 text-white font-bold ">
+            Enviar Operación
+        </x-mary-button>
+    </div>
 </x-mary-card>

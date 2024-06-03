@@ -41,7 +41,7 @@ class Quoter extends Component
         $this->purchaseFactor = $price->purchase ?? 0;
         $this->salesFactor = $price->sales ?? 0;
         $this->form->amountToSend = 1000;
-        $this->form->amountToReceive = $this->form->amountToSend * $this->purchaseFactor;
+        $this->form->amountToReceive = number_format($this->form->amountToSend * $this->purchaseFactor, 2);
 
         $bankAccounts = BankAccount::where('user_id', Auth::id())
             ->with('bank')
@@ -121,13 +121,22 @@ class Quoter extends Component
         try {
             $this->form->resetValidation();
             $this->form->validate();
-            $this->warning('Advertencia', 'Ya tienes una operación en proceso');
+
             $lastOperation = Operation::where('user_id', Auth::id())->latest()->first();
 
-            if ($lastOperation && $lastOperation->status === OperationStatusEnum::UPLOADED) {
-                $this->warning('Advertencia', 'Ya tienes una operación en proceso');
+            if ($lastOperation) {
+                if ($lastOperation->status === OperationStatusEnum::PENDING) {
+                    $this->info('Ingresa el número de operación.');
+                    $this->dispatch('operation-created');
 
-                return;
+                    return;
+                }
+                if ($lastOperation->status === OperationStatusEnum::UPLOADED) {
+                    $this->warning('Advertencia', 'Ya tienes una operación en proceso');
+                    $this->dispatch('operation-created');
+
+                    return;
+                }
             }
 
             $accounts = BankAccount::whereIn('id', [$this->form->solAccount, $this->form->dollarAccount])->get();
