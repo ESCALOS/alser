@@ -6,7 +6,7 @@
     </div>
     <div class="col-span-3 lg:col-span-2">
         <span class="text-gray-600 text-md">Mi cambio</span>
-        <div class="flex flex-wrap md:flex-nowrap justify-between mb-8">
+        <div class="flex flex-wrap justify-between mb-8 md:flex-nowrap">
             <div>
                 <h2 class="text-2xl font-semibold leading-none text-violet-700">Transferencia bancaria</h2>
                 <div class="grid w-40 grid-cols-3">

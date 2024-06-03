@@ -3,10 +3,8 @@
 namespace App\Livewire\Operation;
 
 use App\Enums\CurrencyTypeEnum;
-use App\Enums\OperationStatusEnum;
 use App\Livewire\Forms\OperationForm;
 use App\Models\BankAccount;
-use App\Models\Operation;
 use App\Models\Price;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -121,47 +119,8 @@ class Quoter extends Component
         try {
             $this->form->resetValidation();
             $this->form->validate();
-
-            $lastOperation = Operation::where('user_id', Auth::id())->latest()->first();
-
-            if ($lastOperation) {
-                if ($lastOperation->status === OperationStatusEnum::PENDING) {
-                    $this->info('Ingresa el número de operación.');
-                    $this->dispatch('operation-created');
-
-                    return;
-                }
-                if ($lastOperation->status === OperationStatusEnum::UPLOADED) {
-                    $this->warning('Advertencia', 'Ya tienes una operación en proceso');
-                    $this->dispatch('operation-created');
-
-                    return;
-                }
-            }
-
-            $accounts = BankAccount::whereIn('id', [$this->form->solAccount, $this->form->dollarAccount])->get();
-            $solAccount = $accounts->find($this->form->solAccount);
-            $dollarAccount = $accounts->find($this->form->dollarAccount);
-
-            $accountFromSend = $this->form->isPurchase ? $dollarAccount : $solAccount;
-            $accountToReceive = $this->form->isPurchase ? $solAccount : $dollarAccount;
-
-            Operation::create([
-                'user_id' => auth()->user()->id,
-                'is_purchase' => $this->form->isPurchase,
-                'amount_to_send' => floatval(str_replace(',', '', $this->form->amountToSend)),
-                'amount_to_receive' => floatval(str_replace(',', '', $this->form->amountToReceive)),
-                'factor' => $this->form->isPurchase ? $this->purchaseFactor : $this->salesFactor,
-                'account_from_send' => $accountFromSend->account_number,
-                'account_to_receive' => $accountToReceive->account_number,
-                'origin_bank' => $accountFromSend->bank_id,
-                'destination_bank' => $accountToReceive->bank_id,
-            ]);
-
-            $this->form->terms = false;
-
-            $this->info('Realiza la transferencia y proporciona el código de pago');
-            $this->dispatch('operation-created');
+            $factor = $this->form->isPurchase ? $this->purchaseFactor : $this->salesFactor;
+            $this->dispatch('create-operation', $this->form->all(), $factor);
         } catch (ValidationException $ex) {
             $message = '';
             foreach ($ex->errors() as $field => $errorMessage) {
