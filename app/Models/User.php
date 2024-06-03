@@ -92,6 +92,21 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         return $this->identity_document_status === IdentityDocumentStatusEnum::PENDING || $this->identity_document_status === IdentityDocumentStatusEnum::REJECTED;
     }
 
+    public function isDataValidated(): bool
+    {
+        return $this->identity_document_status === IdentityDocumentStatusEnum::VALIDATED;
+    }
+
+    public function isDataUploaded(): bool
+    {
+        return $this->identity_document_status === IdentityDocumentStatusEnum::UPLOADED;
+    }
+
+    public function isDataPending(): bool
+    {
+        return $this->identity_document_status === IdentityDocumentStatusEnum::PENDING;
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
         // return str_ends_with($this->email, '@alsercambio.com') && $this->hasVerifiedEmail();

@@ -10,10 +10,10 @@
         <span class="font-semibold underline cursor-pointer text-violet-700">¿Cómo lo encuentro?</span>
     </div>
     <div>
-        <x-mary-input type="text" class="w-full py-2 rounded-md" placeholder="Número de operación"
+        <input type="text" class="w-full py-2 rounded-md" placeholder="Número de operación"
             wire:model='form.transactions.0.number' />
-        <x-mary-input type="text" class="w-full py-2 rounded-md" placeholder="Monto de la operación"
-            wire:model='form.transactions.0.amount' />
+        {{-- <x-mary-input type="text" class="w-full py-2 rounded-md" placeholder="Monto de la operación"
+            wire:model='form.transactions.0.amount' /> --}}
     </div>
     <button class="px-4 py-2 mt-10 mb-4 text-sm font-bold rounded-sm bg-violet-100 text-violet-700">
         Agregar más transferencias

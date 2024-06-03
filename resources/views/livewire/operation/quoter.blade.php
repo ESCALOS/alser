@@ -111,16 +111,56 @@
                         </div>
                     </div>
                 </div>
-                <p class="my-4 text-left">
-                    Declaro bajo juramento que los fondos involucrados en la operación provienen de actividades lícitas
-                    en conformidad con la normativa peruana y las regulaciones de prevención de lavado de activos en el
-                    país.
-                </p>
-                <x-mary-checkbox label="Afirmo y ratifico todo lo manifestado en la presente declaración jurada"
-                    wire:model="form.terms" class="select-none" />
-                <x-mary-button label="Iniciar Operación"
-                    class="w-full mt-8 text-lg text-white transition-colors duration-300 bg-violet-800 hover:bg-violet-900"
-                    type="button" wire:click='save' spinner="save" />
+                @if (auth()->user()->hasVerifiedEmail() && auth()->user()->isDataValidated())
+                    <p class="my-4 text-left">
+                        Declaro bajo juramento que los fondos involucrados en la operación provienen de actividades
+                        lícitas
+                        en conformidad con la normativa peruana y las regulaciones de prevención de lavado de activos en
+                        el
+                        país.
+                    </p>
+                    <x-mary-checkbox label="Afirmo y ratifico todo lo manifestado en la presente declaración jurada"
+                        wire:model="form.terms" class="select-none" />
+                    <x-mary-button label="Iniciar Operación"
+                        class="w-full mt-8 text-lg text-white transition-colors duration-300 bg-violet-800 hover:bg-violet-900"
+                        type="button" wire:click='save' spinner="save" />
+                @else
+                    <p class="text-sm text-red-600">
+                        *Para iniciar una operación primero necesita:
+                    </p>
+                    <ul class="pl-6 text-sm list-disc">
+                        @if (!auth()->user()->hasVerifiedEmail())
+                            <li>Validar su correo</li>
+                        @endif
+                        @if (auth()->user()->isDataPending())
+                            <li>Ingresar sus datos</li>
+                        @endif
+                        @if (auth()->user()->isDataUploaded())
+                            <li>Esperar la validación de sus datos</li>
+                        @endif
+                    </ul>
+                    <div class="flex justify-center gap-4 text-center">
+                        @if (!auth()->user()->hasVerifiedEmail())
+                            <button
+                                class="w-full p-2 mt-8 text-lg text-white transition-colors duration-300 rounded-md cursor-pointer bg-sky-800 hover:bg-sky-900"
+                                type="button" x-on:click="$wire.dispatch('send-verification-email')">
+                                Valida tu correo
+                            </button>
+                        @endif
+                        @if (auth()->user()->isDataPending())
+                            <a wire:navigate href="{{ route('account') }}"
+                                class="w-full p-2 mt-8 text-lg text-white transition-colors duration-300 rounded-md cursor-pointer bg-amber-800 hover:bg-amber-900">
+                                Ingresa los datos de tu perfil
+                            </a>
+                        @endif
+                        @if (auth()->user()->isDataUploaded())
+                            <p class="w-full p-2 mt-8 text-lg text-white transition-colors duration-300 rounded-md cursor-pointer bg-amber-800 hover:bg-amber-900"
+                                title="Le enviaremos un correo cuando el proceso concluya">
+                                Sus datos están siendo validados.
+                            </p>
+                        @endif
+                    </div>
+                @endif
             </div>
         </div>
     </div>

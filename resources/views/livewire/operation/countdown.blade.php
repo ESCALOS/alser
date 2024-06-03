@@ -1,5 +1,5 @@
 <div x-data="countdown"
-    class="flex items-center flex-wrap md:flex-nowrap justify-between px-4 py-2 mt-6 md:mt-0 bg-yellow-200 border border-yellow-600 rounded-md w-96">
+    class="flex flex-wrap items-center justify-between px-4 py-2 mt-6 bg-yellow-200 border border-yellow-600 rounded-md md:flex-nowrap md:mt-0 w-96">
     <p class="text-sm">Tiempo para ingresar el N° de operación</p>
     <p class="font-semibold text-md" x-text="formattedTime"></p>
 </div>
@@ -37,8 +37,12 @@
                     const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
                     this.formattedTime = `${this.pad(minutes)}:${this.pad(seconds)}`;
 
-                    if (minutes <= 5 && !this.hasDispatched) {
-                        console.log('Te quedan menos de 5 minutos')
+                    if (minutes <= 4 && !this.hasDispatched) {
+                        Swal.fire({
+                            title: "Te quedan menos de " + (minutes + 1) + " minutos ",
+                            text: "Ingresa tu número de operación o será cancelada de manera automática",
+                            icon: "warning"
+                        });
                         this.hasDispatched = true;
                     }
                 }

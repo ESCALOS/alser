@@ -6,6 +6,7 @@ use App\Enums\OperationStatusEnum;
 use App\Models\BankAccount;
 use App\Models\Operation as ModelsOperation;
 use App\Models\OperationNumber;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -26,6 +27,18 @@ class Operation extends Component
         $this->lastOperation = ModelsOperation::where('user_id', Auth::id())->latest()->first();
     }
 
+    #[On('send-verification-email')]
+    public function sendEmailVerification()
+    {
+        $user = User::find(Auth::id());
+        $user->forceFill([
+            'email_verified_at' => null,
+        ])->save();
+
+        $user->sendEmailVerificationNotification();
+        $this->alert(message: 'Revise su correo');
+    }
+
     #[Computed]
     public function status(): OperationStatusEnum
     {
@@ -35,6 +48,24 @@ class Operation extends Component
     #[On('create-operation')]
     public function createOperation(array $form, $factor)
     {
+        $user = User::find(Auth::id());
+        if (! $user->hasVerifiedEmail()) {
+            $this->alert('warning', 'Tienes que validar tu correo');
+
+            return;
+        }
+
+        if ($user->isDataPending()) {
+            $this->alert('warning', 'Rellena los datos de tu perfil');
+
+            return;
+        }
+        if ($user->isDataUploaded()) {
+            $this->alert('info', 'Tus datos están siendo validados');
+
+            return;
+        }
+
         $this->lastOperation = ModelsOperation::where('user_id', Auth::id())->latest()->first();
 
         if ($this->lastOperation && $this->lastOperation->status === OperationStatusEnum::PENDING) {

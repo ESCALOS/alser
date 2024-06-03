@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('account_to_receive', 30);
             $table->unsignedBigInteger('origin_bank');
             $table->unsignedBigInteger('destination_bank');
-            $table->enum('status', [1, 2, 3, 4, 5])->default(1);
+            $table->enum('status', [1, 2, 3, 4, 5, 6])->default(1);
             $table->timestamps();
 
             $table->foreign('origin_bank')->references('id')->on('banks')->onDelete('restrict');

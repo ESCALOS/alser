@@ -12,7 +12,8 @@ enum OperationStatusEnum: int implements HasColor, HasLabel
     case VALIDATED = 3;
     case CANCELLED_BY_USER = 4;
     case CANCELLED_BY_SYSTEM = 5;
-    case WITHOUT_OPERATION = 6;
+    case REJECTED = 6;
+    case WITHOUT_OPERATION = 7;
 
     public function getLabel(): ?string
     {
@@ -22,6 +23,7 @@ enum OperationStatusEnum: int implements HasColor, HasLabel
             self::VALIDATED => 'Validado',
             self::CANCELLED_BY_USER => 'Cancelado por el usuario',
             self::CANCELLED_BY_SYSTEM => 'Cancelado por el sistema',
+            self::REJECTED => 'Rechazado',
             self::WITHOUT_OPERATION => 'Sin Operación'
         };
     }
@@ -34,6 +36,7 @@ enum OperationStatusEnum: int implements HasColor, HasLabel
             self::VALIDATED->getLabel(),
             self::CANCELLED_BY_USER->getLabel(),
             self::CANCELLED_BY_SYSTEM->getLabel(),
+            self::REJECTED->getLabel(),
             self::WITHOUT_OPERATION->getLabel(),
         ];
     }
@@ -46,7 +49,8 @@ enum OperationStatusEnum: int implements HasColor, HasLabel
             ['id' => 3, 'name' => self::VALIDATED->getLabel()],
             ['id' => 4, 'name' => self::CANCELLED_BY_USER->getLabel()],
             ['id' => 5, 'name' => self::CANCELLED_BY_SYSTEM->getLabel()],
-            ['id' => 6, 'name' => self::WITHOUT_OPERATION->getLabel()],
+            ['id' => 6, 'name' => self::REJECTED->getLabel()],
+            ['id' => 7, 'name' => self::WITHOUT_OPERATION->getLabel()],
         ];
     }
 
@@ -58,6 +62,7 @@ enum OperationStatusEnum: int implements HasColor, HasLabel
             self::VALIDATED => 'm-check-circle',
             self::CANCELLED_BY_USER => 'm-x-mark-circle',
             self::CANCELLED_BY_SYSTEM => 'm-x-mark-circle',
+            self::REJECTED => 'm-x-mark-circle',
             self::WITHOUT_OPERATION => 'm-x-mark-circle'
         };
     }
@@ -70,6 +75,7 @@ enum OperationStatusEnum: int implements HasColor, HasLabel
             self::VALIDATED => 'success',
             self::CANCELLED_BY_USER => 'danger',
             self::CANCELLED_BY_SYSTEM => 'danger',
+            self::REJECTED => 'danger',
             self::WITHOUT_OPERATION => 'info'
         };
     }
@@ -82,6 +88,7 @@ enum OperationStatusEnum: int implements HasColor, HasLabel
             self::VALIDATED => 'text-green-500',
             self::CANCELLED_BY_USER => 'text-red-500',
             self::CANCELLED_BY_SYSTEM => 'text-red-500',
+            self::REJECTED => 'text-red-500',
             self::WITHOUT_OPERATION => 'text-gray-500'
         };
     }
