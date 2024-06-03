@@ -5,9 +5,9 @@
         <x-operation.important :originBank="$operation->originBank->name" :destinationBank="$operation->destinationBank->name" />
     </div>
     <div class="col-span-3 lg:col-span-2">
-        <div class="flex justify-between mb-8">
+        <span class="text-gray-600 text-md">Mi cambio</span>
+        <div class="flex flex-wrap md:flex-nowrap justify-between mb-8">
             <div>
-                <span class="text-gray-600 text-md">Mi cambio</span>
                 <h2 class="text-2xl font-semibold leading-none text-violet-700">Transferencia bancaria</h2>
                 <div class="grid w-40 grid-cols-3">
                     <div class="h-1 mt-2 rounded-lg w-11 bg-violet-700"></div>

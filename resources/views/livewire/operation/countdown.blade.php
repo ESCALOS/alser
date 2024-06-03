@@ -1,5 +1,5 @@
 <div x-data="countdown"
-    class="flex items-center justify-between h-8 p-4 mt-5 bg-yellow-300 border border-yellow-600 rounded-md w-96">
+    class="flex items-center flex-wrap md:flex-nowrap justify-between px-4 py-2 mt-6 md:mt-0 bg-yellow-200 border border-yellow-600 rounded-md w-96">
     <p class="text-sm">Tiempo para ingresar el N° de operación</p>
     <p class="font-semibold text-md" x-text="formattedTime"></p>
 </div>
