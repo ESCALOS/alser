@@ -5,27 +5,21 @@ namespace App\Livewire\Operation;
 use App\Enums\OperationStatusEnum;
 use App\Livewire\Forms\Operation\NumberForm;
 use App\Models\Operation;
-use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class Number extends Component
 {
     public Operation $operation;
 
-    public bool $areMany = false;
-
     public NumberForm $form;
+
+    public float $totalAmount = 0;
 
     public function mount()
     {
-        $this->form->transactions[0]['number'] = '8989';
+        $this->form->transactions[0]['number'] = '';
         $this->form->transactions[0]['amount'] = $this->operation->amount_to_send;
-    }
-
-    #[Computed]
-    public function areManyNumbers()
-    {
-        return count($this->form->transactions) > 1;
+        $this->totalAmount = $this->operation->amount_to_send;
     }
 
     public function cancelByUser()

@@ -1,4 +1,4 @@
-<x-mary-card>
+<x-mary-card x-data="number">
     <div class="flex items-center">
         <div class="flex items-center justify-center w-8 h-8 rounded-full bg-lime-500">
             <p class="font-bold text-white text-md">2</p>
@@ -9,13 +9,19 @@
         <p class="text-gray-700">Ubica el N° de operación de la transferencia realizada e ingrésalo a continuación</p>
         <span class="font-semibold underline cursor-pointer text-violet-700">¿Cómo lo encuentro?</span>
     </div>
-    <div>
-        <input type="text" class="w-full py-2 rounded-md" placeholder="Número de operación"
-            wire:model='form.transactions.0.number' />
-        {{-- <x-mary-input type="text" class="w-full py-2 rounded-md" placeholder="Monto de la operación"
-            wire:model='form.transactions.0.amount' /> --}}
+    <div id="transferencias">
+        <template x-for="(transaction, index) in transactions" :key="index">
+            <div class="flex mb-2 space-x-2">
+                <input type="text" class="w-full py-2 rounded-md" placeholder="Número de operación"
+                    :id="'transactions.' + index + '.number'" x-model="transaction.number" />
+
+                <input type="text" class="w-full py-2 rounded-md" placeholder="Monto de la operación"
+                    :id="'transactions.' + index + '.amount'" x-model="transaction.amount" />
+            </div>
+        </template>
     </div>
-    <button class="px-4 py-2 mt-10 mb-4 text-sm font-bold rounded-sm bg-violet-100 text-violet-700">
+    <button class="px-4 py-2 mt-10 mb-4 text-sm font-bold rounded-sm bg-violet-100 text-violet-700"
+        x-on:click="addMoreWire">
         Agregar más transferencias
         <x-mary-icon name="s-plus-circle" />
     </button>
@@ -33,3 +39,23 @@
         </x-mary-button>
     </div>
 </x-mary-card>
+@script
+    <script>
+        Alpine.data('number', () => ({
+            transactions: $wire.entangle('form.transactions'),
+            totalAmount: $wire.totalAmount,
+            init() {
+                this.transactions = [{
+                    number: '',
+                    amount: this.totalAmount
+                }];
+            },
+            addMoreWire() {
+                this.transactions.push({
+                    number: '',
+                    amount: ''
+                });
+            }
+        }))
+    </script>
+@endscript
