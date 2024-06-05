@@ -1,3 +1,4 @@
 <div>
-    {{-- Because she competes with no one, no one can compete with her. --}}
+    Operaciones recientes
+    <livewire:my-operations.operation-item />
 </div>
