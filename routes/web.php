@@ -17,7 +17,9 @@ Route::middleware([
 ])->group(function () {
     Route::get('/nueva-operacion', Operation::class)->name('new-operation');
     Route::get('/datos-del-perfil', Account::class)->name('account');
-
+    Route::get('/mis-operaciones', function () {
+        return view('my-operations');
+    })->name('my-operations');
     Route::get('/cuentas-bancarias', BankAccountList::class)->name('bank-account');
 
     //  Ruta de imagenes de Documento de identidad
