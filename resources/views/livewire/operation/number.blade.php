@@ -47,7 +47,7 @@
             x-on:click="$wire.dispatch('operation-cancelled')">
             Cancelar Operación
         </x-mary-button>
-        <div x-cloak>
+        <div x-show="accumulatedAmount === totalAmount" x-cloak>
             <x-mary-button type="button"
                 class="px-4 py-2 text-sm font-bold text-white border rounded-sm bg-violet-700 hover:bg-violet-800"
                 wire:click='save' spinner='save'>
