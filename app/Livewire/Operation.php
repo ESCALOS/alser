@@ -36,7 +36,12 @@ class Operation extends Component
         ])->save();
 
         $user->sendEmailVerificationNotification();
-        $this->alert(message: 'Revise su correo');
+        $this->alert(message: 'Revise su correo', options: [
+            'position' => 'center',
+            'toast' => false,
+            'showConfirmButton' => true,
+            'onConfirmed' => '',
+        ]);
     }
 
     #[Computed]
@@ -50,18 +55,33 @@ class Operation extends Component
     {
         $user = User::find(Auth::id());
         if (! $user->hasVerifiedEmail()) {
-            $this->alert('warning', 'Tienes que validar tu correo');
+            $this->alert('warning', 'Tienes que validar tu correo', [
+                'position' => 'center',
+                'toast' => false,
+                'showConfirmButton' => true,
+                'onConfirmed' => '',
+            ]);
 
             return;
         }
 
         if ($user->isDataPending()) {
-            $this->alert('warning', 'Rellena los datos de tu perfil');
+            $this->alert('warning', 'Rellena los datos de tu perfil', [
+                'position' => 'center',
+                'toast' => false,
+                'showConfirmButton' => true,
+                'onConfirmed' => '',
+            ]);
 
             return;
         }
         if ($user->isDataUploaded()) {
-            $this->alert('info', 'Tus datos están siendo validados');
+            $this->alert('info', 'Tus datos están siendo validados', [
+                'position' => 'center',
+                'toast' => false,
+                'showConfirmButton' => true,
+                'onConfirmed' => '',
+            ]);
 
             return;
         }
@@ -152,9 +172,19 @@ class Operation extends Component
                 $this->lastOperation->status = OperationStatusEnum::UPLOADED;
                 $this->lastOperation->save();
             }, 2);
-            $this->alert('success', 'Operación realizada con éxito');
+            $this->alert('success', 'Operación realizada con éxito', [
+                'position' => 'center',
+                'toast' => false,
+                'showConfirmButton' => true,
+                'onConfirmed' => '',
+            ]);
         } catch (\Exception $e) {
-            $this->alert('success', $e->getMessage());
+            $this->alert('warning', 'Ocurrió un error', [
+                'position' => 'center',
+                'toast' => false,
+                'showConfirmButton' => true,
+                'onConfirmed' => '',
+            ]);
         }
     }
 

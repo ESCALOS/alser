@@ -125,7 +125,6 @@ class Business extends Component
                 if ($message === '') {
                     $message = $errorMessage[0];
                 }
-
             }
         } catch (\Exception $ex) {
             $type = 'error';

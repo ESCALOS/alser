@@ -12,13 +12,28 @@
     <div id="transferencias">
         <template x-for="(transaction, index) in transactions" :key="index">
             <div class="flex mb-2 space-x-2">
-                <input type="text" class="w-full py-2 rounded-md" placeholder="Número de operación"
-                    :id="'transactions.' + index + '.number'" x-model="transaction.number" />
-
-                <input type="text" class="w-full py-2 rounded-md" placeholder="Monto de la operación"
-                    :id="'transactions.' + index + '.amount'" x-model="transaction.amount" />
-            </div>
+                <div class="w-full">
+                    <input type="number" class="w-full py-2 rounded-md" placeholder="Número de operación"
+                        :id="'transactions.' + index + '.number'" x-model="transaction.number" />
+                </div>
+                <div class="w-full" x-show="transactions.length > 1">
+                    <input type="number" class="w-full py-2 rounded-md" placeholder="Monto de la operación"
+                        :id="'transactions.' + index + '.amount'" x-model="transaction.amount"
+                        @input="calculateTotal" />
+                </div>
+                <div x-show="index !== 0">
+                    <x-mary-icon name="o-trash" class="m-2 text-red-600 cursor-pointer h-7"
+                        x-on:click="removeTransaction(index)" />
+                </div>
         </template>
+    </div>
+    <div class="mt-4 font-bold text-violet-700" x-show="transactions.length > 1">
+        <span>Total: {{ $this->currencySymbol }} </span>
+        <span
+            :class="accumulatedAmount < totalAmount ? 'text-red-700' : (accumulatedAmount > totalAmount ? 'text-amber-700' :
+                'text-violet-700')"
+            x-text="accumulatedAmount"></span>
+        <span>/ {{ $operation->amount_to_send }}</span>
     </div>
     <button class="px-4 py-2 mt-10 mb-4 text-sm font-bold rounded-sm bg-violet-100 text-violet-700"
         x-on:click="addMoreWire">
@@ -32,11 +47,25 @@
             x-on:click="$wire.dispatch('operation-cancelled')">
             Cancelar Operación
         </x-mary-button>
-        <x-mary-button type="button"
-            class="px-4 py-2 text-sm font-bold text-white border rounded-sm bg-violet-700 hover:bg-violet-800"
-            wire:click='save' spinner='save'>
-            Enviar Operación
-        </x-mary-button>
+        <div x-cloak>
+            <x-mary-button type="button"
+                class="px-4 py-2 text-sm font-bold text-white border rounded-sm bg-violet-700 hover:bg-violet-800"
+                wire:click='save' spinner='save'>
+                Enviar Operación
+            </x-mary-button>
+        </div>
+        <div x-show="accumulatedAmount < totalAmount" x-cloak>
+            <div
+                class="px-4 py-2 font-bold text-white bg-red-700 border rounded-sm cursor-not-allowed text-md hover:bg-red-800">
+                Montos insuficientes
+            </div>
+        </div>
+        <div x-show="accumulatedAmount > totalAmount" x-cloak>
+            <div
+                class="px-4 py-2 font-bold text-white border rounded-sm cursor-not-allowed text-md bg-amber-700 hover:bg-amber-800">
+                Montos excesivos
+            </div>
+        </div>
     </div>
 </x-mary-card>
 @script
@@ -44,6 +73,7 @@
         Alpine.data('number', () => ({
             transactions: $wire.entangle('form.transactions'),
             totalAmount: $wire.totalAmount,
+            accumulatedAmount: $wire.totalAmount,
             init() {
                 this.transactions = [{
                     number: '',
@@ -51,10 +81,27 @@
                 }];
             },
             addMoreWire() {
+                if (this.transactions.length === 1) {
+                    this.transactions[0].amount = ''
+                    this.accumulatedAmount = 0
+                }
                 this.transactions.push({
                     number: '',
                     amount: ''
-                });
+                })
+            },
+            removeTransaction(index) {
+                if (index === 0) {
+                    return;
+                }
+                this.transactions.splice(index, 1);
+                this.calculateTotal();
+            },
+            calculateTotal() {
+                this.accumulatedAmount = this.transactions.reduce((total, transaction) => {
+                    let amount = parseFloat(transaction.amount);
+                    return total + (isNaN(amount) ? 0 : amount);
+                }, 0);
             }
         }))
     </script>
