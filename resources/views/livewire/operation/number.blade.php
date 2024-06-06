@@ -7,7 +7,8 @@
     </div>
     <div class="my-4">
         <p class="text-gray-700">Ubica el N° de operación de la transferencia realizada e ingrésalo a continuación</p>
-        <span class="font-semibold underline cursor-pointer text-violet-700">¿Cómo lo encuentro?</span>
+        <span class="font-semibold underline cursor-pointer text-violet-700" x-on:click="howFoundMessage">¿Cómo lo
+            encuentro?</span>
     </div>
     <div id="transferencias">
         <template x-for="(transaction, index) in transactions" :key="index">
@@ -102,6 +103,14 @@
                     let amount = parseFloat(transaction.amount);
                     return total + (isNaN(amount) ? 0 : amount);
                 }, 0);
+            },
+            howFoundMessage() {
+                Swal.fire({
+                    title: "<strong>¿Cómo encuentro mi N° de operación?</strong>",
+                    text: "Para obtener el número de operación de la transferencia a la cuenta de Alser Cambio indicada en el paso 1 mediante la app o banca por internet de tu banco. Una vez realizada la transferencia, podrás visualizar dicho código en la confirmación de ésta en la plataforma de tu banco.",
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                });
             }
         }))
     </script>
