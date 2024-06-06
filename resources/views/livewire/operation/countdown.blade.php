@@ -43,9 +43,8 @@
 
                     if (minutes <= 4 && !this.hasDispatched) {
                         Swal.fire({
-                            title: "Te quedan menos de " + (minutes + 1) + " minutos ",
-                            text: "Ingresa tu número de operación o será cancelada de manera automática",
-                            icon: "warning"
+                            title: "Realiza la transferencia",
+                            text: "Cuidado, solo te quedan `${this.pad(minutes)}:${this.pad(seconds)}` minutos para realizar la transferencia bancaria y enviarnos el número de operación de la transferencia",
                         });
                         this.hasDispatched = true;
                     }
