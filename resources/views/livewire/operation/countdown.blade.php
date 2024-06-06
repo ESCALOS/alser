@@ -28,6 +28,10 @@
                 if (timeDiff <= 0) {
                     this.formattedTime = '00:00';
                     $wire.dispatch('operation-cancelled')
+                    Swal.fire({
+                        title: "<strong>Operación rechazada</strong>",
+                        text: "Tu operación fue rechazada dado que no enviaste el número de transferencia en el tiempo indicado. Si ya realizaste la transferencia pero no lograste enviarnos el número de operación; puedes volver a ingresar una nueva solicitud y colocar dicho número."
+                    });
                     if (this.intervalId) {
                         clearInterval(this.intervalId);
                     }
