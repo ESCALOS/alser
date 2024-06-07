@@ -107,7 +107,7 @@
             <x-responsive-nav-link wire:navigate.hover href="{{ route('new-operation') }}" :active="request()->routeIs('new-operation')">
                 {{ __('New operation') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link wire:navigate.hover href="{{ route('new-operation') }}" :active="request()->routeIs('new-operation')">
+            <x-responsive-nav-link wire:navigate.hover href="{{ route('my-operations') }}" :active="request()->routeIs('my-operations')">
                 {{ __('My operations') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link wire:navigate.hover href="{{ route('bank-account') }}" :active="request()->routeIs('bank-account')">
