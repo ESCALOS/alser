@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\AccountTypeEnum;
 use App\Enums\DocumentTypeEnum;
 use App\Enums\IdentityDocumentStatusEnum;
 use Filament\Models\Contracts\FilamentUser;
@@ -61,6 +62,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         'email_verified_at' => 'datetime',
         'document_type' => DocumentTypeEnum::class,
         'identity_document_status' => IdentityDocumentStatusEnum::class,
+        'account_type' => AccountTypeEnum::class,
     ];
 
     /**
