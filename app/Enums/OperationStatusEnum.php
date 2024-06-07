@@ -19,7 +19,7 @@ enum OperationStatusEnum: int implements HasColor, HasLabel
     {
         return match ($this) {
             self::PENDING => 'Pendiente en ejecutar',
-            self::UPLOADED => 'Voucher subido',
+            self::UPLOADED => '# Op. registrado',
             self::VALIDATED => 'Validado',
             self::CANCELLED_BY_USER => 'Cancelado por el usuario',
             self::CANCELLED_BY_SYSTEM => 'Cancelado por el sistema',

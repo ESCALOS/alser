@@ -26,9 +26,10 @@
                     <p class="pt-2 text-pretty">Por resolución de la SBS, necesitas llenar los siguientes
                         datos.
                     </p>
-                    <x-mary-alert icon="o-exclamation-circle" class="text-white bg-sky-600">
-                        <span class="font-bold text-md text-pretty">Tus nombres y apellidos deben ser iguales a los que
-                            figuran en tu documento de identidad.</span>
+                    <x-mary-alert icon="o-exclamation-circle" class="text-base-100 bg-violet-600">
+                        <span class="font-bold text-md text-pretty">
+                            Tus nombres y apellidos deben ser iguales a los que figuran en tu documento de identidad.
+                        </span>
                     </x-mary-alert>
                     <x-mary-input label="Nombres" wire:model='form.name' />
                     <div class="grid grid-cols-2 gap-3">

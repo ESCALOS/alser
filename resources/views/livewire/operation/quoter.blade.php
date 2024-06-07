@@ -1,10 +1,10 @@
 <div class="w-full bg-white border border-gray-200 rounded-lg shadow" x-data="quoter">
     <div class="flex justify-center p-6">
         <div class="w-full">
-            <div class="flex justify-between">
+            <div class="flex flex-wrap justify-between">
                 <h1 class="text-2xl font-semibold">Nueva Operación</h1>
-                {{-- <div wire:poll.15s='getPrices'> --}}
-                <div>
+                <div wire:poll.15s='getPrices'>
+                    {{-- <div> --}}
                     <span class="pb-1 mr-4 font-semibold border-b-2 cursor-pointer hover:text-violet-600 text-md"
                         :class="$wire.form.isPurchase ? 'border-violet-500' : 'border-gray-300'"
                         x-on:click="$wire.form.isPurchase = true">
@@ -21,7 +21,7 @@
                 <div class="grid grid-cols-2 gap-4 py-4">
                     <div class="text-center">
                         <h3 class="text-xl font-semibold">
-                            Envío
+                            Envío en
                             <span x-show="$wire.form.isPurchase">dólares</span>
                             <span x-show="!$wire.form.isPurchase">soles</span>
                         </h3>
@@ -44,7 +44,7 @@
                     </div>
                     <div class="text-center">
                         <h3 class="py-2 text-xl font-semibold">
-                            Recibo
+                            Recibo en
                             <span x-show="!$wire.form.isPurchase">dólares</span>
                             <span x-show="$wire.form.isPurchase">soles</span>
                         </h3>
@@ -61,57 +61,61 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-2 mb-4">
-                    <div class="h-32 transition-all"
-                        :class="!$wire.form.isPurchase ? 'translate-y-0' : 'translate-y-32'">
-                        <div x-show='$wire.solAccounts'>
-                            <p class="my-2 text-sm font-semibold">
-                                <span x-show='!$wire.form.isPurchase'>¿Desde que cuenta nos envías los soles?</span>
-                                <span x-show='$wire.form.isPurchase'>¿En qué cuenta deseas recibir los soles?</span>
-                            </p>
-                            <x-mary-choices wire:model="form.solAccount" @change-selection="resetValidation()"
-                                :options="$solAccounts" option-label="account_number" option-sub-label="name"
-                                option-avatar="bank_logo" icon="o-credit-card" height="max-h-96" single />
-                            <p class="my-4 text-sm font-semibold text-right cursor-pointer text-violet-700"
-                                x-on:click="$wire.dispatch('openModal',1)">
-                                Agregar nueva cuenta bancaria soles <x-mary-icon class="w-7" name="o-plus-circle" />
-                            </p>
-                        </div>
-                        <div x-show='!$wire.solAccounts' class="pt-6">
-                            <button type="button"
-                                class="w-full py-6 text-lg font-semibold transition-colors duration-300 bg-white border rounded-md text-violet-900 border-violet-900"
-                                x-on:click="$wire.dispatch('openModal',1)">
-                                Agregar nueva cuenta bancaria soles <x-mary-icon class="w-7" name="o-plus-circle" />
-                            </button>
-                        </div>
-                    </div>
-                    <div class="h-32 transition-all"
-                        :class="!$wire.form.isPurchase ? 'translate-y-0' : '-translate-y-32'">
-                        <div x-show='$wire.dollarAccounts'>
-                            <p class="my-2 text-sm font-semibold">
-                                <span x-show='$wire.form.isPurchase'>¿Desde que cuenta nos envías los dólares?</span>
-                                <span x-show='!$wire.form.isPurchase'>¿En qué cuenta deseas recibir los dólares?</span>
-                            </p>
-                            <x-mary-choices @change-selection="resetValidation()" wire:model="form.dollarAccount"
-                                :options="$dollarAccounts" option-label="account_number" option-sub-label="name"
-                                option-avatar="bank_logo" icon="o-credit-card" height="max-h-96" single />
-                            <p class="my-4 text-sm font-semibold text-right cursor-pointer text-violet-700"
-                                x-on:click="$wire.dispatch('openModal',2)">
-                                Agregar nueva cuenta bancaria dólares <x-mary-icon class="w-7"
-                                    name="o-plus-circle" />
-                            </p>
-                        </div>
-                        <div x-show='!$wire.dollarAccounts' class="pt-6">
-                            <button type="button"
-                                class="w-full py-6 text-lg font-semibold transition-colors duration-300 bg-white border rounded-md text-violet-900 border-violet-900"
-                                x-on:click="$wire.dispatch('openModal',2)">
-                                Agregar nueva cuenta bancaria dólares <x-mary-icon class="w-7"
-                                    name="o-plus-circle" />
-                            </button>
-                        </div>
-                    </div>
-                </div>
                 @if (auth()->user()->hasVerifiedEmail() && auth()->user()->isDataValidated())
+                    <div class="mt-2 mb-4">
+                        <div class="h-32 transition-all"
+                            :class="!$wire.form.isPurchase ? 'translate-y-0' : 'translate-y-32'">
+                            <div x-show='$wire.solAccounts'>
+                                <p class="my-2 text-sm font-semibold">
+                                    <span x-show='!$wire.form.isPurchase'>¿Desde que cuenta nos envías los soles?</span>
+                                    <span x-show='$wire.form.isPurchase'>¿En qué cuenta deseas recibir los soles?</span>
+                                </p>
+                                <x-mary-choices wire:model="form.solAccount" @change-selection="resetValidation()"
+                                    :options="$solAccounts" option-label="account_number" option-sub-label="name"
+                                    option-avatar="bank_logo" icon="o-credit-card" height="max-h-96" single />
+                                <p class="my-4 text-sm font-semibold text-right cursor-pointer text-violet-700"
+                                    x-on:click="$wire.dispatch('openModal',1)">
+                                    Agregar nueva cuenta bancaria soles <x-mary-icon class="w-7"
+                                        name="o-plus-circle" />
+                                </p>
+                            </div>
+                            <div x-show='!$wire.solAccounts' class="pt-6">
+                                <button type="button"
+                                    class="w-full py-6 text-lg font-semibold transition-colors duration-300 bg-white border rounded-md text-violet-900 border-violet-900"
+                                    x-on:click="$wire.dispatch('openModal',1)">
+                                    Agregar nueva cuenta bancaria soles <x-mary-icon class="w-7"
+                                        name="o-plus-circle" />
+                                </button>
+                            </div>
+                        </div>
+                        <div class="h-32 transition-all"
+                            :class="!$wire.form.isPurchase ? 'translate-y-0' : '-translate-y-32'">
+                            <div x-show='$wire.dollarAccounts'>
+                                <p class="my-2 text-sm font-semibold">
+                                    <span x-show='$wire.form.isPurchase'>¿Desde que cuenta nos envías los
+                                        dólares?</span>
+                                    <span x-show='!$wire.form.isPurchase'>¿En qué cuenta deseas recibir los
+                                        dólares?</span>
+                                </p>
+                                <x-mary-choices @change-selection="resetValidation()" wire:model="form.dollarAccount"
+                                    :options="$dollarAccounts" option-label="account_number" option-sub-label="name"
+                                    option-avatar="bank_logo" icon="o-credit-card" height="max-h-96" single />
+                                <p class="my-4 text-sm font-semibold text-right cursor-pointer text-violet-700"
+                                    x-on:click="$wire.dispatch('openModal',2)">
+                                    Agregar nueva cuenta bancaria dólares <x-mary-icon class="w-7"
+                                        name="o-plus-circle" />
+                                </p>
+                            </div>
+                            <div x-show='!$wire.dollarAccounts' class="pt-6">
+                                <button type="button"
+                                    class="w-full py-6 text-lg font-semibold transition-colors duration-300 bg-white border rounded-md text-violet-900 border-violet-900"
+                                    x-on:click="$wire.dispatch('openModal',2)">
+                                    Agregar nueva cuenta bancaria dólares <x-mary-icon class="w-7"
+                                        name="o-plus-circle" />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                     <p class="my-4 text-left">
                         Declaro bajo juramento que los fondos involucrados en la operación provienen de actividades
                         lícitas
@@ -125,36 +129,40 @@
                         class="w-full mt-8 text-lg text-white transition-colors duration-300 bg-violet-800 hover:bg-violet-900"
                         type="button" wire:click='save' spinner="save" />
                 @else
-                    <p class="text-sm text-red-600">
-                        *Para iniciar una operación primero necesita:
-                    </p>
-                    <ul class="pl-6 text-sm list-disc">
-                        @if (!auth()->user()->hasVerifiedEmail())
-                            <li>Validar su correo</li>
-                        @endif
-                        @if (auth()->user()->isDataPending())
-                            <li>Ingresar sus datos</li>
-                        @endif
-                        @if (auth()->user()->isDataUploaded())
-                            <li>Esperar la validación de sus datos</li>
-                        @endif
-                    </ul>
+                    <div>
+                        <x-mary-alert icon="o-exclamation-triangle">
+                            <div class="font-medium text-base-600">
+                                Para iniciar una operación primero necesita:
+                            </div>
+                            <ul class="mt-3 text-sm list-disc list-inside text-base-600">
+                                @if (!auth()->user()->hasVerifiedEmail())
+                                    <li>Validar su correo</li>
+                                @endif
+                                @if (auth()->user()->isDataPending())
+                                    <li>Ingresar sus datos</li>
+                                @endif
+                                @if (auth()->user()->isDataUploaded())
+                                    <li>Esperar la validación de sus datos</li>
+                                @endif
+                            </ul>
+                        </x-mary-alert>
+                    </div>
                     <div class="flex justify-center gap-4 text-center">
                         @if (!auth()->user()->hasVerifiedEmail())
                             <button
-                                class="w-full p-2 mt-8 text-lg text-white transition-colors duration-300 rounded-md cursor-pointer bg-sky-800 hover:bg-sky-900"
+                                class="w-full p-2 mt-8 text-lg font-semibold text-white transition-colors duration-300 rounded-md cursor-pointer bg-violet-600 hover:bg-violet-700"
                                 type="button" x-on:click="$wire.dispatch('send-verification-email')">
                                 Valida tu correo
                             </button>
                         @endif
                         @if (auth()->user()->isDataPending())
                             <a wire:navigate href="{{ route('account') }}"
-                                class="w-full p-2 mt-8 text-lg text-white transition-colors duration-300 rounded-md cursor-pointer bg-amber-800 hover:bg-amber-900">
+                                class="w-full p-2 mt-8 text-lg font-semibold text-white transition-colors duration-300 rounded-md cursor-pointer bg-violet-900 hover:bg-violet-950">
                                 Ingresa los datos de tu perfil
                             </a>
                         @endif
                         @if (auth()->user()->isDataUploaded())
-                            <p class="w-full p-2 mt-8 text-lg text-white transition-colors duration-300 rounded-md cursor-pointer bg-amber-800 hover:bg-amber-900"
+                            <p class="w-full p-2 mt-8 text-lg text-white transition-colors duration-300 rounded-md cursor-pointer bg-violet-800 hover:bg-violet-900"
                                 title="Le enviaremos un correo cuando el proceso concluya">
                                 Sus datos están siendo validados.
                             </p>

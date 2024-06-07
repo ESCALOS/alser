@@ -18,12 +18,16 @@
                 </p>
             @endif
         @endif
-        <p class="pt-2 text-pretty">Por resolución de la SBS, necesitas llenar los siguientes
-            datos.
-        </p>
-        <x-mary-alert icon="o-exclamation-circle" class="text-white bg-amber-600">
-            <span class="font-bold text-md text-pretty">Sus datos están siendo validados.</span>
-        </x-mary-alert>
+        @if ($user->isDataUploaded())
+            <x-mary-alert icon="o-exclamation-circle" class="text-white bg-amber-600">
+                <span class="font-bold text-md text-pretty">Sus datos están siendo validados.</span>
+            </x-mary-alert>
+        @else
+            <x-mary-alert icon="o-check-circle" class="text-white bg-green-600">
+                <span class="font-bold text-md text-pretty">Datos validados.</span>
+            </x-mary-alert>
+        @endif
+
         <x-mary-input label="Nombres" value="{{ $user->name }}" readonly />
         <div class="grid grid-cols-2 gap-3">
             <x-mary-input label="Primer Apellido" value="{{ $personalAccount->first_lastname }}" readonly />
