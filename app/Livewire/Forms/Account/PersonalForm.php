@@ -4,7 +4,6 @@ namespace App\Livewire\Forms\Account;
 
 use App\Enums\DocumentTypeEnum;
 use App\Models\PersonalAccount;
-use App\Models\User;
 use App\Rules\DocumentNumberValidation;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -89,11 +88,9 @@ class PersonalForm extends Form
 
     public function rules(): array
     {
-        $user = User::find(Auth::id());
-
         return [
             'document_type' => ['required', Rule::enum(DocumentTypeEnum::class)->except([DocumentTypeEnum::TAX_NUMBER])],
-            'document_number' => ['required', new DocumentNumberValidation($this->document_type)],
+            'document_number' => ['required', Rule::unique('users')->ignore(Auth::id()), new DocumentNumberValidation($this->document_type)],
             'identity_document_front' => ['required', 'image', 'max:2048', 'mimes:jpeg,png,jpg'],
             'identity_document_back' => ['required', 'image', 'max:2048', 'mimes:jpeg,png,jpg'],
             'pdf_PEP' => [Rule::excludeIf(! ($this->is_PEP || $this->wife_is_PEP || $this->relative_is_PEP)), 'file', 'mimes:pdf'],

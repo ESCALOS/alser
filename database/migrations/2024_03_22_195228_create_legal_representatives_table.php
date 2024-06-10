@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('first_lastname', 20)->nullable()->comment('Primer Apellido');
             $table->string('second_lastname', 20)->nullable()->comment('Segundo Apellido');
             $table->enum('document_type', [1, 3, 4])->nullable()->comment('Tipo de document: 1 => DNI, 3 => CE, 4 => PASSPORT');
-            $table->string('document_number', 12)->nullable()->comment('Número de documento');
+            $table->string('document_number', 12)->nullable()->unique()->comment('Número de documento');
             $table->foreignId('country_id')->default(140)->comment('Nacionalidad');
             $table->boolean('is_PEP')->nullable()->comment('Personas expuestas políticamente');
             $table->boolean('wife_is_PEP')->nullable()->comment('Esposa es PEP');

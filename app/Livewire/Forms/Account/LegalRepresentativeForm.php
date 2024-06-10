@@ -5,8 +5,8 @@ namespace App\Livewire\Forms\Account;
 use App\Enums\DocumentTypeEnum;
 use App\Enums\RepresentationTypeEnum;
 use App\Models\LegalRepresentative;
-use App\Models\User;
 use App\Rules\DocumentNumberValidation;
+use App\Rules\UniqueInCollection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -88,14 +88,17 @@ class LegalRepresentativeForm extends Form
 
     public function rules(): array
     {
-        $user = User::find(Auth::id());
+        $legalRepresentative = LegalRepresentative::where('user_id', Auth::id())->first();
+        $legalRepresentativeId = $legalRepresentative ? $legalRepresentative->id : 0;
 
         return [
             'shareHolders.*.name' => ['required_with:shareHolders.*.documentNumber'],
             'shareHolders.*.documentType' => ['required', Rule::enum(DocumentTypeEnum::class)],
-            'shareHolders.*.documentNumber' => ['required_with:shareHolders.*.name', new DocumentNumberValidation($this->documentType)],
+            'shareHolders.*.documentNumber' => ['required_with:shareHolders.*.name',
+                new UniqueInCollection(collect($this->shareHolders), 'documentNumber', 'El número de documento está repetido'),
+                new DocumentNumberValidation($this->documentType)],
             'documentType' => ['required', Rule::enum(DocumentTypeEnum::class)->except([DocumentTypeEnum::TAX_NUMBER])],
-            'documentNumber' => ['required', new DocumentNumberValidation($this->documentType)],
+            'documentNumber' => ['required', Rule::unique('legal_representatives')->ignore($legalRepresentativeId), new DocumentNumberValidation($this->documentType)],
             'representationType' => ['required', Rule::enum(RepresentationTypeEnum::class)],
             'identityDocumentFront' => ['required', 'image', 'max:2048', 'mimes:jpeg,png,jpg'],
             'identityDocumentBack' => ['required', 'image', 'max:2048', 'mimes:jpeg,png,jpg'],

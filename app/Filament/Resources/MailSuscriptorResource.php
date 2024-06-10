@@ -14,7 +14,7 @@ class MailSuscriptorResource extends Resource
 {
     protected static ?string $model = MailSuscriptor::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-envelope';
 
     protected static ?string $modelLabel = 'Suscriptor';
 

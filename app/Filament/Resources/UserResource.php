@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\AccountTypeEnum;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
 use Filament\Forms;
@@ -10,13 +11,16 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Table;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-users';
+
+    protected static ?string $modelLabel = 'usuario';
 
     public static function form(Form $form): Form
     {
@@ -67,34 +71,34 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Nombre')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->label('Correo')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email_verified_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('two_factor_confirmed_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('current_team_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('profile_photo_path')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('account_type'),
-                Tables\Columns\IconColumn::make('is_admin')
-                    ->boolean(),
+                Tables\Columns\TextColumn::make('account_type')
+                    ->label('Tipo de Cuenta')
+                    ->badge(),
                 Tables\Columns\TextColumn::make('celphone')
+                    ->label('Celular')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('document_type'),
+                Tables\Columns\TextColumn::make('document_type')
+                    ->label('Tipo de Doc.')
+                    ->badge(),
                 Tables\Columns\TextColumn::make('document_number')
+                    ->label('# de Doc.')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('identity_document_status'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                ImageColumn::make('front')
+                    ->label('Lado Frontal')
+                    ->disk('s3')
+                    ->defaultImageUrl(fn (User $record): string => url(route('image.identity-document-by-user', ['type' => 'front', 'userId' => $record->id])))
+                    ->simpleLightbox(),
+                ImageColumn::make('back')
+                    ->label('Lado Posterior')
+                    ->disk('s3')
+                    ->defaultImageUrl(fn (User $record): string => url(route('image.identity-document-by-user', ['type' => 'back', 'userId' => $record->id])))
+                    ->simpleLightbox(),
+                Tables\Columns\TextColumn::make('Fecha de solicitud')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -104,7 +108,7 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -117,7 +121,9 @@ class UserResource extends Resource
     {
         return $infolist
             ->schema([
-                TextEntry::make('name'),
+                TextEntry::make('name')
+                    ->label('Nombre')
+                    ->formatStateUsing(fn (User $record): string => $record->account_type == AccountTypeEnum::PERSONAL ? 'es 1' : 'ahora es 2'),
             ]);
     }
 
@@ -132,9 +138,9 @@ class UserResource extends Resource
     {
         return [
             'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
+            // 'create' => Pages\CreateUser::route('/create'),
             'view' => Pages\ViewUser::route('/{record}'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            // 'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
 }

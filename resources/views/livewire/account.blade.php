@@ -1,15 +1,11 @@
 <div>
-    <x-slot name="header">
-        <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-            {{ __('Profile Data') }}
-        </h2>
-    </x-slot>
     <div class="max-w-4xl py-10 mx-auto">
-        @if (auth()->user()->account_type == 1)
+        @if (auth()->user()->account_type->value === 1)
             <livewire:account.personal lazy />
-        @else
+        @elseif (auth()->user()->account_type->value === 2)
             <livewire:account.business lazy />
+        @else
+            <h1>Hay un error</h1>
         @endif
-
     </div>
 </div>
