@@ -41,7 +41,7 @@ enum AccountTypeEnum: int implements HasColor, HasLabel
     {
         return match ($this) {
             self::PERSONAL => 'info',
-            self::BUSINESS => 'indigo',
+            self::BUSINESS => 'warning',
         };
     }
 }
