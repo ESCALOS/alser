@@ -4,10 +4,13 @@ namespace App\Livewire\Account;
 
 use App\Enums\DocumentTypeEnum;
 use App\Enums\IdentityDocumentStatusEnum;
+use App\Filament\Resources\UserResource;
 use App\Livewire\Forms\Account\PersonalForm;
 use App\Models\Country;
 use App\Models\PersonalAccount;
 use App\Models\User;
+use Filament\Notifications\Actions\Action;
+use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -90,8 +93,19 @@ class Personal extends Component
                 $this->user->save();
                 $personaAccount->save();
             });
+            $admins = User::where('is_admin', true)->get();
+            Notification::make()
+                ->title('Nuevo usuario a validar')
+                ->info()
+                ->body('El usuario <strong>'.$this->user->name.'</strong> se ha registrado.')
+                ->actions([
+                    Action::make('view')
+                        ->label('Ver')
+                        ->url(UserResource::getUrl('view', ['record' => $this->user]))
+                        ->markAsRead(),
+                ])
+                ->sendToDatabase($admins);
             $this->form->personalAccount = $personaAccount;
-
         } catch (ValidationException $ex) {
             $type = 'error';
             $message = '';

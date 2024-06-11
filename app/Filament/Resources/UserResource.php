@@ -122,8 +122,9 @@ class UserResource extends Resource
         return $infolist
             ->schema([
                 TextEntry::make('name')
-                    ->label('Nombre')
-                    ->formatStateUsing(fn (User $record): string => $record->account_type == AccountTypeEnum::PERSONAL ? 'es 1' : 'ahora es 2'),
+                    ->label(fn (User $record): string => $record->account_type == AccountTypeEnum::PERSONAL ? 'Nombre' : 'Razón Social'),
+                TextEntry::make('account_type')
+                    ->label('Tipo de cuenta'),
             ]);
     }
 

@@ -57,6 +57,7 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->plugin(SimpleLightBoxPlugin::make());
+            ->plugin(SimpleLightBoxPlugin::make())
+            ->databaseNotifications();
     }
 }

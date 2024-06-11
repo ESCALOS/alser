@@ -46,11 +46,6 @@
                 <x-mary-input label="Número de documento" value="{{ $shareHolder->document_number }}" readonly />
             </div>
         @endforeach
-
-
-        <x-mary-alert icon="o-exclamation-circle" class="text-white bg-amber-600">
-            <span class="font-bold text-md text-pretty">Sus datos están siendo validados.</span>
-        </x-mary-alert>
         <h3 class="text-2xl font-semibold">Datos del representante legal</h3>
         <x-mary-input label="Nombres" value="{{ $legalRepresentative->name }}" readonly />
         <div class="grid grid-cols-2 gap-3">

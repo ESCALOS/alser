@@ -98,7 +98,7 @@ class LegalRepresentativeForm extends Form
                 new UniqueInCollection(collect($this->shareHolders), 'documentNumber', 'El número de documento está repetido'),
                 new DocumentNumberValidation($this->documentType)],
             'documentType' => ['required', Rule::enum(DocumentTypeEnum::class)->except([DocumentTypeEnum::TAX_NUMBER])],
-            'documentNumber' => ['required', Rule::unique('legal_representatives')->ignore($legalRepresentativeId), new DocumentNumberValidation($this->documentType)],
+            'documentNumber' => ['required', Rule::unique('legal_representatives', 'document_number')->ignore($legalRepresentativeId), new DocumentNumberValidation($this->documentType)],
             'representationType' => ['required', Rule::enum(RepresentationTypeEnum::class)],
             'identityDocumentFront' => ['required', 'image', 'max:2048', 'mimes:jpeg,png,jpg'],
             'identityDocumentBack' => ['required', 'image', 'max:2048', 'mimes:jpeg,png,jpg'],
