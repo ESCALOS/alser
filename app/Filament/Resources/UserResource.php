@@ -7,6 +7,8 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\Tabs;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
@@ -121,10 +123,45 @@ class UserResource extends Resource
     {
         return $infolist
             ->schema([
-                TextEntry::make('name')
-                    ->label(fn (User $record): string => $record->account_type == AccountTypeEnum::PERSONAL ? 'Nombre' : 'Razón Social'),
-                TextEntry::make('account_type')
-                    ->label('Tipo de cuenta'),
+                Tabs::make('Tabs')
+                    ->tabs([
+                        Tabs\Tab::make('Data')
+                            ->label(fn (User $user) => $user->isPersonalAccount() ? 'Datos Generales' : 'Datos de la Empresa')
+                            ->schema([
+                                TextEntry::make('name')
+                                    ->label(fn (User $user) => $user->isBusinessAccount() ? 'Razón Social' : 'Nombres y Apellidos')
+                                    ->formatStateUsing(fn (User $user): string => $user->fullname)
+                                    ->columnSpanFull(),
+                                TextEntry::make('document_type')
+                                    ->label('Tipo de documento')
+                                    ->badge(),
+                                TextEntry::make('document_number')
+                                    ->label('# de Documento'),
+                                TextEntry::make('personalAccount.country.name')
+                                    ->label('Nacionalidad')
+                                    ->visible(fn (User $user) => $user->isPersonalAccount()),
+                                TextEntry::make('celphone')
+                                    ->label('Celular')
+                                    ->visible(fn (User $user) => $user->isPersonalAccount()),
+                                IconEntry::make('pep')
+                                    ->label('¿Es PEP?')
+                                    ->boolean()
+                                    ->visible(fn (User $user) => $user->isPersonalAccount()),
+                                IconEntry::make('wife_pep')
+                                    ->label('¿Esposa PEP?')
+                                    ->boolean()
+                                    ->visible(fn (User $user) => $user->isPersonalAccount()),
+                                IconEntry::make('relative_pep')
+                                    ->label('¿Familiar PEP?')
+                                    ->boolean()
+                                    ->visible(fn (User $user) => $user->isPersonalAccount()),
+                            ])
+                            ->columns(2),
+                        Tabs\Tab::make('Representante Legal')
+                            ->schema([
+
+                            ])->visible(fn (User $user): bool => $user->account_type === AccountTypeEnum::BUSINESS),
+                    ]),
             ]);
     }
 

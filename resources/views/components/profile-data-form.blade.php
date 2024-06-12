@@ -31,7 +31,7 @@
         <x-mary-input label="Nombres" value="{{ $user->name }}" readonly />
         <div class="grid grid-cols-2 gap-3">
             <x-mary-input label="Primer Apellido" value="{{ $personalAccount->first_lastname }}" readonly />
-            <x-mary-input label="Primer Apellido" value="{{ $personalAccount->second_lastname }}" readonly />
+            <x-mary-input label="Segundo Apellido" value="{{ $personalAccount->second_lastname }}" readonly />
         </div>
         <div class="grid gap-3 lg:grid-cols-2">
             <x-mary-input label="Tipo de Documento" value="{{ $user->document_type->getLabel() }}" readonly />

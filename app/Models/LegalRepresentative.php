@@ -28,4 +28,9 @@ class LegalRepresentative extends Model
     {
         return $this->belongsTo(Country::class);
     }
+
+    public function getFullnameAttribute(): string
+    {
+        return "{$this->name} {$this->first_lastname} {$this->second_lastname}";
+    }
 }

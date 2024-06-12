@@ -79,6 +79,11 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         return $this->hasOne(PersonalAccount::class);
     }
 
+    public function legalRepresentative(): HasOne
+    {
+        return $this->hasOne(LegalRepresentative::class);
+    }
+
     public function shareHolders(): HasMany
     {
         return $this->hasMany(ShareHolder::class);
@@ -87,6 +92,53 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     public function bankAccounts(): HasMany
     {
         return $this->hasMany(BankAccount::class);
+    }
+
+    public function isPersonalAccount(): bool
+    {
+        return $this->account_type === AccountTypeEnum::PERSONAL;
+    }
+
+    public function getFullnameAttribute(): string
+    {
+        $lastname = '';
+        if ($this->isPersonalAccount()) {
+            $lastname = "{$this->personalAccount->first_lastname} {$this->personalAccount->second_lastname}";
+        }
+
+        return "{$this->name} {$lastname}";
+    }
+
+    public function getPepAttribute(): bool
+    {
+        if ($this->personalAccount()) {
+            return $this->personalAccount->is_PEP;
+        } else {
+            return $this->legalRepresentative->is_PEP;
+        }
+    }
+
+    public function getWifePepAttribute(): bool
+    {
+        if ($this->personalAccount()) {
+            return $this->personalAccount->wife_is_PEP;
+        } else {
+            return $this->legalRepresentative->wife_is_PEP;
+        }
+    }
+
+    public function getRelativePepAttribute(): bool
+    {
+        if ($this->personalAccount()) {
+            return $this->personalAccount->relative_is_PEP;
+        } else {
+            return $this->legalRepresentative->relative_is_PEP;
+        }
+    }
+
+    public function isBusinessAccount(): bool
+    {
+        return $this->account_type === AccountTypeEnum::BUSINESS;
     }
 
     public function isIdentityDocumentRequired(): bool
