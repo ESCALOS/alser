@@ -7,7 +7,9 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\Tabs;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
@@ -72,18 +74,14 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('fullname')
                     ->label('Nombre')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->label('Correo')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('account_type')
                     ->label('Tipo de Cuenta')
                     ->badge(),
                 Tables\Columns\TextColumn::make('celphone')
-                    ->label('Celular')
-                    ->searchable(),
+                    ->label('Celular'),
                 Tables\Columns\TextColumn::make('document_type')
                     ->label('Tipo de Doc.')
                     ->badge(),
@@ -128,39 +126,73 @@ class UserResource extends Resource
                         Tabs\Tab::make('Data')
                             ->label(fn (User $user) => $user->isPersonalAccount() ? 'Datos Generales' : 'Datos de la Empresa')
                             ->schema([
-                                TextEntry::make('name')
+                                TextEntry::make('fullname')
                                     ->label(fn (User $user) => $user->isBusinessAccount() ? 'Razón Social' : 'Nombres y Apellidos')
-                                    ->formatStateUsing(fn (User $user): string => $user->fullname)
-                                    ->columnSpanFull(),
+                                    ->columnSpan(fn (User $user) => $user->isPersonalAccount() ? 2 : 1),
                                 TextEntry::make('document_type')
                                     ->label('Tipo de documento')
-                                    ->badge(),
+                                    ->badge()
+                                    ->visible(fn (User $user) => $user->isPersonalAccount()),
                                 TextEntry::make('document_number')
-                                    ->label('# de Documento'),
-                                TextEntry::make('personalAccount.country.name')
-                                    ->label('Nacionalidad')
-                                    ->visible(fn (User $user) => $user->isPersonalAccount()),
-                                TextEntry::make('celphone')
-                                    ->label('Celular')
-                                    ->visible(fn (User $user) => $user->isPersonalAccount()),
-                                IconEntry::make('pep')
-                                    ->label('¿Es PEP?')
-                                    ->boolean()
-                                    ->visible(fn (User $user) => $user->isPersonalAccount()),
-                                IconEntry::make('wife_pep')
-                                    ->label('¿Esposa PEP?')
-                                    ->boolean()
-                                    ->visible(fn (User $user) => $user->isPersonalAccount()),
-                                IconEntry::make('relative_pep')
-                                    ->label('¿Familiar PEP?')
-                                    ->boolean()
-                                    ->visible(fn (User $user) => $user->isPersonalAccount()),
+                                    ->label(fn (User $user) => $user->isPersonalAccount() ? '# de Documento' : 'RUC'),
+                                Grid::make()
+                                    ->schema([
+                                        TextEntry::make('personalAccount.country.name')
+                                            ->label('Nacionalidad'),
+                                        TextEntry::make('celphone')
+                                            ->label('Celular'),
+                                        IconEntry::make('pep')
+                                            ->label('¿Es PEP?')
+                                            ->boolean(),
+                                        IconEntry::make('wife_pep')
+                                            ->label('¿Esposa PEP?')
+                                            ->boolean(),
+                                        IconEntry::make('relative_pep')
+                                            ->label('¿Familiar PEP?')
+                                            ->boolean(),
+                                    ])->visible(fn (User $user) => $user->isPersonalAccount()),
                             ])
                             ->columns(2),
                         Tabs\Tab::make('Representante Legal')
                             ->schema([
-
-                            ])->visible(fn (User $user): bool => $user->account_type === AccountTypeEnum::BUSINESS),
+                                TextEntry::make('legalRepresentative.fullname')
+                                    ->label('Nombres y Apellidos'),
+                                TextEntry::make('legalRepresentative.representation_type')
+                                    ->label('Tipo de representación')
+                                    ->badge(),
+                                TextEntry::make('legalRepresentative.document_type')
+                                    ->label('Tipo de documento')
+                                    ->badge(),
+                                TextEntry::make('legalRepresentative.document_number')
+                                    ->label('# de Documento'),
+                                TextEntry::make('legalRepresentative.country.name')
+                                    ->label('Nacionalidad'),
+                                TextEntry::make('celphone')
+                                    ->label('Celular'),
+                                IconEntry::make('legalRepresentative.is_PEP')
+                                    ->label('¿Es PEP?')
+                                    ->boolean(),
+                                IconEntry::make('legalRepresentative.wife_is_PEP')
+                                    ->label('¿Esposa PEP?')
+                                    ->boolean(),
+                                IconEntry::make('legalRepresentative.relative_is_PEP')
+                                    ->label('¿Familiar PEP?')
+                                    ->boolean(),
+                            ])->columns(2)
+                            ->visible(fn (User $user): bool => $user->account_type === AccountTypeEnum::BUSINESS),
+                        Tabs\Tab::make('ShareHolders')
+                            ->label('Accionistas')
+                            ->schema([
+                                RepeatableEntry::make('shareHolders')
+                                    ->schema([
+                                        TextEntry::make('fullname'),
+                                        TextEntry::make('document_type'),
+                                        TextEntry::make('document_number')
+                                            ->columnSpan(2),
+                                    ])
+                                    ->columns(2),
+                            ])->columns(2)
+                            ->visible(fn (User $user): bool => $user->account_type === AccountTypeEnum::BUSINESS),
                     ]),
             ]);
     }

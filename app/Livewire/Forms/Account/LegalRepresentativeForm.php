@@ -67,7 +67,9 @@ class LegalRepresentativeForm extends Form
     {
         $this->celphone = auth()->user()->celphone ?? '';
         for ($i = 0; $i < 3; $i++) {
+            $this->shareHolders[$i]['name'] = '';
             $this->shareHolders[$i]['documentType'] = DocumentTypeEnum::ID;
+            $this->shareHolders[$i]['documentNumber'] = '';
         }
         $this->shareHolders;
         if (LegalRepresentative::where('user_id', Auth::id())->exists()) {
@@ -91,12 +93,11 @@ class LegalRepresentativeForm extends Form
         $legalRepresentative = LegalRepresentative::where('user_id', Auth::id())->first();
         $legalRepresentativeId = $legalRepresentative ? $legalRepresentative->id : 0;
 
-        return [
+        $rules = [
             'shareHolders.*.name' => ['required_with:shareHolders.*.documentNumber'],
             'shareHolders.*.documentType' => ['required', Rule::enum(DocumentTypeEnum::class)],
             'shareHolders.*.documentNumber' => ['required_with:shareHolders.*.name',
-                new UniqueInCollection(collect($this->shareHolders), 'documentNumber', 'El número de documento está repetido'),
-                new DocumentNumberValidation($this->documentType)],
+                new UniqueInCollection(collect($this->shareHolders), 'documentNumber', 'El número de documento está repetido')],
             'documentType' => ['required', Rule::enum(DocumentTypeEnum::class)->except([DocumentTypeEnum::TAX_NUMBER])],
             'documentNumber' => ['required', Rule::unique('legal_representatives', 'document_number')->ignore($legalRepresentativeId), new DocumentNumberValidation($this->documentType)],
             'representationType' => ['required', Rule::enum(RepresentationTypeEnum::class)],
@@ -104,6 +105,13 @@ class LegalRepresentativeForm extends Form
             'identityDocumentBack' => ['required', 'image', 'max:2048', 'mimes:jpeg,png,jpg'],
             'pdfPEP' => [Rule::excludeIf(! ($this->isPEP || $this->wifeIsPEP || $this->relativeIsPEP)), 'file', 'mimes:pdf'],
         ];
+
+        foreach ($this->shareHolders as $index => $shareHolder) {
+            $documentType = $shareHolder['documentType'] ?? null;
+            $rules["shareHolders.$index.documentNumber"] = new DocumentNumberValidation($documentType);
+        }
+
+        return $rules;
     }
 
     public function validationAttributes(): array

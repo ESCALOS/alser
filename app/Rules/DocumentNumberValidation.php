@@ -22,7 +22,7 @@ class DocumentNumberValidation implements ValidationRule
         $isValidLenght = $this->documentType->validateNumberLength($value);
 
         if (! $isValidLenght) {
-            $fail(':attribute no válido.');
+            $fail('El número '.$value.' no es un '.$this->documentType->getLabel().'.');
         }
     }
 }

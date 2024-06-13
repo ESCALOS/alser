@@ -39,41 +39,67 @@
                         jurídica.
                     </p>
                     {{-- Accionistas --}}
-                    @for ($i = 0; $i < 3; $i++)
-                        <h3 class="font-semibold border-b-2 border-gray-900 text-md">
-                            Accionista {{ $i + 1 }}
-                        </h3>
-                        <div class="grid grid-cols-2 gap-2 py-4 md:grid-cols-4">
-                            <div class="col-span-2">
-                                <x-mary-input label="Nombres o Razón Social"
-                                    wire:model='form.shareHolders.{{ $i }}.name' />
+                    <div x-data="{ shareHolders: $wire.entangle('form.shareHolders') }">
+                        <template x-for="(shareHolder, index) in shareHolders" :key="index">
+                            <div>
+                                <h3 class="font-semibold border-b-2 border-gray-900 text-md"
+                                    x-text="'Accionista '+(index+1)">
+                                </h3>
+                                <div class="grid grid-cols-2 gap-2 py-4 md:grid-cols-4">
+                                    <div class="col-span-2">
+                                        <label for="shareHolder.name" class="pt-0 font-semibold label label-text"
+                                            x-text="shareHolder.documentType == 2 ? 'Razón Social' : 'Nombres y Apellidos'">
+                                        </label>
+                                        <input type="text" :id="'shareHolders.' + index + '.name'"
+                                            class="w-full max-w-xs input input-bordered input-primary"
+                                            x-model='shareHolder.name' />
+                                    </div>
+                                    <div>
+                                        <label for="shareHolder.documentType"
+                                            class="pt-0 font-semibold label label-text">
+                                            Tipo de documento
+                                        </label>
+                                        <select class="w-full max-w-xs select select-primary"
+                                            :id="'shareHolders.' + index + '.documentType'"
+                                            x-model.number="shareHolder.documentType">
+                                            <option value="1">DNI</option>
+                                            <option value="2">RUC</option>
+                                            <option value="3">CARNET DE EXTRANJ.</option>
+                                            <option value="4">PASAPORTE</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="shareHolder.documentNumber"
+                                            class="pt-0 font-semibold label label-text">
+                                            Número de documento
+                                        </label>
+                                        <input type="text" :id="'shareHolders.' + index + '.documentNumber'"
+                                            class="w-full max-w-xs input input-bordered input-primary"
+                                            x-model='shareHolder.documentNumber'
+                                            x-mask:dynamic="(value) => {
+                                            switch (shareHolders[index]['documentType']) {
+                                                case 1:
+                                                    return '99999999';
+                                                case 2:
+                                                    if (value.startsWith('1')) {
+                                                        return '10999999999';
+                                                    }
+                                                    if(value.startsWith('2')) {
+                                                        return '20999999999'
+                                                    }
+                                                    return 'a';
+                                                case 3:
+                                                case 4:
+                                                    return '************';
+                                                default:
+                                                    return 'a';
+                                            }
+                                        }" />
+                                    </div>
+                                </div>
                             </div>
-                            <x-mary-choices-offline label="Tipo de Documento" :options="$documentTypes"
-                                wire:model='form.shareHolders.{{ $i }}.documentType' single />
-                            <x-mary-input label="Número de documento"
-                                wire:model='form.shareHolders.{{ $i }}.documentNumber'
-                                x-mask:dynamic="(value) => {
-                                    switch ($wire.form.documentType) {
-                                        case 1:
-                                            return '99999999';
-                                        case 2:
-                                            if (value.startsWith('1')) {
-                                                return '10999999999';
-                                            }
-                                            if(value.startsWith('2')) {
-                                                return '20999999999'
-                                            }
-                                            return 'a';
-                                        case 3:
-                                        case 4:
-                                            return '************';
-                                        default:
-                                            return 'a';
-                                    }
-                                }" />
-                        </div>
-                    @endfor
-
+                        </template>
+                    </div>
                     <x-mary-alert icon="o-exclamation-circle" class="text-white bg-sky-600">
                         <span class="font-bold text-md text-pretty">
                             Tus nombres y apellidos deben ser iguales a los que figuran en tu documento de identidad.
@@ -285,6 +311,5 @@
         @else
             <x-legal-representative-form :legal-representative="$form->legalRepresentative" :verification-link-sent="$verificationLinkSent" :user="$this->user" />
         @endif
-
     </x-mary-card>
 </div>
