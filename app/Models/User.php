@@ -111,7 +111,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
     public function getPepAttribute(): bool
     {
-        if ($this->personalAccount()) {
+        if ($this->isPersonalAccount()) {
             return $this->personalAccount->is_PEP;
         } else {
             return $this->legalRepresentative->is_PEP;
@@ -120,7 +120,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
     public function getWifePepAttribute(): bool
     {
-        if ($this->personalAccount()) {
+        if ($this->isPersonalAccount()) {
             return $this->personalAccount->wife_is_PEP;
         } else {
             return $this->legalRepresentative->wife_is_PEP;
@@ -129,7 +129,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
     public function getRelativePepAttribute(): bool
     {
-        if ($this->personalAccount()) {
+        if ($this->isPersonalAccount()) {
             return $this->personalAccount->relative_is_PEP;
         } else {
             return $this->legalRepresentative->relative_is_PEP;
