@@ -5,14 +5,11 @@ namespace App\Livewire\Account;
 use App\Enums\DocumentTypeEnum;
 use App\Enums\IdentityDocumentStatusEnum;
 use App\Enums\RepresentationTypeEnum;
-use App\Filament\Resources\UserResource;
 use App\Livewire\Forms\Account\LegalRepresentativeForm;
 use App\Models\Country;
 use App\Models\LegalRepresentative;
 use App\Models\ShareHolder;
 use App\Models\User;
-use Filament\Notifications\Actions\Action;
-use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -117,18 +114,7 @@ class Business extends Component
                 $this->user->save();
                 $legalRepresentative->save();
             });
-            $admins = User::where('is_admin', true)->get();
-            Notification::make()
-                ->title('Nueva empresa a validar')
-                ->info()
-                ->body('La empresa <strong>'.$this->user->name.'</strong> se ha registrado.')
-                ->actions([
-                    Action::make('view')
-                        ->label('Ver')
-                        ->url(UserResource::getUrl('view', ['record' => $this->user]))
-                        ->markAsRead(),
-                ])
-                ->sendToDatabase($admins);
+
             $this->form->legalRepresentative = $legalRepresentative;
 
         } catch (ValidationException $ex) {
