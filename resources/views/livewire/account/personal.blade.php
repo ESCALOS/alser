@@ -55,9 +55,7 @@
                 </div>
                 <!--Fotos del documento-->
                 <div class="grid gap-3 my-10 md:grid-cols-2">
-                    <x-mary-file wire:model="form.identity_document_front" accept="image/*" change-text="Cambiar"
-                        crop-after-change crop-text="Recortar" crop-title-text="Recortar imagen"
-                        crop-cancel-text="Cancelar" crop-save-text="Recortar">
+                    <x-mary-file wire:model="form.identity_document_front" accept="image/*" change-text="Cambiar">
                         <div class="h-52">
                             <div class="h-32 rounded-t-md bg-violet-100">
                                 <h3 class="pt-4 pb-1 text-lg font-semibold text-center text-violet-400">
@@ -74,9 +72,7 @@
                             </div>
                         </div>
                     </x-mary-file>
-                    <x-mary-file wire:model="form.identity_document_back" accept="image/*" change-text="Cambiar"
-                        crop-after-change crop-text="Recortar" crop-title-text="Recortar imagen"
-                        crop-cancel-text="Cancelar" crop-save-text="Recortar">
+                    <x-mary-file wire:model="form.identity_document_back" accept="image/*" change-text="Cambiar">
                         <div class="h-52">
                             <div class="h-32 rounded-t-md bg-violet-100">
                                 <h3 class="pt-4 pb-1 text-lg font-semibold text-center text-violet-400">
