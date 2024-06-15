@@ -44,7 +44,7 @@
                     if (minutes <= 4 && !this.hasDispatched) {
                         Swal.fire({
                             title: "Realiza la transferencia",
-                            text: "Cuidado, solo te quedan `${this.pad(minutes)}:${this.pad(seconds)}` minutos para realizar la transferencia bancaria y enviarnos el número de operación de la transferencia",
+                            text: `Cuidado, solo te quedan ${this.pad(minutes)}:${this.pad(seconds)} minutos para realizar la transferencia bancaria y enviarnos el número de operación de la transferencia`,
                         });
                         this.hasDispatched = true;
                     }
