@@ -25,8 +25,8 @@ class OperationItem extends Component
         $firtPart = ucfirst($date->translatedFormat('l, d \d\e '));
         $SecondPart = ucfirst($date->translatedFormat('M \d\e Y'));
         $this->createdAtFormatted = $firtPart.$SecondPart;
-        $this->currencySymbolSend = $this->operation->is_purchase ? '$' : 'S/.';
-        $this->currencySymbolReceive = $this->operation->is_purchase ? 'S/.' : '$';
+        $this->currencySymbolSend = $this->operation->isPurchase() ? '$' : 'S/.';
+        $this->currencySymbolReceive = $this->operation->isPurchase() ? 'S/.' : '$';
     }
 
     public function placeholder()

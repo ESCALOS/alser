@@ -30,7 +30,7 @@ class Number extends Component
     #[Computed]
     public function currencySymbol(): string
     {
-        return $this->operation->is_purchase ? '$' : 'S/. ';
+        return $this->operation->isPurchase() ? '$' : 'S/. ';
     }
 
     public function cancelByUser()

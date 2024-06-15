@@ -23,4 +23,5 @@
             <span>{{ $status->getLabel() }}</span>
         </div>
     </div>
+    <span class="hidden text-amber-500"></span>
 </div>

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('operations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->boolean('is_purchase');
+            $table->enum('transaction_type', [1, 2])->default(1);
             $table->double('amount_to_send', 10, 2);
             $table->double('amount_to_receive', 10, 2);
             $table->double('factor', 8, 4);

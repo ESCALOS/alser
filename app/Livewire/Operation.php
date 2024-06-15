@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Enums\OperationStatusEnum;
+use App\Enums\TransactionTypeEnum;
 use App\Models\BankAccount;
 use App\Models\Operation as ModelsOperation;
 use App\Models\OperationNumber;
@@ -107,7 +108,7 @@ class Operation extends Component
 
         $newOperation = ModelsOperation::create([
             'user_id' => auth()->user()->id,
-            'is_purchase' => $form['isPurchase'],
+            'transaction_type' => $form['isPurchase'] ? TransactionTypeEnum::PURCHASE : TransactionTypeEnum::SALE,
             'amount_to_send' => $amountToSend,
             'amount_to_receive' => $amountToReceive,
             'factor' => $factor,

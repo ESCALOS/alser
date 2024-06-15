@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\OperationStatusEnum;
+use App\Enums\TransactionTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,6 +14,7 @@ class Operation extends Model
     protected $guarded = ['created_at', 'updated_at'];
 
     protected $casts = [
+        'transaction_type' => TransactionTypeEnum::class,
         'status' => OperationStatusEnum::class,
     ];
 
@@ -29,5 +31,15 @@ class Operation extends Model
     public function destinationBank()
     {
         return $this->belongsTo(Bank::class, 'destination_bank');
+    }
+
+    public function isPurchase(): bool
+    {
+        return $this->transaction_type === TransactionTypeEnum::PURCHASE;
+    }
+
+    public function isSale(): bool
+    {
+        return $this->transaction_type === TransactionTypeEnum::SALE;
     }
 }
