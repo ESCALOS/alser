@@ -96,6 +96,9 @@
                     return;
                 }
                 this.transactions.splice(index, 1);
+                if (this.transactions.length === 1) {
+                    this.transactions[0].amount = this.totalAmount
+                }
                 this.calculateTotal();
             },
             calculateTotal() {
