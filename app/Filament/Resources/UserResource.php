@@ -7,7 +7,6 @@ use App\Enums\DocumentTypeEnum;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\ShareHolder;
 use App\Models\User;
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\IconEntry;
@@ -36,43 +35,7 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->maxLength(255)
-                    ->default(null),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('two_factor_secret')
-                    ->columnSpanFull(),
-                Forms\Components\Textarea::make('two_factor_recovery_codes')
-                    ->columnSpanFull(),
-                Forms\Components\DateTimePicker::make('two_factor_confirmed_at'),
-                Forms\Components\TextInput::make('current_team_id')
-                    ->numeric()
-                    ->default(null),
-                Forms\Components\TextInput::make('profile_photo_path')
-                    ->maxLength(2048)
-                    ->default(null),
-                Forms\Components\TextInput::make('account_type')
-                    ->required(),
-                Forms\Components\Toggle::make('is_admin')
-                    ->required(),
-                Forms\Components\TextInput::make('celphone')
-                    ->tel()
-                    ->maxLength(20)
-                    ->default(null),
-                Forms\Components\TextInput::make('document_type'),
-                Forms\Components\TextInput::make('document_number')
-                    ->maxLength(12)
-                    ->default(null),
-                Forms\Components\TextInput::make('identity_document_status')
-                    ->required(),
+
             ]);
     }
 
@@ -114,12 +77,6 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                // Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 
@@ -234,9 +191,7 @@ class UserResource extends Resource
     {
         return [
             'index' => Pages\ListUsers::route('/'),
-            // 'create' => Pages\CreateUser::route('/create'),
             'view' => Pages\ViewUser::route('/{record}'),
-            // 'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
 }

@@ -33,6 +33,11 @@ class Operation extends Model
         return $this->belongsTo(Bank::class, 'destination_bank');
     }
 
+    public function isUploaded(): bool
+    {
+        return $this->status === OperationStatusEnum::UPLOADED;
+    }
+
     public function isPurchase(): bool
     {
         return $this->transaction_type === TransactionTypeEnum::PURCHASE;
