@@ -25,11 +25,10 @@ class OperationObserver
     {
         if ($operation->isUploaded()) {
             $admins = User::where('is_admin', true)->get();
-            $message = 'Nueva operación';
             Notification::make()
-                ->title('Nuevo usuario a validar')
+                ->title('Operación pendiente')
                 ->info()
-                ->body($message)
+                ->body('Nueva '.$operation->transaction_type->getLabel())
                 ->actions([
                     Action::make('view')
                         ->label('Ver')
