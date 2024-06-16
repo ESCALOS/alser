@@ -13,11 +13,11 @@
                 <x-mary-choices-offline label="Tipo de moneda" wire:model="form.currencyType" :options="$currencies"
                     single />
                 <div class="col-span-1 md:col-span-2">
-                    <x-mary-input label="Número de cuenta" min="10" max="30"
+                    <x-mary-input label="Número de cuenta" minlength="10" maxlength="30"
                         wire:model="form.accountNumber" />
                 </div>
                 <div class="col-span-1 md:col-span-2">
-                    <x-mary-input label="Alias de la cuenta" min="3" max="30" wire:model="form.name" />
+                    <x-mary-input label="Alias de la cuenta" minlength="3" maxlength="30" wire:model="form.name" />
                 </div>
             </div>
             <x-slot:actions>
