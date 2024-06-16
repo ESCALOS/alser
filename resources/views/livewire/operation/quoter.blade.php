@@ -207,7 +207,7 @@
             },
             updateAmountToSend() {
                 const amountToReceive = parseFloat(this.amountToReceive.replace(/,/g, ''))
-                this.amountToSend = isNaN(amountToReceive) ? 0 : (amountToReceive * this.factor).toFixed(
+                this.amountToSend = isNaN(amountToReceive) ? 0 : (amountToReceive / this.factor).toFixed(
                     2);
             },
             resetValidation() {
