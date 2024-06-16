@@ -47,10 +47,14 @@ class BankAccountForm extends Form
             'accountNumber' => [
                 'required',
                 Rule::unique('bank_accounts', 'account_number')->where('user_id', Auth::user()->id)->ignore($this->bankAccountId),
+                'min:10',
+                'max:30',
             ],
             'name' => [
                 'required',
                 Rule::unique('bank_accounts')->where('user_id', Auth::user()->id)->ignore($this->bankAccountId),
+                'min:3',
+                'max:30',
             ],
         ];
     }

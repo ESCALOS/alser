@@ -3,23 +3,24 @@
         <div class="w-full">
             <div class="flex flex-wrap justify-between">
                 <h1 class="text-2xl font-semibold">Nueva Operación</h1>
-                <div wire:poll.15s='getPrices'>
-                    {{-- <div> --}}
-                    <span class="pb-1 mr-4 font-semibold border-b-2 cursor-pointer hover:text-violet-600 text-md"
+                {{-- <div wire:poll.15s='getPrices'> --}}
+                <div class="flex p-4 text-center md:p-0">
+                    <div class="pb-1 mr-4 font-semibold border-b-2 cursor-pointer hover:text-violet-600 text-md"
                         :class="$wire.form.isPurchase ? 'border-violet-500' : 'border-gray-300'"
                         x-on:click="$wire.form.isPurchase = true">
                         Dólar compra: {{ number_format($purchaseFactor, 4) }}
-                    </span>
-                    <span class="pb-1 mr-4 font-semibold border-b-2 cursor-pointer hover:text-violet-600 text-md"
+                    </div>
+                    <div class="pb-1 mr-4 font-semibold border-b-2 cursor-pointer hover:text-violet-600 text-md"
                         :class="$wire.form.isPurchase ? 'border-gray-300' : 'border-violet-500'"
                         x-on:click="$wire.form.isPurchase = false">
                         Dólar venta: {{ number_format($salesFactor, 4) }}
-                    </span>
+                    </div>
                 </div>
             </div>
             <div>
-                <div class="grid grid-cols-2 gap-4 py-4">
-                    <div class="text-center">
+                <div
+                    class="relative grid grid-cols-1 gap-4 px-4 rounded-md md:px-0 bg-neutral-200 md:bg-white md:grid-cols-2">
+                    <div class="py-4 text-center">
                         <h3 class="text-xl font-semibold">
                             Envío en
                             <span x-show="$wire.form.isPurchase">dólares</span>
@@ -42,7 +43,8 @@
                                 class="block w-full py-4 pr-4 text-2xl text-center border border-gray-300 rounded-lg pl-7 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                         </div>
                     </div>
-                    <div class="text-center">
+                    <hr class="border-1 border-neutral-300 md:hidden">
+                    <div class="py-4 text-center">
                         <h3 class="py-2 text-xl font-semibold">
                             Recibo en
                             <span x-show="!$wire.form.isPurchase">dólares</span>
@@ -60,38 +62,43 @@
                                 class="block w-full py-4 pr-4 text-2xl text-center border border-gray-300 rounded-lg pl-7 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                         </div>
                     </div>
+                    <div class="absolute flex items-center content-center justify-center text-center cursor-pointer top-36 left-[45%] md:top-[5rem] md:left-[19.5rem] lg:left-[21rem]"
+                        x-on:click="$wire.form.isPurchase = !$wire.form.isPurchase">
+                        <div
+                            class="w-10 h-10 transition-all duration-300 rotate-90 rounded-full md:rotate-180 bg-violet-900">
+                            <i class="mt-1 text-2xl text-white fa-solid fa-arrow-right-arrow-left"></i>
+                        </div>
+                    </div>
                 </div>
                 @if (auth()->user()->hasVerifiedEmail() && auth()->user()->isDataValidated())
-                    <div class="mt-2 mb-4">
-                        <div class="h-32 transition-all"
-                            :class="!$wire.form.isPurchase ? 'translate-y-0' : 'translate-y-32'">
+                    <div class="mt-8 mb-4 md:mt-4">
+                        <div class="relative h-40 transition-all md:h-36"
+                            :class="!$wire.form.isPurchase ? 'translate-y-0 z-10' : 'translate-y-40 md:translate-y-36'">
                             <div x-show='$wire.solAccounts'>
-                                <p class="my-2 text-sm font-semibold">
+                                <p class="mb-2 text-sm font-semibold">
                                     <span x-show='!$wire.form.isPurchase'>¿Desde que cuenta nos envías los soles?</span>
                                     <span x-show='$wire.form.isPurchase'>¿En qué cuenta deseas recibir los soles?</span>
                                 </p>
                                 <x-mary-choices wire:model="form.solAccount" @change-selection="resetValidation()"
                                     :options="$solAccounts" option-label="account_number" option-sub-label="name"
-                                    option-avatar="bank_logo" icon="o-credit-card" height="max-h-96" single />
+                                    option-avatar="bank_logo" height="max-h-96" single />
                                 <p class="my-4 text-sm font-semibold text-right cursor-pointer text-violet-700"
                                     x-on:click="$wire.dispatch('openModal',1)">
-                                    Agregar nueva cuenta bancaria soles <x-mary-icon class="w-7"
-                                        name="o-plus-circle" />
+                                    Agregar cuenta bancaria soles <x-mary-icon class="w-7" name="o-plus-circle" />
                                 </p>
                             </div>
-                            <div x-show='!$wire.solAccounts' class="pt-6">
+                            <div x-show='!$wire.solAccounts'>
                                 <button type="button"
                                     class="w-full py-6 text-lg font-semibold transition-colors duration-300 bg-white border rounded-md text-violet-900 border-violet-900"
                                     x-on:click="$wire.dispatch('openModal',1)">
-                                    Agregar nueva cuenta bancaria soles <x-mary-icon class="w-7"
-                                        name="o-plus-circle" />
+                                    Agregar cuenta bancaria soles <x-mary-icon class="w-7" name="o-plus-circle" />
                                 </button>
                             </div>
                         </div>
-                        <div class="h-32 transition-all"
-                            :class="!$wire.form.isPurchase ? 'translate-y-0' : '-translate-y-32'">
+                        <div class="relative h-40 transition-all md:h-36"
+                            :class="!$wire.form.isPurchase ? 'translate-y-0' : '-translate-y-40 md:-translate-y-36'">
                             <div x-show='$wire.dollarAccounts'>
-                                <p class="my-2 text-sm font-semibold">
+                                <p class="mb-2 text-sm font-semibold">
                                     <span x-show='$wire.form.isPurchase'>¿Desde que cuenta nos envías los
                                         dólares?</span>
                                     <span x-show='!$wire.form.isPurchase'>¿En qué cuenta deseas recibir los
@@ -99,19 +106,17 @@
                                 </p>
                                 <x-mary-choices @change-selection="resetValidation()" wire:model="form.dollarAccount"
                                     :options="$dollarAccounts" option-label="account_number" option-sub-label="name"
-                                    option-avatar="bank_logo" icon="o-credit-card" height="max-h-96" single />
+                                    option-avatar="bank_logo" height="max-h-96" single />
                                 <p class="my-4 text-sm font-semibold text-right cursor-pointer text-violet-700"
                                     x-on:click="$wire.dispatch('openModal',2)">
-                                    Agregar nueva cuenta bancaria dólares <x-mary-icon class="w-7"
-                                        name="o-plus-circle" />
+                                    Agregar cuenta bancaria dólares <x-mary-icon class="w-7" name="o-plus-circle" />
                                 </p>
                             </div>
-                            <div x-show='!$wire.dollarAccounts' class="pt-6">
+                            <div x-show='!$wire.dollarAccounts'>
                                 <button type="button"
                                     class="w-full py-6 text-lg font-semibold transition-colors duration-300 bg-white border rounded-md text-violet-900 border-violet-900"
                                     x-on:click="$wire.dispatch('openModal',2)">
-                                    Agregar nueva cuenta bancaria dólares <x-mary-icon class="w-7"
-                                        name="o-plus-circle" />
+                                    Agregar cuenta bancaria dólares <x-mary-icon class="w-7" name="o-plus-circle" />
                                 </button>
                             </div>
                         </div>
