@@ -3,8 +3,7 @@
         <div class="w-full">
             <div class="flex flex-wrap justify-between">
                 <h1 class="text-2xl font-semibold">Nueva Operación</h1>
-                {{-- <div wire:poll.15s='getPrices'> --}}
-                <div class="flex p-4 text-center md:p-0">
+                <div wire:poll.15s='getPrices' class="flex p-4 text-center md:p-0">
                     <div class="pb-1 mr-4 font-semibold border-b-2 cursor-pointer hover:text-violet-600 text-md"
                         :class="$wire.form.isPurchase ? 'border-violet-500' : 'border-gray-300'"
                         x-on:click="$wire.form.isPurchase = true">
