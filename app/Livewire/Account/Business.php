@@ -38,7 +38,7 @@ class Business extends Component
         $this->documentTypes = DocumentTypeEnum::getChoices();
         $this->documentTypesExceptRuc = DocumentTypeEnum::getChoicesExceptRuc();
         $this->representationTypes = RepresentationTypeEnum::getChoices();
-        $this->form->setLegalRepresentativeForm($this->user);
+        $this->form->setLegalRepresentativeForm();
 
     }
 

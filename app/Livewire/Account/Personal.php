@@ -72,7 +72,6 @@ class Personal extends Component
             }
 
             $personaAccount = PersonalAccount::firstOrNew(['user_id' => Auth::id()]);
-            $personaAccount->user_id = $this->user->id;
             $personaAccount->fill($this->form->getPersonalForm());
 
             $this->form->saveIdentityDocumentImages($personaAccount);
