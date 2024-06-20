@@ -90,7 +90,6 @@ class Personal extends Component
                 $this->user->save();
                 $personaAccount->save();
             });
-            $this->form->personalAccount = $personaAccount;
         } catch (ValidationException $ex) {
             $type = 'error';
             $message = '';

@@ -305,7 +305,7 @@
                 </x-slot:actions>
             </x-mary-form>
         @else
-            <x-legal-representative-form :legal-representative="$form->legalRepresentative" :verification-link-sent="$verificationLinkSent" :user="$this->user" />
+            <x-legal-representative-form :verification-link-sent="$verificationLinkSent" />
         @endif
     </x-mary-card>
 </div>

@@ -47,18 +47,20 @@
             </div>
         @endforeach
         <h3 class="text-2xl font-semibold">Datos del representante legal</h3>
-        <x-mary-input label="Nombres" value="{{ $legalRepresentative->name }}" readonly />
+        <x-mary-input label="Nombres" value="{{ $user->legalRepresentative->name }}" readonly />
         <div class="grid grid-cols-2 gap-3">
-            <x-mary-input label="Primer Apellido" value="{{ $legalRepresentative->first_lastname }}" readonly />
-            <x-mary-input label="Segundo Apellido" value="{{ $legalRepresentative->second_lastname }}" readonly />
+            <x-mary-input label="Primer Apellido" value="{{ $user->legalRepresentative->first_lastname }}" readonly />
+            <x-mary-input label="Segundo Apellido" value="{{ $user->legalRepresentative->second_lastname }}"
+                readonly />
         </div>
         <div class="grid gap-3 lg:grid-cols-2">
-            <x-mary-input label="Tipo de Documento" value="{{ $legalRepresentative->document_type->getLabel() }}"
+            <x-mary-input label="Tipo de Documento" value="{{ $user->legalRepresentative->document_type->getLabel() }}"
                 readonly />
-            <x-mary-input label="Número de documento" value="{{ $legalRepresentative->document_number }}" readonly />
-            <x-mary-input label="Nacionalidad" value="{{ $legalRepresentative->country->name }}" readonly />
+            <x-mary-input label="Número de documento" value="{{ $user->legalRepresentative->document_number }}"
+                readonly />
+            <x-mary-input label="Nacionalidad" value="{{ $user->legalRepresentative->country->name }}" readonly />
             <x-mary-input label="Tipo de representación"
-                value="{{ $legalRepresentative->representation_type->getLabel() }}" readonly />
+                value="{{ $user->legalRepresentative->representation_type->getLabel() }}" readonly />
         </div>
     </div>
     <div class="grid gap-3 my-10 md:grid-cols-2">
@@ -68,7 +70,7 @@
     <div class="space-y-6">
         <div>
             <label class="inline-flex items-center cursor-not-allowed">
-                <input type="checkbox" class="sr-only peer" @checked($legalRepresentative->is_PEP) disabled>
+                <input type="checkbox" class="sr-only peer" @checked($user->legalRepresentative->is_PEP) disabled>
                 <div
                     class="relative w-16 h-8 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-violet-300 rounded-full peer peer-checked:after:translate-x-8 peer-checked:before:-translate-x-5 rtl:peer-checked:before:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-7 after:w-7 after:transition-all after:duration-500
                     before:content-['No'] peer-checked:before:content-['Sí'] before:font-semibold before:top-[.25rem] before:start-[2rem] before:text-white before:absolute before:transition-all before:duration-500 peer-checked:bg-violet-600">
@@ -95,7 +97,7 @@
         </div>
         <div>
             <label class="inline-flex items-center cursor-not-allowed">
-                <input type="checkbox" class="sr-only peer" @checked($legalRepresentative->wife_is_PEP) disabled>
+                <input type="checkbox" class="sr-only peer" @checked($user->legalRepresentative->wife_is_PEP) disabled>
                 <div
                     class="relative w-16 h-8 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-violet-300 rounded-full peer peer-checked:after:translate-x-8 peer-checked:before:-translate-x-5 rtl:peer-checked:before:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-7 after:w-7 after:transition-all after:duration-500
                     before:content-['No'] peer-checked:before:content-['Sí'] before:font-semibold before:top-[.25rem] before:start-[2rem] before:text-white before:absolute before:transition-all before:duration-500 peer-checked:bg-violet-600">
@@ -109,7 +111,7 @@
         </div>
         <div>
             <label class="inline-flex items-center cursor-not-allowed">
-                <input type="checkbox" class="sr-only peer" @checked($legalRepresentative->relative_is_PEP) disabled>
+                <input type="checkbox" class="sr-only peer" @checked($user->legalRepresentative->relative_is_PEP) disabled>
                 <div
                     class="relative w-16 h-8 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-violet-300 rounded-full peer peer-checked:after:translate-x-8 peer-checked:before:-translate-x-5 rtl:peer-checked:before:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-7 after:w-7 after:transition-all after:duration-500
                     before:content-['No'] peer-checked:before:content-['Sí'] before:font-semibold before:top-[.25rem] before:start-[2rem] before:text-white before:absolute before:transition-all before:duration-500 peer-checked:bg-violet-600">

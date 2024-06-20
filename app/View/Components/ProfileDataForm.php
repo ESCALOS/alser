@@ -2,22 +2,20 @@
 
 namespace App\View\Components;
 
-use App\Models\PersonalAccount;
 use App\Models\User;
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 
 class ProfileDataForm extends Component
 {
-    /**
-     * Create a new component instance.
-     */
+    protected User $user;
+
     public function __construct(
-        public PersonalAccount $personalAccount,
-        public User $user,
-        public bool $verificationLinkSent,
+        public bool $verificationLinkSent
     ) {
+        $this->user = User::find(Auth::id());
     }
 
     /**
@@ -25,6 +23,8 @@ class ProfileDataForm extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.profile-data-form');
+        return view('components.profile-data-form', [
+            'user' => $this->user,
+        ]);
     }
 }

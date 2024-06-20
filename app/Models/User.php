@@ -103,7 +103,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     {
         $lastname = '';
         if ($this->isPersonalAccount()) {
-            $lastname = "{$this->personalAccount->first_lastname} {$this->personalAccount->second_lastname}";
+            $lastname = "{$this->personalAccount?->first_lastname} {$this->personalAccount?->second_lastname}";
         }
 
         return "{$this->name} {$lastname}";

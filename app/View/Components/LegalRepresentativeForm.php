@@ -2,23 +2,21 @@
 
 namespace App\View\Components;
 
-use App\Models\LegalRepresentative;
 use App\Models\User;
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 
 class LegalRepresentativeForm extends Component
 {
-    /**
-     * Create a new component instance.
-     */
+    protected User $user;
+
     public function __construct(
-        public LegalRepresentative $legalRepresentative,
-        public User $user,
         public bool $verificationLinkSent,
 
     ) {
+        $this->user = User::find(Auth::id());
     }
 
     /**
@@ -26,6 +24,8 @@ class LegalRepresentativeForm extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.legal-representative-form');
+        return view('components.legal-representative-form', [
+            'user' => $this->user,
+        ]);
     }
 }

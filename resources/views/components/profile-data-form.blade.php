@@ -30,13 +30,13 @@
 
         <x-mary-input label="Nombres" value="{{ $user->name }}" readonly />
         <div class="grid grid-cols-2 gap-3">
-            <x-mary-input label="Primer Apellido" value="{{ $personalAccount->first_lastname }}" readonly />
-            <x-mary-input label="Segundo Apellido" value="{{ $personalAccount->second_lastname }}" readonly />
+            <x-mary-input label="Primer Apellido" value="{{ $user->personalAccount->first_lastname }}" readonly />
+            <x-mary-input label="Segundo Apellido" value="{{ $user->personalAccount->second_lastname }}" readonly />
         </div>
         <div class="grid gap-3 lg:grid-cols-2">
             <x-mary-input label="Tipo de Documento" value="{{ $user->document_type->getLabel() }}" readonly />
             <x-mary-input label="Número de documento" value="{{ $user->document_number }}" readonly />
-            <x-mary-input label="Nacionalidad" value="{{ $personalAccount->country->name }}" readonly />
+            <x-mary-input label="Nacionalidad" value="{{ $user->personalAccount->country->name }}" readonly />
 
             <x-mary-input label="Celular" value="{{ $user->celphone }}" readonly />
         </div>
@@ -48,7 +48,7 @@
     <div class="space-y-6">
         <div>
             <label class="inline-flex items-center cursor-not-allowed">
-                <input type="checkbox" class="sr-only peer" @checked($personalAccount->is_PEP) disabled>
+                <input type="checkbox" class="sr-only peer" @checked($user->personalAccount->is_PEP) disabled>
                 <div
                     class="relative w-16 h-8 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-violet-300 rounded-full peer peer-checked:after:translate-x-8 peer-checked:before:-translate-x-5 rtl:peer-checked:before:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-7 after:w-7 after:transition-all after:duration-500
                     before:content-['No'] peer-checked:before:content-['Sí'] before:font-semibold before:top-[.25rem] before:start-[2rem] before:text-white before:absolute before:transition-all before:duration-500 peer-checked:bg-violet-600">
@@ -75,7 +75,7 @@
         </div>
         <div>
             <label class="inline-flex items-center cursor-not-allowed">
-                <input type="checkbox" class="sr-only peer" @checked($personalAccount->wife_is_PEP) disabled>
+                <input type="checkbox" class="sr-only peer" @checked($user->personalAccount->wife_is_PEP) disabled>
                 <div
                     class="relative w-16 h-8 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-violet-300 rounded-full peer peer-checked:after:translate-x-8 peer-checked:before:-translate-x-5 rtl:peer-checked:before:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-7 after:w-7 after:transition-all after:duration-500
                     before:content-['No'] peer-checked:before:content-['Sí'] before:font-semibold before:top-[.25rem] before:start-[2rem] before:text-white before:absolute before:transition-all before:duration-500 peer-checked:bg-violet-600">
@@ -89,7 +89,7 @@
         </div>
         <div>
             <label class="inline-flex items-center cursor-not-allowed">
-                <input type="checkbox" class="sr-only peer" @checked($personalAccount->relative_is_PEP) disabled>
+                <input type="checkbox" class="sr-only peer" @checked($user->personalAccount->relative_is_PEP) disabled>
                 <div
                     class="relative w-16 h-8 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-violet-300 rounded-full peer peer-checked:after:translate-x-8 peer-checked:before:-translate-x-5 rtl:peer-checked:before:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-7 after:w-7 after:transition-all after:duration-500
                     before:content-['No'] peer-checked:before:content-['Sí'] before:font-semibold before:top-[.25rem] before:start-[2rem] before:text-white before:absolute before:transition-all before:duration-500 peer-checked:bg-violet-600">

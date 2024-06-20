@@ -236,7 +236,7 @@
                 </x-slot:actions>
             </x-mary-form>
         @else
-            <x-profile-data-form :personal-account="$form->personalAccount" :verification-link-sent="$verificationLinkSent" :user="$this->user" />
+            <x-profile-data-form :verification-link-sent="$verificationLinkSent" />
         @endif
     </x-mary-card>
 </div>

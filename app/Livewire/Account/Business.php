@@ -114,9 +114,6 @@ class Business extends Component
                 $this->user->save();
                 $legalRepresentative->save();
             });
-
-            $this->form->legalRepresentative = $legalRepresentative;
-
         } catch (ValidationException $ex) {
             $type = 'error';
             $message = '';
