@@ -1,7 +1,7 @@
 <x-mary-form wire:submit='save'>
     <div class="space-y-4">
         <x-mary-input label="{{ __('Email') }}" class="rounded-lg" value="{{ auth()->user()->email }}" disabled />
-        @if ($this->user->hasVerifiedEmail())
+        @if (!$user->hasVerifiedEmail())
             <p class="mt-2 text-sm text-red-600">
                 {{ __('Your email address is unverified.') }}
 

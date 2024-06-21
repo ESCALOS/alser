@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\Reactive;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -28,8 +27,7 @@ class PersonalForm extends Component
 
     public User $user;
 
-    #[Reactive]
-    public bool $verificationLinkSent;
+    public bool $verificationLinkSent = false;
 
     public function mount()
     {
@@ -56,7 +54,7 @@ class PersonalForm extends Component
         try {
             $this->form->resetValidation();
             $this->form->validate();
-            unset($this->user);
+            $this->user = User::find(Auth::id());
             if (! $this->user->identity_document_status === IdentityDocumentStatusEnum::UPLOADED) {
                 throw new \Exception('Datos en proceso de validación');
             }
@@ -83,6 +81,8 @@ class PersonalForm extends Component
                 $this->user->save();
                 $personaAccount->save();
             });
+
+            $this->dispatch('refresh-personal');
         } catch (ValidationException $ex) {
             $type = 'error';
             $message = '';

@@ -4,6 +4,7 @@ namespace App\Livewire\Account;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Personal extends Component
@@ -15,6 +16,12 @@ class Personal extends Component
     public function mount()
     {
         $this->user = User::find(Auth::id());
+    }
+
+    public function sendEmailVerification()
+    {
+        $this->user->sendEmailVerificationNotification();
+        $this->verificationLinkSent = true;
     }
 
     public function placeholder()
@@ -30,6 +37,7 @@ class Personal extends Component
         HTML;
     }
 
+    #[On('refresh-personal')]
     public function render()
     {
         return view('livewire.account.personal');

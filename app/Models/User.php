@@ -113,8 +113,10 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     {
         if ($this->isPersonalAccount()) {
             return $this->personalAccount->is_PEP;
-        } else {
+        } elseif ($this->isBusinessAccount()) {
             return $this->legalRepresentative->is_PEP;
+        } else {
+            return false;
         }
     }
 
@@ -122,8 +124,10 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     {
         if ($this->isPersonalAccount()) {
             return $this->personalAccount->wife_is_PEP;
-        } else {
+        } elseif ($this->isBusinessAccount()) {
             return $this->legalRepresentative->wife_is_PEP;
+        } else {
+            return false;
         }
     }
 
@@ -131,8 +135,10 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     {
         if ($this->isPersonalAccount()) {
             return $this->personalAccount->relative_is_PEP;
-        } else {
+        } elseif ($this->isBusinessAccount()) {
             return $this->legalRepresentative->relative_is_PEP;
+        } else {
+            return false;
         }
     }
 
@@ -163,7 +169,6 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
     public function canAccessPanel(Panel $panel): bool
     {
-        // return str_ends_with($this->email, '@alsercambio.com') && $this->hasVerifiedEmail();
         return $this->is_admin;
     }
 }
