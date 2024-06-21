@@ -5,18 +5,14 @@ namespace App\View\Components;
 use App\Models\User;
 use Closure;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 
 class LegalRepresentativeForm extends Component
 {
-    protected User $user;
-
     public function __construct(
         public bool $verificationLinkSent,
-
+        public User $user
     ) {
-        $this->user = User::find(Auth::id());
     }
 
     /**
@@ -24,8 +20,6 @@ class LegalRepresentativeForm extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.legal-representative-form', [
-            'user' => $this->user,
-        ]);
+        return view('components.legal-representative-form');
     }
 }

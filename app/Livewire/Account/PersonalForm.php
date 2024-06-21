@@ -81,7 +81,6 @@ class PersonalForm extends Component
                 $this->user->save();
                 $personaAccount->save();
             });
-
             $this->dispatch('refresh-personal');
         } catch (ValidationException $ex) {
             $type = 'error';
