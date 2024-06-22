@@ -13,5 +13,5 @@
     @else
         <p>No tienes operaciones</p>
     @endif
-
+    <div wire:loading.delay><x-loader /></div>
 </div>
