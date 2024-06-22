@@ -5,14 +5,19 @@
                 <x-mary-icon name="o-credit-card" class="w-8 mr-2 text-lime-500" />
                 <span class="text-lg font-semibold text-blue-900">
                     {{ $item->name }}
-                    <x-mary-icon name="s-pencil" class="w-5 ml-4 cursor-pointer"
-                        wire:click="$dispatch('fill-fields', { bankAccountId: {{ $item->id }} })" />
+
                 </span>
             </div>
-            <div wire:click="$dispatch('delete', { bankAccountId: {{ $item->id }} })"
-                wire:confirm="¿Desea eliminar la cuenta {{ $item->name }}?">
-                <x-mary-icon name="o-trash" class="w-5 text-red-600 cursor-pointer" />
+            <div class="flex space-x-4">
+                <div wire:click="$dispatch('fill-fields', { bankAccountId: {{ $item->id }} })">
+                    <x-mary-icon name="s-pencil" class="w-5 cursor-pointer text-amber-500" />
+                </div>
+                <div wire:click="$dispatch('delete', { bankAccountId: {{ $item->id }} })"
+                    wire:confirm="¿Desea eliminar la cuenta {{ $item->name }}?">
+                    <x-mary-icon name="o-trash" class="w-5 text-red-600 cursor-pointer" />
+                </div>
             </div>
+
         </div>
         <div class="grid grid-cols-1 pt-4 md:grid-cols-3">
             <div class="hidden text-sm text-blue-900 md:block">

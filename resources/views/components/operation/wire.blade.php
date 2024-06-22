@@ -13,10 +13,10 @@
             {{ number_format($amount, 2) }}
         </h2>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">
+    <div class="grid grid-cols-1 gap-2 mt-4 md:grid-cols-2">
         <div class="flex items-center w-full p-3 bg-gray-100 rounded-sm">
-            <p class="w-1/4 font-semibold text-violet-900 text-md">Hacia</p>
-            <p class="w-3/4 text-sm font-semibold text-gray-700">Tu cuenta</p>
+            <p class="w-1/4 font-semibold text-violet-900 text-md">Desde</p>
+            <p class="w-3/4 text-sm font-semibold text-gray-700">Tu cuenta {{ $bank }}</p>
         </div>
         <div class="w-full p-3 text-sm bg-gray-100 rounded-sm">
             <p class="font-semibold text-gray-500">{{ $bank }}</p>

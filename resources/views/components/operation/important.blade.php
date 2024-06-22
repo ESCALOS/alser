@@ -1,7 +1,8 @@
 <x-mary-card>
     <h2 class="text-2xl font-bold text-red-400">Importante</h2>
     <p class="my-4 text-sm">
-        Has seleccionado una cuenta de <b>origen</b> {{ $originBank }} de provincia. Ten en consideración que:
+        Has seleccionado una cuenta de <b>origen</b> {{ $originBank }}.
+        Ten en consideración que:
     </p>
     <ul class="pl-6 text-sm list-disc">
         <li>
