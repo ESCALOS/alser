@@ -57,13 +57,26 @@ enum OperationStatusEnum: int implements HasColor, HasLabel
     public function getIcon()
     {
         return match ($this) {
-            self::PENDING => 'm-clock',
-            self::UPLOADED => 'm-clock',
-            self::VALIDATED => 'm-check-circle',
-            self::CANCELLED_BY_USER => 'm-x-mark-circle',
-            self::CANCELLED_BY_SYSTEM => 'm-x-mark-circle',
-            self::REJECTED => 'm-x-mark-circle',
-            self::WITHOUT_OPERATION => 'm-x-mark-circle'
+            self::PENDING => 's-clock',
+            self::UPLOADED => 'o-ellipsis-horizontal-circle',
+            self::VALIDATED => 's-check-circle',
+            self::CANCELLED_BY_USER => 's-x-circle',
+            self::CANCELLED_BY_SYSTEM => 's-x-circle',
+            self::REJECTED => 's-x-circle',
+            self::WITHOUT_OPERATION => 's-x-circle'
+        };
+    }
+
+    public function getIconColor()
+    {
+        return match ($this) {
+            self::PENDING => 'text-gray-500',
+            self::UPLOADED => 'text-gray-500',
+            self::VALIDATED => 'text-lime-500',
+            self::CANCELLED_BY_USER => 'text-red-500',
+            self::CANCELLED_BY_SYSTEM => 'text-red-500',
+            self::REJECTED => 'text-red-500',
+            self::WITHOUT_OPERATION => 'text-gray-500'
         };
     }
 
