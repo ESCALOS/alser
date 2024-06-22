@@ -1,4 +1,5 @@
 <div>
+    <div wire:loading><x-loader /></div>
     <x-mary-drawer wire:model="showDrawer" title="Nueva Cuenta Bancaria"
         subtitle="Añade la cuenta bancaria desde donde quieres enviar o recibir tu dinero" right separator
         class="w-11/12 lg:w-2/3">
