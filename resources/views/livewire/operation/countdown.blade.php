@@ -32,9 +32,6 @@
                         title: "<strong>Operación rechazada</strong>",
                         text: "Tu operación fue rechazada dado que no enviaste el número de transferencia en el tiempo indicado. Si ya realizaste la transferencia pero no lograste enviarnos el número de operación; puedes volver a ingresar una nueva solicitud y colocar dicho número."
                     });
-                    if (this.intervalId) {
-                        clearInterval(this.intervalId);
-                    }
                     return false;
                 } else {
                     const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
@@ -53,7 +50,13 @@
             },
             pad(num) {
                 return num < 10 ? '0' + num : num;
+            },
+            destroy() {
+                if (this.intervalId) {
+                    clearInterval(this.intervalId);
+                }
             }
+
         }))
     </script>
 @endscript
