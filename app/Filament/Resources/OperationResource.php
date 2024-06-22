@@ -53,6 +53,13 @@ class OperationResource extends Resource
                             ->label('Tasa de cambio')
                             ->numeric(decimalPlaces: 4),
                     ])->columns(3),
+                FieldSet::make('Cuenta de la transferencia')
+                    ->schema([
+                        TextEntry::make('bank_account_to_receive_name')
+                            ->label('Nombre'),
+                        TextEntry::make('bank_account_to_receive_number')
+                            ->label('Número'),
+                    ]),
                 Fieldset::make('Detalle de bancos')
                     ->schema([
                         TextEntry::make('originBank.name')

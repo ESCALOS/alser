@@ -17,7 +17,7 @@
             </div>
             <livewire:operation.countdown :created-at="$operation->created_at" />
         </div>
-        <x-operation.wire :bank="$operation->originBank->name" :account="$operation->account_from_send" :amount="$operation->amount_to_send" :is-purchase="$operation->isPurchase()" />
+        <x-operation.wire :bank="$operation->originBank" :account="$operation->account_from_send" :amount="$operation->amount_to_send" :is-purchase="$operation->isPurchase()" />
         <div class="mt-4">
             <livewire:operation.number :$operation />
         </div>

@@ -26,8 +26,29 @@ class BankResource extends Resource
                     ->label('Nombre')
                     ->required()
                     ->unique()
+                    ->maxLength(255)
+                    ->columnSpanFull(),
+                Forms\Components\TextInput::make('sol_account_name')
+                    ->label('Alias')
+                    ->required()
+                    ->unique()
                     ->maxLength(255),
-            ]);
+                Forms\Components\TextInput::make('sol_account_number')
+                    ->label('Cuenta en soles')
+                    ->required()
+                    ->unique()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('dollar_account_name')
+                    ->label('Alias')
+                    ->required()
+                    ->unique()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('dollar_account_number')
+                    ->label('Cuenta en dólares')
+                    ->required()
+                    ->unique()
+                    ->maxLength(255),
+            ])->columns();
     }
 
     public static function table(Table $table): Table
@@ -37,6 +58,10 @@ class BankResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nombre')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('sol_account')
+                    ->label('Cuenta en soles'),
+                Tables\Columns\TextColumn::make('dollar_account')
+                    ->label('Cuenta en dólares'),
             ])
             ->filters([
                 //

@@ -14,6 +14,10 @@ return new class extends Migration
         Schema::create('banks', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
+            $table->string('sol_account_name')->unique();
+            $table->string('sol_account_number')->unique();
+            $table->string('dollar_account_name')->unique();
+            $table->string('dollar_account_number')->unique();
             $table->timestamps();
         });
     }

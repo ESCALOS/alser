@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('account_to_receive', 30);
             $table->unsignedBigInteger('origin_bank');
             $table->unsignedBigInteger('destination_bank');
+            $table->string('bank_account_to_receive_name');
+            $table->string('bank_account_to_receive_number');
             $table->enum('status', [1, 2, 3, 4, 5, 6])->default(1);
             $table->timestamps();
 

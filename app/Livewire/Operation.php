@@ -116,6 +116,8 @@ class Operation extends Component
             'account_to_receive' => $accountToReceive->account_number,
             'origin_bank' => $accountFromSend->bank_id,
             'destination_bank' => $accountToReceive->bank_id,
+            'bank_account_to_receive_name' => $form['isPurchase'] ? $accountFromSend->bank->dollar_account_name : $accountFromSend->bank->sol_account_name,
+            'bank_account_to_receive_number' => $form['isPurchase'] ? $accountFromSend->bank->dollar_account_number : $accountFromSend->bank->sol_account_number,
             'status' => OperationStatusEnum::PENDING,
         ]);
         $this->lastOperation = $newOperation;
