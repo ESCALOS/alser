@@ -19,7 +19,9 @@ return new class extends Migration
             $table->double('amount_to_receive', 10, 2);
             $table->double('factor', 8, 4);
             $table->string('account_from_send', 30);
+            $table->string('cci_from_send', 30);
             $table->string('account_to_receive', 30);
+            $table->string('cci_to_receive', 30);
             $table->unsignedBigInteger('origin_bank');
             $table->unsignedBigInteger('destination_bank');
             $table->string('bank_account_to_receive_name');

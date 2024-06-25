@@ -66,10 +66,14 @@ class OperationResource extends Resource
                             ->label('Banco de origen'),
                         TextEntry::make('account_from_send')
                             ->label('Cuenta de origen'),
+                        TextEntry::make('cci_from_send')
+                                ->label('CCI de origen'),
                         TextEntry::make('destinationBank.name')
                             ->label('Banco de destino'),
                         TextEntry::make('account_to_receive')
-                            ->label('Banco de destino'),
+                            ->label('Cuenta de destino'),
+                        TextEntry::make('cci_to_receive')
+                        ->label('CCI de destino'),
                         RepeatableEntry::make('numbers')
                             ->label('Números de operación')
                             ->schema([
@@ -81,8 +85,8 @@ class OperationResource extends Resource
                                     ->prefix(fn (OperationNumber $number) => $number->operation->isPurchase() ? '$ ' : 'S/. '),
                             ])
                             ->columns(2)
-                            ->columnSpan(2),
-                    ]),
+                            ->columnSpanFull(),
+                    ])->columns(3),
             ])->columns();
     }
 
