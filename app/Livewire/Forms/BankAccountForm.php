@@ -74,6 +74,7 @@ class BankAccountForm extends Form
             'bankAccountType' => 'Tipo de cuenta bancaria',
             'currencyType' => 'Tipo de moneda',
             'accountNumber' => 'Número de cuenta',
+            'cciNumber' => 'Número de CCI',
             'name' => 'Alias',
         ];
     }
