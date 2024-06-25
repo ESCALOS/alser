@@ -9,7 +9,7 @@ class Bank extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $guarded = ['created_at','updated_at'];
 
     public function getLogoAttribute()
     {

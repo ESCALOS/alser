@@ -25,28 +25,28 @@ class BankResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->label('Nombre')
                     ->required()
-                    ->unique()
+                    ->unique(ignoreRecord: true)
                     ->maxLength(255)
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('sol_account_name')
                     ->label('Alias')
                     ->required()
-                    ->unique()
+                    ->unique(ignoreRecord: true)
                     ->maxLength(255),
                 Forms\Components\TextInput::make('sol_account_number')
                     ->label('Cuenta en soles')
                     ->required()
-                    ->unique()
+                    ->unique(ignoreRecord: true)
                     ->maxLength(255),
                 Forms\Components\TextInput::make('dollar_account_name')
                     ->label('Alias')
                     ->required()
-                    ->unique()
+                    ->unique(ignoreRecord: true)
                     ->maxLength(255),
                 Forms\Components\TextInput::make('dollar_account_number')
                     ->label('Cuenta en dólares')
                     ->required()
-                    ->unique()
+                    ->unique(ignoreRecord: true)
                     ->maxLength(255),
             ])->columns();
     }
@@ -58,9 +58,9 @@ class BankResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nombre')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('sol_account')
+                Tables\Columns\TextColumn::make('sol_account_number')
                     ->label('Cuenta en soles'),
-                Tables\Columns\TextColumn::make('dollar_account')
+                Tables\Columns\TextColumn::make('dollar_account_number')
                     ->label('Cuenta en dólares'),
             ])
             ->filters([
