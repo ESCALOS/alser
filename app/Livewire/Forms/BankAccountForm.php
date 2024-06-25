@@ -31,6 +31,9 @@ class BankAccountForm extends Form
     public string $accountNumber = '';
 
     #[Validate]
+    public string $cciNumber = '';
+
+    #[Validate]
     public string $name = '';
 
     public function rules(): array
@@ -47,6 +50,12 @@ class BankAccountForm extends Form
             'accountNumber' => [
                 'required',
                 Rule::unique('bank_accounts', 'account_number')->where('user_id', Auth::user()->id)->ignore($this->bankAccountId),
+                'min:10',
+                'max:30',
+            ],
+            'cciNumber' => [
+                'required',
+                Rule::unique('bank_accounts', 'cci_number')->where('user_id', Auth::user()->id)->ignore($this->bankAccountId),
                 'min:10',
                 'max:30',
             ],
@@ -92,6 +101,7 @@ class BankAccountForm extends Form
             $this->bankAccountType = $bankAccount->bank_account_type;
             $this->currencyType = $bankAccount->currency_type;
             $this->accountNumber = $bankAccount->account_number;
+            $this->cciNumber = $bankAccount->cci_number;
             $this->name = $bankAccount->name;
         }
 
@@ -113,6 +123,7 @@ class BankAccountForm extends Form
         $bankAccount->bank_id = $this->bankId;
         $bankAccount->bank_account_type = $this->bankAccountType;
         $bankAccount->currency_type = $this->currencyType;
+        $bankAccount->cci_number = $this->cciNumber;
         $bankAccount->account_number = $this->accountNumber;
         $bankAccount->name = $this->name;
 

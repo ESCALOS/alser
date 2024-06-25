@@ -18,6 +18,9 @@
                         wire:model="form.accountNumber" />
                 </div>
                 <div class="col-span-1 md:col-span-2">
+                    <x-mary-input label="Número de CCI" minlength="10" maxlength="30" wire:model="form.cciNumber" />
+                </div>
+                <div class="col-span-1 md:col-span-2">
                     <x-mary-input label="Alias de la cuenta" minlength="3" maxlength="30" wire:model="form.name" />
                 </div>
             </div>
@@ -41,6 +44,7 @@
             }
             $wire.form.bankAccountId = 0
             $wire.form.accountNumber = ''
+            $wire.form.cciNumber = ''
             $wire.form.name = ''
             $wire.form.currencyType = currency
             $wire.showDrawer = true

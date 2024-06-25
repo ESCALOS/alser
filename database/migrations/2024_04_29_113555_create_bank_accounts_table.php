@@ -19,6 +19,7 @@ return new class extends Migration
             $table->enum('bank_account_type', [1, 2])->comment('Tipo de cuenta bancaria');
             $table->enum('currency_type', [1, 2])->comment('Tipo de moneda');
             $table->string('account_number');
+            $table->string('cci_number')->nullable();
             $table->string('name');
             $table->boolean('is_owner')->default(true);
             $table->timestamps();
