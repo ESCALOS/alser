@@ -158,7 +158,7 @@ class UserResource extends Resource
                                         ->label('¿Familiar PEP?')
                                         ->boolean(),
                                 ])->columns(2)
-                                ->visible(fn (User $user): bool => $user->account_type === AccountTypeEnum::BUSINESS),
+                                ->visible(fn (User $user): bool => $user->isBusinessAccount()),
                         ]),
                     Section::make('Documento de Identidad')
                         ->schema([
@@ -172,8 +172,11 @@ class UserResource extends Resource
                                 ->disk('s3')
                                 ->defaultImageUrl(fn (User $record): string => url(route('image.identity-document-by-user', ['type' => 'back', 'userId' => $record->id])))
                                 ->simpleLightbox(),
-                            ViewEntry::make('status')
-                                ->view('filament.infolists.entries.users.view-pdf', ['userId' => $infolist->getRecord()->id])
+                            ViewEntry::make('pdfRUC')
+                                ->view('filament.infolists.entries.users.view-pdf', ['text' => 'Ver Ficha RUC', 'route' => route('pdf.ruc-by-user', ['userId' =>  $infolist->getRecord()->id])])
+                                ->visible(fn (User $user) => $user->isBusinessAccount()),
+                            ViewEntry::make('pdfPEP')
+                                ->view('filament.infolists.entries.users.view-pdf', ['text' => 'Ver Documento PEP', 'route' => route('pdf.pep-by-user', ['userId' =>  $infolist->getRecord()->id])])
                                 ->visible(fn (User $user) => $user->pep || $user->wife_pep || $user->relative_pep),
                         ])->grow(false),
                 ])->from('md')

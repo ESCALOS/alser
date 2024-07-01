@@ -47,5 +47,12 @@ Route::middleware([
 
             return redirect($urlFirmada);
         })->name('pep-by-user');
+
+        Route::get('ruc/{userId}', function ($userId) {
+            $ruta = 'pdf-RUC/'.$userId.'.pdf';
+            $urlFirmada = Storage::temporaryUrl($ruta, now()->addMinutes(5));
+
+            return redirect($urlFirmada);
+        })->name('ruc-by-user');
     });
 });
