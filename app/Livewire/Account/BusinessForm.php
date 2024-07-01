@@ -90,6 +90,7 @@ class BusinessForm extends Component
 
             $this->form->saveIdentityDocumentImages();
             $this->form->savePdfPEP();
+            $this->form->savePdfRUC();
 
             DB::transaction(function () use ($legalRepresentative) {
                 $this->user->celphone = $this->form->celphone;

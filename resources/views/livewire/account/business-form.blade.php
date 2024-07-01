@@ -27,6 +27,38 @@
             <x-mary-input label="Razón Social" value="{{ auth()->user()->name }}" readonly />
             <x-mary-input label="Celular" wire:model='form.celphone' x-mask='999999999' />
         </div>
+        <div x-data="{ uploading: false, uploaded: false, progress: 0 }" x-on:livewire-upload-start="uploading = true, uploaded = false"
+            x-on:livewire-upload-finish="uploading = false, uploaded = true"
+            x-on:livewire-upload-cancel="uploading = false, uploaded = false"
+            x-on:livewire-upload-error="uploading = false, uploaded = false"
+            x-on:livewire-upload-progress="progress = $event.detail.progress" class="py-2">
+            <p class="mt-6 text-center cursor-pointer select-none text-violet-800" x-on:click="$refs.pdfRUC.click()">
+                <span class="px-4 py-2 mr-2 font-semibold border rounded-lg">
+                    Subir Ficha RUC
+                    <i class="fa-solid fa-upload"></i>
+                </span>
+            </p>
+            <p class="mt-3 text-sm text-center text-gray-900">
+                Descargar tu ficha RUC del portal de SUNAT y subela en formato pdf
+            </p>
+            @error('form.pdfRUC')
+                <div class="p-1 pt-2 text-red-500 label-text-alt">{{ $message }}</div>
+            @enderror
+
+            <input x-ref="pdfRUC" type="file" class="hidden" wire:model='form.pdfRUC' accept="application/pdf">
+
+            <div x-show="uploading">
+                <x-mary-loading class="text-primary loading-lg" />
+            </div>
+            <div x-show="uploaded">
+                <p class="mt-6 text-center select-none text-violet-800">
+                    <span class="px-4 pt-2 pb-3 border-2 border-dashed border-violet-600">
+                        <x-icons.pdf />
+                        Ficha RUC cargado
+                    </span>
+                </p>
+            </div>
+        </div>
         <h3 class="text-xl font-semibold">Datos de los accionistas</h3>
         <p class="text-md">
             Según los requerimientos de la SBS, indica los accionistas, socios o asociados que tengan
@@ -175,7 +207,7 @@
                 activos y del financiamiento del terrorismo.
                 <a target="_blank" class="text-violet-700"
                     href="https://www.sbs.gob.pe/prevencion-de-lavado-activos/listas-de-interes">
-                    Disponible aquí
+                    Disponible aquíbold
                 </a>
             </p>
             <p class="mt-2 text-xs font-semibold text-violet-700"

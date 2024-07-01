@@ -63,6 +63,9 @@ class LegalRepresentativeForm extends Form
     #[Validate]
     public $pdfPEP;
 
+    #[Validate]
+    public $pdfRUC;
+
     public function setLegalRepresentativeForm()
     {
         $this->celphone = auth()->user()->celphone ?? '';
@@ -104,6 +107,7 @@ class LegalRepresentativeForm extends Form
             'identityDocumentFront' => ['required', 'image', 'max:2048', 'mimes:jpeg,png,jpg'],
             'identityDocumentBack' => ['required', 'image', 'max:2048', 'mimes:jpeg,png,jpg'],
             'pdfPEP' => [Rule::excludeIf(! ($this->isPEP || $this->wifeIsPEP || $this->relativeIsPEP)), 'file', 'mimes:pdf'],
+            'pdfRUC' => ['file', 'mimes:pdf'],
         ];
 
         foreach ($this->shareHolders as $index => $shareHolder) {
@@ -121,6 +125,7 @@ class LegalRepresentativeForm extends Form
             'identityDocumentFront' => 'lado frontal',
             'identityDocumentBack' => 'lado reverso',
             'pdfPEP' => 'Documento PEP',
+            'pdfRUC' => 'Ficha RUC',
         ];
     }
 
@@ -131,6 +136,7 @@ class LegalRepresentativeForm extends Form
             'shareHolders.*.documentNumber.required_with' => 'El número de documento del accionista es obligatorio',
             'documentNumber.required' => 'El número de documento es obligatorio',
             'pdfPEP.file' => 'El documento PEP es obligatorio',
+            'pdfRUC.file' => 'La ficha RUC es obligatorio',
         ];
     }
 
@@ -155,11 +161,14 @@ class LegalRepresentativeForm extends Form
             return;
         }
 
-        if (! $this->pdfPEP) {
-            return;
-        }
-
         if (! $this->pdfPEP->storeAs('pdf-PEP/', Auth::user()->id.'.pdf', 's3')) {
+            new \Exception('Error al guardar el pdf');
+        }
+    }
+
+    public function savePdfRUC(): void
+    {
+        if (! $this->pdfRUC->storeAs('pdf-RUC/', Auth::user()->id.'.pdf', 's3')) {
             new \Exception('Error al guardar el pdf');
         }
     }
